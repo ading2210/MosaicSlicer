@@ -1,0 +1,8 @@
+{
+  "name": "web-slicer",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.mjs",
+  "author": "ading2210",
+  "license": "AGPL-3.0-only"
+}
