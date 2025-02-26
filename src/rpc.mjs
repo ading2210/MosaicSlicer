@@ -4,7 +4,7 @@ class RPCFunction {
   }
 
   create_msg(event, data) {
-    return {func_name, event, data}
+    return {func_name: this.func_name, event, data}
   }
 }
 
@@ -28,15 +28,14 @@ export class HostRPCFunction extends RPCFunction {
   }
 
   async * call(...args) {
-    this.worker.postMessage(create_msg("call", args));
+    this.worker.postMessage(this.create_msg("call", args));
     while (true) {
       let msg = await this.msg_promise();
+      if (msg.event === "error")
+        throw msg.data;
+      yield [msg.event, msg.data];
       if (msg.event === "done") 
         break;
-      else if (msg.event === "error")
-        throw msg.data;
-      else 
-        yield [msg.event, msg.data];
     }
   }
 }
@@ -44,7 +43,6 @@ export class HostRPCFunction extends RPCFunction {
 export class WorkerRPCFunction extends RPCFunction {
   constructor(func_name) {
     super(func_name);
-    this.run = () => {};
   }
 
   send(event, data) {

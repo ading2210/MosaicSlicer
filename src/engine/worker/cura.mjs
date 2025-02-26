@@ -1,5 +1,5 @@
-import CuraEngine from "../../dist/compiled/CuraEngine.mjs";
-import { WorkerRPCFunction } from "../rpc.mjs";
+import CuraEngine from "../../../dist/compiled/CuraEngine.mjs";
+import { WorkerRPCFunction } from "../../rpc.mjs";
 
 const engine = await CuraEngine();
 
@@ -8,7 +8,7 @@ export class CuraEngineFunction extends WorkerRPCFunction {
     super("cura_engine");
   }
 
-  run() {
+  run(new_args=[]) {
     globalThis.__progress_cb = this.progress_cb;
     globalThis.__slice_info_cb = this.slice_info_cb;
     globalThis.__gcode_header_cb = this.gcode_header_cb;
@@ -19,9 +19,10 @@ export class CuraEngineFunction extends WorkerRPCFunction {
       "--progress_cb=__progress_cb", 
       "--slice_info_cb=__slice_info_cb", 
       "--gcode_header_cb=__gcode_header_cb", 
-      "--engine_info_cb=__engine_info_cb"
+      "--engine_info_cb=__engine_info_cb",
+      ...new_args
     ];
-    engine.runMain(args);
+    return engine.callMain(args);
   }
 
   progress_cb(progress) {
@@ -37,4 +38,3 @@ export class CuraEngineFunction extends WorkerRPCFunction {
     this.send("engine_info", engine_info)
   }
 }
-

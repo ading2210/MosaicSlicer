@@ -4,7 +4,7 @@ const rpc_functions = {
   "cura_engine": CuraEngineFunction
 }
 
-self.addEventListener("message", (event) => {
+globalThis.addEventListener("message", (event) => {
   let msg = event.data;
   if (msg.event === "call") {
     let func_name = msg.func_name;
@@ -13,3 +13,5 @@ self.addEventListener("message", (event) => {
     func.call(...msg.data);
   }
 });
+
+globalThis.postMessage(true);
