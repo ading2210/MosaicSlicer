@@ -4,5 +4,13 @@
   "description": "",
   "main": "src/index.mjs",
   "author": "ading2210",
-  "license": "AGPL-3.0-only"
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "build": "npx webpack",
+    "build:prod": "npx webpack --mode=production",
+    "dev": "npx webpack --watch"
+  },
+  "devDependencies": {
+    "webpack": "^5.98.0"
+  }
 }

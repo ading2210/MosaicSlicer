@@ -19,5 +19,5 @@ cmake --preset conan-emscripten-release
 cmake --build --preset conan-emscripten-release
 cd ..
 
-mkdir -p dist
-cp CuraEngine/build/emscripten/Release/CuraEngine.js dist/CuraEngine.mjs
+mkdir -p dist/compiled
+cp CuraEngine/build/emscripten/Release/CuraEngine.js dist/compiled/CuraEngine.mjs
