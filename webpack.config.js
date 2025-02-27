@@ -1,5 +1,6 @@
 const common_options = {
   mode: "development",
+  devtool: "eval-source-map",
   experiments: {
     topLevelAwait: true,
     outputModule: true
@@ -7,17 +8,6 @@ const common_options = {
 }
 
 module.exports = [
-  {
-    name: "cura_worker",
-    entry: "./src/engine/worker/index.mjs",
-    output: {
-      filename: "cura_worker.mjs",
-      library: {
-        type: "module"
-      }
-    },
-    ...common_options
-  },
   {
     name: "app_main",
     entry: "./src/index.mjs",

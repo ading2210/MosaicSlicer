@@ -1,14 +1,14 @@
 import CuraEngine from "../../../dist/compiled/CuraEngine.mjs";
 import { WorkerRPCFunction } from "../../rpc.mjs";
 
-const engine = await CuraEngine();
+export const engine = await CuraEngine();
 
-export class CuraEngineFunction extends WorkerRPCFunction {
+export class RunCuraEngine extends WorkerRPCFunction {
   constructor() {
     super("cura_engine");
   }
 
-  run(new_args=[]) {
+  run(new_args) {
     globalThis.__progress_cb = this.progress_cb;
     globalThis.__slice_info_cb = this.slice_info_cb;
     globalThis.__gcode_header_cb = this.gcode_header_cb;

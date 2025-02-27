@@ -38,6 +38,13 @@ export class HostRPCFunction extends RPCFunction {
         break;
     }
   }
+
+  async call_once(...args) {
+    for await (let [event, data] of this.call(...args)) {
+      if (event === "done")
+        return data;
+    }
+  }
 }
 
 export class WorkerRPCFunction extends RPCFunction {
@@ -58,4 +65,34 @@ export class WorkerRPCFunction extends RPCFunction {
       this.send("error", e);
     }
   }
+}
+
+export class SimpleRPCFunction extends WorkerRPCFunction {
+  constructor(func_name, callback) {
+    super(func_name);
+    this.callback = callback;
+  }
+
+  run(...args) {
+    return this.callback(...args);
+  }
+
+  static create(func_name, callback) {
+    return class extends SimpleRPCFunction {
+      constructor() {
+        super(func_name, callback);
+      }
+    }
+  }
+}
+
+export function wait_for_worker(worker) {
+  return new Promise(resolve => {
+    let callback = (event) => {
+      if (event.data !== true) return;
+      resolve();
+      worker.removeEventListener("message", callback);
+    }
+    worker.addEventListener("message", callback);
+  });
 }

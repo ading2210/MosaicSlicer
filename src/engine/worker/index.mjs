@@ -1,7 +1,10 @@
-import { CuraEngineFunction } from "./cura.mjs"; 
+import * as cura from "./cura.mjs";
+import * as vfs from "./vfs.mjs";
+import { SimpleRPCFunction } from "../../rpc.mjs";
 
 const rpc_functions = {
-  "cura_engine": CuraEngineFunction
+  "cura_engine": cura.RunCuraEngine,
+  "import_files": SimpleRPCFunction.create("import_files", vfs.import_files)
 }
 
 globalThis.addEventListener("message", (event) => {
