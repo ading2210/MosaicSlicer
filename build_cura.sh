@@ -11,6 +11,7 @@ source .venv/bin/activate
 if ! pip3 list | grep conan > /dev/null; then
   pip3 install conan==2.7.1
   conan config install https://github.com/ultimaker/conan-config.git
+  conan profile detect --force
 fi
 
 cd CuraEngine

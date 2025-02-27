@@ -1,3 +1,6 @@
 [submodule "CuraEngine"]
 	path = CuraEngine
 	url = https://github.com/Ultimaker/CuraEngine
+[submodule "Cura"]
+	path = Cura
+	url = https://github.com/Ultimaker/Cura
