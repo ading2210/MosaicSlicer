@@ -16,19 +16,19 @@ scene.add(spotLight);
 
 // ---- Model Material
 const material = new THREE.MeshPhysicalMaterial({
-    color: 0xfc7703,
-    // A bit of constant light to dampen the shadows
-    emissive: 0xfc7703,
-    emissiveIntensity: 0.3,
+  color: 0xfc7703,
+  // A bit of constant light to dampen the shadows
+  emissive: 0xfc7703,
+  emissiveIntensity: 0.3,
 })
 
-const loader = new STLLoader()
+const loader = new STLLoader();
 
-export function loadSTL(stlData) {
-    const mesh = new THREE.Mesh(loader.parse(stlData), material)
+export function load_stl(stl_data) {
+  const mesh = new THREE.Mesh(loader.parse(stl_data), material)
 
-    // These settings are specific to the 3DBenchy model
-    mesh.scale.set(0.01, 0.01, 0.01)
-    mesh.rotateX(-Math.PI / 2)
-    scene.add(mesh)
+  // These settings are specific to the 3DBenchy model
+  mesh.scale.set(0.01, 0.01, 0.01)
+  mesh.rotateX(-Math.PI / 2)
+  scene.add(mesh)
 }

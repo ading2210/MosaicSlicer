@@ -2,56 +2,27 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Slicer V1</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Slicer V1</title>
 
-    <script type="module">
-        import { engine } from '/dist/main.mjs';
+  <script type="module" defer>
+    import * as app from '/dist/main.mjs';
+    globalThis.app = app;
 
-        // engine.run_cura("-h")
-    </script>
+    app.main();
+  </script>
 
-    <script type="importmap">
-        {
-          "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three/build/three.module.js",
-            "three/examples/": "https://cdn.jsdelivr.net/npm/three/examples/"
-
-          }
-        }
-      </script>
-
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
-    </style>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
 </head>
 
 <body>
-    <input type="file" id="stl-file" accept=".stl">
-
-    <script type="module">
-        import { loadSTL } from "/src/stl_viewer.mjs"
-        const fileInput = document.getElementById('stl-file');
-
-        fileInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-
-            if (file) {
-                const reader = new FileReader();
-
-                reader.onload = (e) => {
-                    const arrayBuffer = e.target.result;
-                    loadSTL(arrayBuffer);
-                };
-
-                reader.readAsArrayBuffer(file);
-            }
-        });
-    </script>
+  <input type="file" id="stl-file" accept=".stl">
 </body>
 
 </html>

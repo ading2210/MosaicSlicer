@@ -8,8 +8,8 @@ scene.add(new THREE.AxesHelper(5)) // TODO: Use build-plate model
 
 // ---- Camera
 const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
+  75,
+  window.innerWidth / window.innerHeight,
 )
 camera.position.x = 1
 camera.position.y = 1
@@ -24,24 +24,20 @@ document.body.appendChild(renderer.domElement)
 const controls = new OrbitControls(camera, renderer.domElement)
 
 // ---- Three.js Updating and Rendering
-window.addEventListener('resize', onWindowResize, false)
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight
-    camera.updateProjectionMatrix()
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    render()
-}
-
-function animate() {
-    requestAnimationFrame(animate)
-
-    controls.update()
-
-    render()
+function on_window_resize() {
+  camera.aspect = window.innerWidth / window.innerHeight
+  camera.updateProjectionMatrix()
+  renderer.setSize(window.innerWidth, window.innerHeight)
+  render()
 }
 
 function render() {
-    renderer.render(scene, camera)
+  renderer.render(scene, camera)
 }
 
-animate()
+export function animate() {
+  window.addEventListener('resize', on_window_resize, false)
+  requestAnimationFrame(animate)
+  controls.update()
+  render()
+}
