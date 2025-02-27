@@ -1,0 +1,12 @@
+$text: hsl(0, 0%, 100%);
+$background: hsl(180, 6%, 3%);
+$primary: hsl(178, 91%, 73%);
+$secondary: hsl(167, 39%, 47%);
+$accent: hsl(204, 100%, 50%);
+
+body {
+    background-color: $background;
+    color: $text;
+
+    margin: 0;
+}

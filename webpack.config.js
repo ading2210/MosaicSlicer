@@ -17,6 +17,14 @@ module.exports = [
         type: "module"
       }
     },
+    module: {
+      rules: [
+        {
+          test: /\.s[ac]ss$/i,
+          use: ["style-loader", "css-loader", "sass-loader"],
+        },
+      ],
+    },
     ...common_options
   }
 ]
