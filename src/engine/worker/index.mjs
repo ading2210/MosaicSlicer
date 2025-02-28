@@ -17,4 +17,5 @@ globalThis.addEventListener("message", (event) => {
   }
 });
 
+//notify the host that the worker has finished loading
 globalThis.postMessage(true);

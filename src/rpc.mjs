@@ -1,3 +1,5 @@
+//this file contains an rpc implementation for running functions and generators on web workers
+
 class RPCFunction {
   constructor(func_name) {
     this.func_name = func_name;
