@@ -1,18 +1,15 @@
 // Renderer
-import { scene } from './renderer.mjs'
+import { scene } from "./renderer.mjs"
 
 // Loads STL
-import * as THREE from 'three'
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js'
+import * as THREE from "three"
+import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js"
 
 // ---- Lighting
 const spotLight = new THREE.SpotLight(0xffffff);
 spotLight.position.set(1, 1, 1);
-
 spotLight.intensity = 10;
-
 scene.add(spotLight);
-
 
 // ---- Model Material
 const material = new THREE.MeshPhysicalMaterial({

@@ -1,6 +1,6 @@
 // Three.js setup for STL viewer and GCode viewer
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import * as THREE from "three"
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 
 const viewport = document.getElementById("viewer")
 
@@ -48,7 +48,7 @@ function render() {
 }
 
 export function animate() {
-  window.addEventListener('resize', () => {
+  window.addEventListener("resize", () => {
     resize()
   })
   requestAnimationFrame(animate)
