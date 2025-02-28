@@ -18,6 +18,18 @@ function load_file(file) {
   reader.readAsArrayBuffer(file);
 }
 
+function save_file(data, filename, type) {
+  let blob = new Blob([data], {type: type});
+  let a = document.createElement("a");
+  a.download = filename;
+  a.href = URL.createObjectURL(blob);
+  a.style.display = "none";
+
+  document.body.append(a);
+  a.click();
+  a.remove();
+}
+
 file_input.addEventListener("change", (event) => {
   const file = event.target.files[0];
 
@@ -56,10 +68,12 @@ drop_zone.addEventListener("drop", (event) => {
 });
 
 slice_button.addEventListener("click", async () => {
-  var engine = new CuraEngine();
-  await engine.slice({
+  let engine = new CuraEngine();
+  let gcode = await engine.slice({
     stl: loaded_stl,
     settings: sample_settings,
     printer: "creality_ender3"
   });
+  console.log(gcode);
+  save_file(gcode, "out.gcode", "text/plain");
 });

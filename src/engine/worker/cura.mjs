@@ -1,7 +1,7 @@
-import CuraEngine from "../../../dist/compiled/CuraEngine.mjs";
+import EmscriptenRuntime from "../../../dist/compiled/CuraEngine.mjs";
 import { WorkerRPCFunction } from "../../rpc.mjs";
 
-export const engine = await CuraEngine();
+export const runtime = await EmscriptenRuntime();
 
 export class RunCuraEngine extends WorkerRPCFunction {
   constructor() {
@@ -9,21 +9,21 @@ export class RunCuraEngine extends WorkerRPCFunction {
   }
 
   run(new_args) {
-    globalThis.__progress_cb = this.progress_cb;
-    globalThis.__slice_info_cb = this.slice_info_cb;
-    globalThis.__gcode_header_cb = this.gcode_header_cb;
-    globalThis.__engine_info_cb = this.engine_info_cb; 
+    globalThis.__progress_cb = this.progress_cb.bind(this);
+    globalThis.__slice_info_cb = this.slice_info_cb.bind(this);
+    globalThis.__gcode_header_cb = this.gcode_header_cb.bind(this);
+    globalThis.__engine_info_cb = this.engine_info_cb.bind(this); 
 
     let args = [
       "slice", 
-      "--progress_cb=__progress_cb", 
-      "--slice_info_cb=__slice_info_cb", 
-      "--gcode_header_cb=__gcode_header_cb", 
-      "--engine_info_cb=__engine_info_cb",
+      "--progress_cb", "__progress_cb", 
+      "--slice_info_cb", "__slice_info_cb", 
+      "--gcode_header_cb", "__gcode_header_cb", 
+      "--engine_info_cb", "__engine_info_cb",
       ...new_args
     ];
     console.log("Launching CuraEngine with arguments:", args.join(" "));
-    return engine.callMain(args);
+    return runtime.callMain(args);
   }
 
   progress_cb(progress) {

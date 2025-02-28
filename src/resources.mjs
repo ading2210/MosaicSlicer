@@ -30,3 +30,7 @@ export function get_resource(relative_path, as_str=false) {
   else
     return file_data;
 }
+
+export function get_json(relative_path) {
+  return JSON.parse(get_resource(relative_path, true));
+}

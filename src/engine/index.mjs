@@ -1,4 +1,5 @@
-import { cura_resources } from "../resources.mjs";
+import { cura_resources, get_resource } from "../resources.mjs";
+import { resolve_definitions } from "../definitions.mjs";
 import { import_files, run_cura, read_file } from "./handler.mjs";
 
 //format for settings json:
@@ -7,9 +8,9 @@ import { import_files, run_cura, read_file } from "./handler.mjs";
 //https://github.com/Ultimaker/CuraEngine/blob/ba89f84d0e1ebd4c0d7cb7922da33fdaafbb4091/src/Application.cpp#L115
 
 export const sample_settings = {
-  "global": [],
-  "extruder.0": [],
-  "model.stl": []
+  "global": {},
+  "extruder": {},
+  "model.stl": {}
 }
 
 export class CuraEngine {
@@ -26,14 +27,13 @@ export class CuraEngine {
   async slice({stl, settings, printer}) {
     if (!stl)
       throw TypeError("stl file not provided");
-
     await this.init();
     let engine_args = [
       "-v", //enable verbose output
       "-p", //log progress info
-      "-d", "/cura/definitions:/cura/extruders", //printer definitions search path,
+      "-d", "/cura/definitions", //printer definitions search path,
       "-j", `/cura/definitions/${printer}.def.json`, //specific printer definition 
-      "-r", "/tmp/settings.json", //settings json path
+      //"-r", "/tmp/settings.json", //settings json path
       "-l", "/tmp/model.stl", //stl path
       "-o", "/tmp/out.gcode", //output gcode path
     ]
