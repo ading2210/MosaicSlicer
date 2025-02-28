@@ -1,36 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 :root {
-    --text: #ffffff;
-    --background: hsl(270, 4%, 11%);
-    --background-2: hsl(270, 4%, 15%);
+	--text: #ffffff;
+	--background: hsl(270, 4%, 11%);
+	--background-2: hsl(270, 4%, 15%);
 
-    --primary: #37d79c;
-    --secondary: #1a5f5a;
-    --accent: #37d2d7;
+	--primary: #37d79c;
+	--secondary: #1a5f5a;
+	--accent: #37d2d7;
 
-    font-size: 1rem;
-    font-family: 'Inter', sans-serif;
+	font-size: 1rem;
+	font-family: 'Inter', sans-serif;
 }
 
 body {
-    background-color: var(--background);
-    color: var(--text);
+	background-color: var(--background);
+	color: var(--text);
 
-    height: 100vh;
+	height: 100vh;
 
-    margin: 0;
+	margin: 0;
+	padding: 0;
 }
 
 button {
-    font: inherit;
-    font-weight: 600;
-    color: var(--primary);
+	font: inherit;
+	font-weight: 600;
+	color: var(--text);
 
-    background-color: transparent;
+	background-color: transparent;
 
-    border: 3px solid var(--primary);
+	border: 3px solid var(--text);
 
-    padding: 0.25rem 2rem;
+	padding: 0.25rem 2rem;
 
 }

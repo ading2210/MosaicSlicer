@@ -1,94 +1,122 @@
 @import "./base.css";
 
 body {
-    display: flex;
-    flex-direction: row;
-    margin: 0;
-    padding: 0;
+	display: flex;
+	flex-direction: row;
+	margin: 0;
+	padding: 0;
 }
 
 input {
-    position: absolute;
+	position: absolute;
 }
 
 #viewer {
-    border-right: 1px solid #e0e0e0;
-
-    width: 75vw;
+	width: 75vw;
 }
 
-#sidebar {
-    background-color: var(--background-2);
-    padding: 1rem 0.5rem;
+#sidebar-container {
+	height: 100vh;
+	width: 25vw;
 
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 
-    .section-header {
-        font-size: 1.2rem;
-        font-weight: 600;
-    }
+	padding: 0;
+	margin: 0;
+
+	#sidebar {
+		height: 98%;
+		width: 95%;
+
+		border-radius: 1rem;
+		padding: 1rem;
+		box-sizing: border-box;
+
+		background-color: var(--background-2);
+		box-shadow: 0 0 1rem rgba(0, 0, 1, 0.5);
+
+		display: flex;
+		flex-direction: column;
+
+		.section-header {
+			font-size: 1.2rem;
+			font-weight: 600;
+		}
+	}
 }
 
 #actions {
-    height: 3.5rem;
-    width: inherit;
+	height: 3.5rem;
+	width: inherit;
 
-    position: absolute;
-    bottom: 0;
+	position: absolute;
+	bottom: calc(100vh * 0.01);
 
-    padding: 0.25rem 0.5rem;
-    box-sizing: border-box;
+	padding: 0 0.5rem;
+	box-sizing: border-box;
 
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 
-    .left {
-        #stl-file {
-            display: none;
-        }
+	.left {
+		height: 3.5rem;
 
-        #file-label {
-            font-size: calc(3.5rem * 0.9);
-            height: 100%;
+		#stl-file {
+			display: none;
+		}
 
-            ion-icon {
-                cursor:help !important;
-            }
-        }
-    }
+		#file-label {
+			margin: 0;
+			padding: 0;
 
-    .right {
-        #slice-button {
-            font-size: 1.5rem;
-            height: 90%;
+			ion-icon {
+				font-size: 3rem;
 
-            transition: 0.2s ease-out;
-            &:hover {
-                background-color: var(--primary);
-                color: var(--background);
-            }
+				transition: 0.2s ease-out;
 
-        }
-    }
+				&:hover {
+					color: var(--primary);
+				}
+			}
+		}
+	}
+
+	.right {
+		#slice-button {
+			font-size: 1.5rem;
+			height: 90%;
+
+			transition: 0.2s ease-out;
+
+			&:hover {
+				border-color: var(--primary);
+				background-color: var(--primary);
+				color: var(--background);
+			}
+
+		}
+	}
 }
 
 #drop-zone {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-    position: absolute;
+	position: absolute;
 
-    background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.5);
 
-    top: 0;
-    left: 0;
+	top: 0;
+	left: 0;
 
-    width: 100vw;
-    height: 100vh;
+	width: 100vw;
+	height: 100vh;
 
-    display: none;
+	display: none;
 
 }

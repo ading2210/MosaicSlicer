@@ -3,16 +3,9 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 const viewport = document.getElementById("viewer")
-const sidebar = document.getElementById("sidebar")
 
-var bar_width = 0.3 * window.innerWidth
-var view_width = window.innerWidth - bar_width
-var view_height = window.innerHeight
-
-viewport.style.width = view_width + "px"
-viewport.style.height = view_height + "px"
-
-sidebar.style.width = bar_width + "px"
+var view_width = viewport.clientWidth
+var view_height = viewport.clientHeight
 
 // ---- Scene
 export const scene = new THREE.Scene()
@@ -37,11 +30,8 @@ const controls = new OrbitControls(camera, renderer.domElement)
 
 // ---- Three.js Updating and Rendering
 function resize() {
-  view_width = window.innerWidth - bar_width
-  view_height = window.innerHeight
-
-  viewport.style.width = view_width + "px"
-  viewport.style.height = view_height
+  view_width = viewport.clientWidth
+  view_height = viewport.clientHeight
 
   console.log(view_width, view_height)
 
