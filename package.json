@@ -15,12 +15,8 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "css-loader": "^7.1.2",
     "js-untar": "^2.0.0",
     "pako": "^2.1.0",
-    "sass": "^1.85.1",
-    "sass-loader": "^16.0.5",
-    "style-loader": "^4.0.0",
     "three": "^0.174.0"
   }
 }
