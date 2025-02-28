@@ -2,24 +2,46 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web Slicer</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Web Slicer</title>
 
-  <link rel="stylesheet" href="/static/styles/index.css">
+	<link rel="stylesheet" href="/static/styles/index.css">
 
-  <script type="module" defer>
-    import * as app from '/dist/main.mjs';
-    globalThis.app = app;
+	<script type="module" defer>
+		import * as app from '/dist/main.mjs';
+		globalThis.app = app;
 
-    app.main();
-  </script>
+		app.main();
+	</script>
 </head>
 
 <body>
-  <input type="file" id="stl-file" accept=".stl">
+	<div id="viewer">
+		<canvas id="stl-viewer"></canvas>
 
-  <canvas id="stl-viewer"></canvas>
+		<div id="actions">
+			<span class="left">
+				<input type="file" id="stl-file" accept=".stl">
+				<label for="stl-file" id="file-label">
+					<ion-icon name="document-outline"></ion-icon>
+				</label>
+			</span>
+			<span class="right">
+				<button id="slice-button">Slice</button>
+			</span>
+		</div>
+	</div>
+
+	<div id="sidebar">
+		<span class="section-header">Settings</span>
+	</div>
+
+	<div id="drop-zone">
+		<h1>Drop STL</h1>
+	</div>
+
+	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 </body>
 
 </html>

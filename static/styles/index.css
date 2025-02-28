@@ -1,1 +1,94 @@
 @import "./base.css";
+
+body {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+input {
+    position: absolute;
+}
+
+#viewer {
+    border-right: 1px solid #e0e0e0;
+
+    width: 75vw;
+}
+
+#sidebar {
+    background-color: var(--background-2);
+    padding: 1rem 0.5rem;
+
+    display: flex;
+    flex-direction: column;
+
+    .section-header {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+}
+
+#actions {
+    height: 3.5rem;
+    width: inherit;
+
+    position: absolute;
+    bottom: 0;
+
+    padding: 0.25rem 0.5rem;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .left {
+        #stl-file {
+            display: none;
+        }
+
+        #file-label {
+            font-size: calc(3.5rem * 0.9);
+            height: 100%;
+
+            ion-icon {
+                cursor:help !important;
+            }
+        }
+    }
+
+    .right {
+        #slice-button {
+            font-size: 1.5rem;
+            height: 90%;
+
+            transition: 0.2s ease-out;
+            &:hover {
+                background-color: var(--primary);
+                color: var(--background);
+            }
+
+        }
+    }
+}
+
+#drop-zone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: none;
+
+}

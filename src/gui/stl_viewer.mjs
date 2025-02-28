@@ -16,9 +16,9 @@ scene.add(spotLight);
 
 // ---- Model Material
 const material = new THREE.MeshPhysicalMaterial({
-  color: 0xfc7703,
+  color: 0x37d79c,
   // A bit of constant light to dampen the shadows
-  emissive: 0xfc7703,
+  emissive: 0x37d79c,
   emissiveIntensity: 0.3,
 })
 
