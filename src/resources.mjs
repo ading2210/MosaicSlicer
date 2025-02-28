@@ -16,12 +16,12 @@ export async function extract_tar(archive_data) {
   let returned_files = {};
   for (let file of files) {
     if (file.type === "L") continue;
-    returned_files[file.name] = file.buffer;
+    returned_files[file.name] = new Uint8Array(file.buffer);
   }
   return returned_files;
 }
 
-export function get(relative_path, as_str=false) {
+export function get_resource(relative_path, as_str=false) {
   let file_data = cura_resources[relative_path];
   if (!file_data) 
     return null;

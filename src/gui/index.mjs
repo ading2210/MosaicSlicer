@@ -1,12 +1,17 @@
+import { CuraEngine, sample_settings } from "../engine/index.mjs";
 import { load_stl } from "./stl_viewer.mjs"
 
 const file_input = document.getElementById("stl-file");
+const slice_button = document.getElementById("slice-button");
+
+export let loaded_stl = null;
 
 function load_file(file) {
   const reader = new FileReader();
 
   reader.onload = (e) => {
     const array_buffer = e.target.result;
+    loaded_stl = array_buffer;
     load_stl(array_buffer);
   };
 
@@ -48,4 +53,13 @@ drop_zone.addEventListener("drop", (event) => {
       load_file(file);
     }
   }
+});
+
+slice_button.addEventListener("click", async () => {
+  var engine = new CuraEngine();
+  await engine.slice({
+    stl: loaded_stl,
+    settings: sample_settings,
+    printer: "creality_ender3"
+  });
 });

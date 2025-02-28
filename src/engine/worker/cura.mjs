@@ -22,6 +22,7 @@ export class RunCuraEngine extends WorkerRPCFunction {
       "--engine_info_cb=__engine_info_cb",
       ...new_args
     ];
+    console.log("Launching CuraEngine with arguments:", args.join(" "));
     return engine.callMain(args);
   }
 

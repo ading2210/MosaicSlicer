@@ -1,5 +1,5 @@
 import * as engine from "./engine/index.mjs";
-import * as gui from "./gui/gui.mjs";
+import * as gui from "./gui/index.mjs";
 import * as renderer from "./gui/renderer.mjs";
 
 import * as rpc from "./rpc.mjs";

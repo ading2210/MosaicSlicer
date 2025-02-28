@@ -1,24 +1,51 @@
-import { HostRPCFunction, wait_for_worker } from "../rpc.mjs";
+import { cura_resources } from "../resources.mjs";
+import { import_files, run_cura, read_file } from "./handler.mjs";
 
-let cura_worker = null;
+//format for settings json:
+//https://github.com/Ultimaker/CuraEngine/blob/ba89f84d0e1ebd4c0d7cb7922da33fdaafbb4091/src/communication/CommandLine.cpp#L346-L366
+//format for curaengine args:
+//https://github.com/Ultimaker/CuraEngine/blob/ba89f84d0e1ebd4c0d7cb7922da33fdaafbb4091/src/Application.cpp#L115
 
-async function create_worker() {
-  if (!cura_worker) {
-    cura_worker = new Worker(new URL("./worker/index.mjs", import.meta.url), {type: "module"});
-    await wait_for_worker(cura_worker)
-  }
+export const sample_settings = {
+  "global": [],
+  "extruder.0": [],
+  "model.stl": []
 }
 
-export async function run_cura(new_args) {
-  await create_worker();
-  let cura_func = new HostRPCFunction("cura_engine", cura_worker);
-  for await (let [event, data] of cura_func.call(new_args)) {
-    console.log(event, data);
+export class CuraEngine {
+  constructor() {
+    this.initialized = false;
   }
-}
 
-export async function import_files(base_dir, files) {
-  await create_worker();
-  let cura_func = new HostRPCFunction("import_files", cura_worker);
-  await cura_func.call_once(base_dir, files);
+  async init() {
+    if (this.initialized) return;
+    await import_files("/cura", cura_resources);
+    this.initialized = true;
+  }
+
+  async slice({stl, settings, printer}) {
+    if (!stl)
+      throw TypeError("stl file not provided");
+
+    await this.init();
+    let engine_args = [
+      "-v", //enable verbose output
+      "-p", //log progress info
+      "-d", "/cura/definitions:/cura/extruders", //printer definitions search path,
+      "-j", `/cura/definitions/${printer}.def.json`, //specific printer definition 
+      "-r", "/tmp/settings.json", //settings json path
+      "-l", "/tmp/model.stl", //stl path
+      "-o", "/tmp/out.gcode", //output gcode path
+    ]
+
+    let settings_data = new TextEncoder().encode(JSON.stringify(settings));
+    let tmp_files = {
+      "settings.json": settings_data,
+      "model.stl": stl
+    }
+    await import_files("/tmp", tmp_files);
+
+    await run_cura(engine_args);
+    return await read_file("/tmp/out.gcode");
+  }
 }
