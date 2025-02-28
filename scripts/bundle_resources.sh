@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -x
+
 pack_dir() {
   local source_dir="$1"
   local out_path="$2"
@@ -7,8 +10,8 @@ pack_dir() {
   tar -cvf - -C "$source_dir" "$@" | gzip -9 - > "$out_path"
 }
 
-mkdir "static/dist/"
-pack_dir "Cura/resources/" "static/dist/cura_resources.tar.gz" \
+mkdir -p "static/dist/resources"
+pack_dir "Cura/resources/" "static/dist/resources/cura_data.tar.gz" \
   definitions \
   extruders \
   i18n \

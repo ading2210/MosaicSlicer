@@ -1,13 +1,32 @@
 import pako from "pako";
 import untar from "js-untar";
 
+export let cura_resources = {};
+
+export async function download_resources() {
+  let resources_url = "/dist/resources/cura_data.tar.gz";
+  let response = await fetch(resources_url);
+  let compressed_tar = await response.arrayBuffer();
+  cura_resources = await extract_tar(compressed_tar);
+}
+
 export async function extract_tar(archive_data) {
   let decompressed = pako.inflate(archive_data);
-  let tar_files = await untar(decompressed.buffer);
-  let files = {};
-  for (let file of tar_files) {
-    let relative_path = file.name.substring(1);
-    files[relative_path] = tar_files.buffer;
+  let files = await untar(decompressed.buffer);
+  let returned_files = {};
+  for (let file of files) {
+    if (file.type === "L") continue;
+    returned_files[file.name] = file.buffer;
   }
-  return files;
+  return returned_files;
+}
+
+export function get(relative_path, as_str=false) {
+  let file_data = cura_resources[relative_path];
+  if (!file_data) 
+    return null;
+  if (as_str)
+    return new TextDecoder().decode(file_data);
+  else
+    return file_data;
 }

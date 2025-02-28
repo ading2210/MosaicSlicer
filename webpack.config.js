@@ -1,3 +1,5 @@
+const path = require("path");
+
 const common_options = {
   mode: "development",
   devtool: "eval-source-map",
@@ -13,6 +15,7 @@ module.exports = [
     entry: "./src/index.mjs",
     output: {
       filename: "main.mjs",
+      path: path.join(__dirname, "./static/dist"),
       library: {
         type: "module"
       }
