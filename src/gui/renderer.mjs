@@ -33,15 +33,12 @@ function resize() {
   view_width = viewport.clientWidth
   view_height = viewport.clientHeight
 
-  console.log(view_width, view_height)
-
   camera.aspect = view_width / view_height
   camera.updateProjectionMatrix()
 
   renderer.setSize(view_width, view_height)
   render()
 }
-resize()
 
 function render() {
   renderer.render(scene, camera)
@@ -50,7 +47,8 @@ function render() {
 export function animate() {
   window.addEventListener("resize", () => {
     resize()
-  })
+  });
+  resize();
   requestAnimationFrame(animate)
   controls.update()
   render()

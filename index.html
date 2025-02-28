@@ -2,48 +2,45 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Web Slicer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Slicer</title>
 
-	<link rel="stylesheet" href="/static/styles/index.css">
+  <link rel="stylesheet" href="/static/styles/index.css">
 
-	<script type="module" defer>
-		import * as app from "/dist/main.mjs";
-		globalThis.app = app;
-
-		app.main();
-	</script>
+  <script type="module" src="/dist/main.mjs" defer></script>
 </head>
 
 <body>
-	<div id="viewer">
-		<canvas id="stl-viewer"></canvas>
+  <div id="viewer">
+    <canvas id="stl-viewer"></canvas>
 
-		<div id="actions">
-			<span class="left">
-				<input type="file" id="stl-file" accept=".stl">
-				<label for="stl-file" id="file-label">
-					<ion-icon name="document-outline"></ion-icon>
-				</label>
-			</span>
-			<span class="right">
-				<button id="slice-button">Slice</button>
-			</span>
-		</div>
-	</div>
+    <div id="actions">
+      <span class="left">
+        <input type="file" id="stl-file" accept=".stl">
+        <label for="stl-file" id="file-label">
+          <ion-icon name="document-outline"></ion-icon>
+        </label>
+      </span>
+      <div class="flex-spacer"></div>
+      <span class="right">
+        <button id="slice-button">Slice</button>
+      </span>
+    </div>
+  </div>
 
-	<div id="sidebar-container">
-		<div id="sidebar">
-			<span class="section-header">Settings</span>
-		</div>
-	</div>
+  <div id="sidebar-container">
+    <div id="sidebar">
+      <span class="section-header">Settings</span>
+    </div>
+  </div>
 
-	<div id="drop-zone">
-		<h1>Drop STL</h1>
-	</div>
+  <div id="drop-zone">
+    <h1>Drop STL</h1>
+  </div>
 
-	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <!-- todo: don't load this from a third party cdn -->
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 </body>
 
 </html>
