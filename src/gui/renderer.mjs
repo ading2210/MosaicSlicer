@@ -4,15 +4,15 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 
 const viewport = document.getElementById("viewer")
 
-var view_width = viewport.clientWidth
-var view_height = viewport.clientHeight
+export var view_width = viewport.clientWidth
+export var view_height = viewport.clientHeight
 
 // ---- Scene
 export const scene = new THREE.Scene()
 scene.add(new THREE.AxesHelper(5)) // TODO: Use build-plate model
 
 // ---- Camera
-const camera = new THREE.PerspectiveCamera(
+export const camera = new THREE.PerspectiveCamera(
   75,
   view_width / view_height,
 )

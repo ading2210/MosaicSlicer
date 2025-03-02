@@ -1,26 +1,26 @@
 import { CuraEngine, sample_settings } from "../engine/index.mjs";
-import { load_stl } from "./stl_viewer.mjs"
+import { load_stl, models } from "./stl_viewer.mjs"
 import "./sidebar.mjs";
+import { mod } from "three/tsl";
 
 const file_input = document.getElementById("stl-file");
 const slice_button = document.getElementById("slice-button");
 
-export let loaded_stl = null;
 
 function load_file(file) {
   const reader = new FileReader();
 
   reader.onload = (e) => {
     const array_buffer = e.target.result;
-    loaded_stl = array_buffer;
-    load_stl(array_buffer);
+    // loaded_stl = array_buffer;
+    load_stl(array_buffer)
   };
 
   reader.readAsArrayBuffer(file);
 }
 
 function save_file(data, filename, type) {
-  let blob = new Blob([data], {type: type});
+  let blob = new Blob([data], { type: type });
   let a = document.createElement("a");
   a.download = filename;
   a.href = URL.createObjectURL(blob);
@@ -71,7 +71,7 @@ drop_zone.addEventListener("drop", (event) => {
 slice_button.addEventListener("click", async () => {
   let engine = new CuraEngine();
   let gcode = await engine.slice({
-    stl: loaded_stl,
+    stl: models[Object.keys(models)[0]].data, // TODO: Support multiple models
     settings: sample_settings,
     printer: "creality_ender3"
   });
