@@ -22,7 +22,7 @@ export function merge_deep(target, ...sources) {
   return merge_deep(target, ...sources);
 }
 
-export function resolve_printer(printer_id) {
+function resolve_printer(printer_id) {
   let printer = get_json(`definitions/${printer_id}.def.json`);
   if (printer.inherits) 
     return merge_deep(resolve_printer(printer.inherits), printer);
@@ -30,7 +30,7 @@ export function resolve_printer(printer_id) {
     return printer;
 }
 
-export function resolve_extruder(extruder_id) {
+function resolve_extruder(extruder_id) {
   let extruder = get_json(`extruders/${extruder_id}.def.json`);
   if (!extruder) 
     extruder = get_json(`definitions/${extruder_id}.def.json`);
@@ -42,11 +42,42 @@ export function resolve_extruder(extruder_id) {
 
 export function resolve_definitions(printer_id) {
   let printer = resolve_printer(printer_id);
-  let extruder_ids = Object.values(printer.metadata.machine_extruder_trains);
-  let extruders = extruder_ids.map(id => resolve_extruder(id));
+
+  let extruder_data = printer.metadata.machine_extruder_trains;
+  let extruders = {};
+  for (let [extuder_num, extruder_id] of Object.entries(extruder_data))
+    extruders[extuder_num] = resolve_extruder(extruder_id);
 
   return {
     printer: resolve_printer(printer_id),
     extruders: extruders
   }
+}
+
+export function resolve_settings(overrides, settings, resolved={}) {
+  for (let [id, setting] of Object.entries(settings)) {
+    if (setting.type !== "category") {
+      if (typeof overrides[id] === "object") 
+        resolved[id] = merge_deep(setting, overrides[id]);
+      else
+        resolved[id] = setting;  
+    }
+    if (setting.children) 
+      resolve_settings(overrides, setting.children, resolved);
+  }
+
+  return resolved;
+}
+
+export function resolve_machine_settings(printer_id) {
+  let {printer, extruders} = resolve_definitions(printer_id);
+  let printer_settings = resolve_settings(printer.overrides, printer.settings);
+  let extuder_settings = {};
+  for (let [id, extuder] of Object.entries(extruders)) 
+    extuder_settings[id] = resolve_settings(extuder.overrides, extuder.settings);
+
+  return {
+    printer: printer_settings,
+    extruders: extuder_settings
+  };
 }

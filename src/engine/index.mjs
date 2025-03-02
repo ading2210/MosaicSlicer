@@ -9,7 +9,7 @@ import { import_files, run_cura, read_file } from "./handler.mjs";
 
 export const sample_settings = {
   "global": {},
-  "extruder": {},
+  "extruder.0": {},
   "model.stl": {}
 }
 
@@ -32,8 +32,8 @@ export class CuraEngine {
       "-v", //enable verbose output
       "-p", //log progress info
       "-d", "/cura/definitions", //printer definitions search path,
-      "-j", `/cura/definitions/${printer}.def.json`, //specific printer definition 
-      //"-r", "/tmp/settings.json", //settings json path
+      //"-j", `/cura/definitions/${printer}.def.json`, //specific printer definition 
+      "-r", "/tmp/settings.json", //settings json path
       "-l", "/tmp/model.stl", //stl path
       "-o", "/tmp/out.gcode", //output gcode path
     ]

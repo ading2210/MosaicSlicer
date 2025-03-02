@@ -1,4 +1,5 @@
-import { CuraEngine, sample_settings } from "../engine/index.mjs";
+import { CuraEngine } from "../engine/index.mjs";
+import { resolve_machine_settings } from "../definitions.mjs";
 import { load_stl, models } from "./stl_viewer.mjs"
 import "./sidebar.mjs";
 import { mod } from "three/tsl";
@@ -70,11 +71,22 @@ drop_zone.addEventListener("drop", (event) => {
 
 slice_button.addEventListener("click", async () => {
   let engine = new CuraEngine();
+  let printer_id = "creality_ender3"; //hardcoded for testing
+  let machine_settings = resolve_machine_settings(printer_id);
+  function resolve_setting_values(settings) {
+    let resolved = {};
+    for (let [id, setting] of Object.entries(settings)) 
+      resolved[id] = setting.default_value; //todo: eval the python expressions
+    return resolved;
+  }
+  let resolved_settings = {
+    "global": resolve_setting_values(machine_settings.printer),
+    "extruder.0": resolve_setting_values(machine_settings.extruders["0"]),
+  }
   let gcode = await engine.slice({
     stl: models[Object.keys(models)[0]].data, // TODO: Support multiple models
-    settings: sample_settings,
-    printer: "creality_ender3"
+    settings: resolved_settings,
+    printer: printer_id
   });
-  console.log(gcode);
   save_file(gcode, "out.gcode", "text/plain");
 });
