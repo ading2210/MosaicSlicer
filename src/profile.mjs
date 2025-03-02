@@ -1,3 +1,6 @@
+// note: i think this current code is obsolete
+/*
+
 // Load keys and defaults for profiles
 import { get_resource } from "./resources.mjs"
 
@@ -19,3 +22,5 @@ export function create_profile(name) {
 	}
 	return profile
 }
+
+*/

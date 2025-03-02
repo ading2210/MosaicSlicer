@@ -14,7 +14,7 @@ module.exports = [
     name: "app_main",
     entry: "./src/index.mjs",
     output: {
-      filename: "main.mjs",
+      filename: "app.mjs",
       path: path.join(__dirname, "./static/dist"),
       library: {
         type: "module"

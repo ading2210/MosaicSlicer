@@ -1,5 +1,7 @@
 import { get_json } from "./resources.mjs";
 
+//module for resolving printer/extruder definitions, and their associated settings
+
 //https://stackoverflow.com/a/34749873/21330993
 function is_object(item) {
   return (item && typeof item === 'object' && !Array.isArray(item));

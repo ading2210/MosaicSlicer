@@ -1,4 +1,4 @@
-export { loadMicroPython } from "@micropython/micropython-webassembly-pyscript";
+import { loadMicroPython } from "@micropython/micropython-webassembly-pyscript";
 import mp_wasm from "@micropython/micropython-webassembly-pyscript/micropython.wasm";
 
 export const micropython = await loadMicroPython({url: mp_wasm});
