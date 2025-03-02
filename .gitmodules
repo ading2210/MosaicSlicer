@@ -4,3 +4,6 @@
 [submodule "Cura"]
 	path = Cura
 	url = https://github.com/Ultimaker/Cura
+[submodule "micropython"]
+	path = micropython
+	url = https://github.com/micropython/micropython.git
