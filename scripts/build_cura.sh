@@ -8,9 +8,11 @@ if [ ! -d ".venv" ]; then
 fi
 source .venv/bin/activate
 
+cd third_party
+
 if ! pip3 list | grep conan > /dev/null; then
   pip3 install conan==2.7.1
-  conan config install https://github.com/ultimaker/conan-config.git
+  conan config install -t dir conan-config
   conan profile detect --force
 fi
 
@@ -20,5 +22,5 @@ cmake --preset conan-emscripten-release
 cmake --build --preset conan-emscripten-release
 cd ..
 
-mkdir -p dist/compiled
-cp CuraEngine/build/emscripten/Release/CuraEngine.js dist/compiled/CuraEngine.mjs
+mkdir -p ../dist/compiled
+cp CuraEngine/build/emscripten/Release/CuraEngine.js ../dist/compiled/CuraEngine.mjs

@@ -15,6 +15,7 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
+    "@micropython/micropython-webassembly-pyscript": "^1.24.1",
     "ionicons": "^7.4.0",
     "js-untar": "^2.0.0",
     "pako": "^2.1.0",

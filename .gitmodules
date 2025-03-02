@@ -1,9 +1,9 @@
 [submodule "CuraEngine"]
-	path = CuraEngine
+	path = third_party/CuraEngine
 	url = https://github.com/Ultimaker/CuraEngine
 [submodule "Cura"]
-	path = Cura
+	path = third_party/Cura
 	url = https://github.com/Ultimaker/Cura
-[submodule "micropython"]
-	path = micropython
-	url = https://github.com/micropython/micropython.git
+[submodule "third_party/conan-config"]
+	path = third_party/conan-config
+	url = https://github.com/ultimaker/conan-config.git

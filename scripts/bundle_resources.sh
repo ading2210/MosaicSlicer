@@ -11,7 +11,7 @@ pack_dir() {
 }
 
 mkdir -p "static/dist/resources"
-pack_dir "Cura/resources/" "static/dist/resources/cura_data.tar.gz" \
+pack_dir "third_party/Cura/resources/" "static/dist/resources/cura_data.tar.gz" \
   definitions \
   extruders \
   i18n \

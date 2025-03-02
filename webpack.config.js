@@ -20,6 +20,22 @@ module.exports = [
         type: "module"
       }
     },
+    resolve: {
+      fallback: {
+        "url": false,
+        "fs": false,
+        "path": false,
+        "module": false
+      }
+    },
+    module: {
+      rules: [
+        {
+          test: /\.wasm/,
+          type: 'asset/resource'
+        }
+      ]
+    },
     ...common_options
   }
 ]

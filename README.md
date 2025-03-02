@@ -19,5 +19,5 @@ $ npm i
 
 Bundle JS with Webpack:
 ```
-npm run build:prod
+$ npm run build:prod
 ```
