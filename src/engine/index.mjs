@@ -17,7 +17,7 @@ export class CuraEngine {
     this.initialized = true;
   }
 
-  async slice({stl, settings}) {
+  async slice({ stl, settings }) {
     if (!stl)
       throw TypeError("stl file not provided");
     await this.init();

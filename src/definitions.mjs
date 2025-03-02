@@ -26,19 +26,19 @@ export function merge_deep(target, ...sources) {
 
 function resolve_printer(printer_id) {
   let printer = get_json(`definitions/${printer_id}.def.json`);
-  if (printer.inherits) 
+  if (printer.inherits)
     return merge_deep(resolve_printer(printer.inherits), printer);
-  else 
+  else
     return printer;
 }
 
 function resolve_extruder(extruder_id) {
   let extruder = get_json(`extruders/${extruder_id}.def.json`);
-  if (!extruder) 
+  if (!extruder)
     extruder = get_json(`definitions/${extruder_id}.def.json`);
-  if (extruder.inherits) 
+  if (extruder.inherits)
     return merge_deep(resolve_extruder(extruder.inherits), extruder);
-  else 
+  else
     return extruder;
 }
 
@@ -56,15 +56,15 @@ export function resolve_definitions(printer_id) {
   }
 }
 
-export function resolve_settings(overrides, settings, resolved={}) {
+export function resolve_settings(overrides, settings, resolved = {}) {
   for (let [id, setting] of Object.entries(settings)) {
     if (setting.type !== "category") {
-      if (typeof overrides[id] === "object") 
+      if (typeof overrides[id] === "object")
         resolved[id] = merge_deep(setting, overrides[id]);
       else
-        resolved[id] = setting;  
+        resolved[id] = setting;
     }
-    if (setting.children) 
+    if (setting.children)
       resolve_settings(overrides, setting.children, resolved);
   }
 
@@ -72,10 +72,10 @@ export function resolve_settings(overrides, settings, resolved={}) {
 }
 
 export function resolve_machine_settings(printer_id) {
-  let {printer, extruders} = resolve_definitions(printer_id);
+  let { printer, extruders } = resolve_definitions(printer_id);
   let printer_settings = resolve_settings(printer.overrides, printer.settings);
   let extuder_settings = {};
-  for (let [id, extuder] of Object.entries(extruders)) 
+  for (let [id, extuder] of Object.entries(extruders))
     extuder_settings[id] = resolve_settings(extuder.overrides, extuder.settings);
 
   return {

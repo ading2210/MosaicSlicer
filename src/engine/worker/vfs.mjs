@@ -5,7 +5,7 @@ export function rm_dir(path) {
     return;
   for (let entry of runtime.FS.readdir(path)) {
     let new_path = path + "/" + entry;
-    if (entry === "." || entry === "..") 
+    if (entry === "." || entry === "..")
       continue;
     try {
       runtime.FS.unlink(new_path);
@@ -18,7 +18,7 @@ export function rm_dir(path) {
 }
 
 export function write_file(file_path, data) {
-  if (!(data instanceof Uint8Array)) 
+  if (!(data instanceof Uint8Array))
     data = new Uint8Array(data);
   runtime.FS.writeFile(file_path, data);
 }
@@ -28,10 +28,10 @@ export function import_files(base_dir, files) {
   runtime.FS.mkdir(base_dir);
   for (let [relative_path, data] of Object.entries(files)) {
     let out_path = base_dir + "/" + relative_path;
-    if (out_path.endsWith("/")) 
+    if (out_path.endsWith("/"))
       runtime.FS.mkdir(out_path);
     else
-    write_file(out_path, data);
+      write_file(out_path, data);
   }
 }
 

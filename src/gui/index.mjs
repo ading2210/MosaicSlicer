@@ -74,7 +74,7 @@ slice_button.addEventListener("click", async () => {
   let machine_settings = resolve_machine_settings(printer_id);
   function resolve_setting_values(settings) {
     let resolved = {};
-    for (let [id, setting] of Object.entries(settings)) 
+    for (let [id, setting] of Object.entries(settings))
       resolved[id] = setting.default_value; //todo: eval the python expressions
     return resolved;
   }

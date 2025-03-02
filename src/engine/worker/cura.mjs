@@ -12,13 +12,13 @@ export class RunCuraEngine extends WorkerRPCFunction {
     globalThis.__progress_cb = this.progress_cb.bind(this);
     globalThis.__slice_info_cb = this.slice_info_cb.bind(this);
     globalThis.__gcode_header_cb = this.gcode_header_cb.bind(this);
-    globalThis.__engine_info_cb = this.engine_info_cb.bind(this); 
+    globalThis.__engine_info_cb = this.engine_info_cb.bind(this);
 
     let args = [
-      "slice", 
-      "--progress_cb", "__progress_cb", 
-      "--slice_info_cb", "__slice_info_cb", 
-      "--gcode_header_cb", "__gcode_header_cb", 
+      "slice",
+      "--progress_cb", "__progress_cb",
+      "--slice_info_cb", "__slice_info_cb",
+      "--gcode_header_cb", "__gcode_header_cb",
       "--engine_info_cb", "__engine_info_cb",
       ...new_args
     ];

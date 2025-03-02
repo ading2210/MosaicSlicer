@@ -21,9 +21,9 @@ export async function extract_tar(archive_data) {
   return returned_files;
 }
 
-export function get_resource(relative_path, as_str=false) {
+export function get_resource(relative_path, as_str = false) {
   let file_data = cura_resources[relative_path];
-  if (!file_data) 
+  if (!file_data)
     return null;
   if (as_str)
     return new TextDecoder().decode(file_data);
