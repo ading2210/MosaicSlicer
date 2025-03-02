@@ -1,8 +1,7 @@
 import { CuraEngine } from "../engine/index.mjs";
 import { resolve_machine_settings } from "../definitions.mjs";
-import { load_stl, models } from "./stl_viewer.mjs"
+import { load_stl, models } from "./viewer.mjs";
 import "./sidebar.mjs";
-import { mod } from "three/tsl";
 
 const file_input = document.getElementById("stl-file");
 const slice_button = document.getElementById("slice-button");
