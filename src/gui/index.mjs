@@ -1,5 +1,6 @@
 import { CuraEngine, sample_settings } from "../engine/index.mjs";
 import { load_stl } from "./stl_viewer.mjs"
+import "./sidebar.mjs";
 
 const file_input = document.getElementById("stl-file");
 const slice_button = document.getElementById("slice-button");
