@@ -1,6 +1,6 @@
 import * as engine from "./engine/index.mjs";
 import * as gui from "./gui/index.mjs";
-import * as viewer from "./gui/viewer.mjs"; // Not sure if we need this
+import * as viewer from "./gui/viewer.mjs";
 import * as definitions from "./definitions.mjs";
 import * as python from "./python.mjs";
 
