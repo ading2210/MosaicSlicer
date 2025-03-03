@@ -1,18 +1,23 @@
 import { CuraEngine } from "../engine/index.mjs";
+import * as python from "../python.mjs";
+
 import { resolve_machine_settings } from "../definitions.mjs";
-import { load_stl, models } from "./viewer.mjs";
-import "./sidebar.mjs";
+import { start_viewer, load_stl, models } from "./viewer.mjs";
+import { load_sidebar } from "./sidebar.mjs";
 
 const file_input = document.getElementById("stl-file");
 const slice_button = document.getElementById("slice-button");
 
+export function start_gui() {
+  start_viewer();
+  load_sidebar();
+}
 
 function load_file(file) {
   const reader = new FileReader();
 
   reader.onload = (e) => {
     const array_buffer = e.target.result;
-    // loaded_stl = array_buffer;
     load_stl(array_buffer)
   };
 
@@ -41,6 +46,7 @@ file_input.addEventListener("change", (event) => {
   }
 });
 
+// ---- File drop
 var drop_zone = document.getElementById("drop-zone");
 window.addEventListener("dragover", (event) => {
   event.preventDefault();
@@ -70,6 +76,8 @@ drop_zone.addEventListener("drop", (event) => {
 
 slice_button.addEventListener("click", async () => {
   let engine = new CuraEngine();
+
+  // perhaps we can store settings like this in globalThis and save to localstorage when updated (this is also used in sidebar.mjs)
   let printer_id = "creality_ender3"; //hardcoded for testing
   let machine_settings = resolve_machine_settings(printer_id);
   function resolve_setting_values(settings) {

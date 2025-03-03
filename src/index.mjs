@@ -1,6 +1,6 @@
 import * as engine from "./engine/index.mjs";
 import * as gui from "./gui/index.mjs";
-import * as viewer from "./gui/viewer.mjs";
+import * as viewer from "./gui/viewer.mjs"; // Not sure if we need this
 import * as definitions from "./definitions.mjs";
 import * as python from "./python.mjs";
 
@@ -14,7 +14,7 @@ function define_globals() {
 async function main() {
   define_globals();
   await app.resources.download_resources();
-  viewer.start_viewer();
+  gui.start_gui();
   console.log("Done loading.");
 }
 

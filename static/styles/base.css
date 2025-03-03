@@ -6,8 +6,10 @@
 
 :root {
   --text: #ffffff;
-  --background: hsl(270, 4%, 11%);
-  --background-2: hsl(270, 4%, 15%);
+  --background: #1c1b1d;
+  --background-2: #262528;
+  
+  --grey: #acacac;
 
   --primary: #37d79c;
   --secondary: #1a5f5a;
