@@ -1,6 +1,6 @@
+import { SimpleRPCFunction } from "../../rpc.mjs";
 import * as cura from "./cura.mjs";
 import * as vfs from "./vfs.mjs";
-import { SimpleRPCFunction } from "../../rpc.mjs";
 
 //all the code in this directory runs inside a seperate worker
 
@@ -8,7 +8,7 @@ const rpc_functions = {
   "cura_engine": cura.RunCuraEngine,
   "import_files": SimpleRPCFunction.create("import_files", vfs.import_files),
   "get_file": SimpleRPCFunction.create("get_file", vfs.get_file)
-}
+};
 
 globalThis.addEventListener("message", (event) => {
   let msg = event.data;

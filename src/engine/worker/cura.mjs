@@ -16,10 +16,14 @@ export class RunCuraEngine extends WorkerRPCFunction {
 
     let args = [
       "slice",
-      "--progress_cb", "__progress_cb",
-      "--slice_info_cb", "__slice_info_cb",
-      "--gcode_header_cb", "__gcode_header_cb",
-      "--engine_info_cb", "__engine_info_cb",
+      "--progress_cb",
+      "__progress_cb",
+      "--slice_info_cb",
+      "__slice_info_cb",
+      "--gcode_header_cb",
+      "__gcode_header_cb",
+      "--engine_info_cb",
+      "__engine_info_cb",
       ...new_args
     ];
     console.log("Launching CuraEngine with arguments:", args.join(" "));
@@ -36,6 +40,6 @@ export class RunCuraEngine extends WorkerRPCFunction {
     this.send("gcode_header", atob(gcode_b64));
   }
   engine_info_cb(engine_info) {
-    this.send("engine_info", engine_info)
+    this.send("engine_info", engine_info);
   }
 }

@@ -9,9 +9,8 @@ var selected_section = null;
 var definition = {};
 
 function select_section(section) {
-  if (selected_section) {
+  if (selected_section)
     document.querySelector("#sidebar>.sections>.section.selected").classList.remove("selected");
-  }
   selected_section = section;
   document.querySelector(`#sidebar>.sections>.section[data-setting="${section}"]`).classList.add("selected");
 }
@@ -44,7 +43,7 @@ function populate_settings() {
     value.classList.add("value");
 
     let input = document.createElement("input");
-    console.log(setting_id, setting.type)
+    console.log(setting_id, setting.type);
     if (setting.type == "float") {
       input.type = "number";
       input.step = "1";
@@ -64,7 +63,7 @@ function populate_settings() {
 
     setting_div.append(value);
     section_settings.append(setting_div);
-  };
+  }
 }
 
 export function load_sidebar() {
@@ -87,10 +86,10 @@ export function load_sidebar() {
       console.log("Clicked", setting);
       select_section(setting);
       populate_settings();
-    }
+    };
     sidebar_sections.append(section);
   }
-  
+
   select_section(Object.keys(definition.printer.settings)[8]);
 
   // Populate sidebar settings

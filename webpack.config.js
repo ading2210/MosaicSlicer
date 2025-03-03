@@ -7,7 +7,7 @@ const common_options = {
     topLevelAwait: true,
     outputModule: true
   }
-}
+};
 
 module.exports = [
   {
@@ -32,10 +32,10 @@ module.exports = [
       rules: [
         {
           test: /\.wasm/,
-          type: 'asset/resource'
+          type: "asset/resource"
         }
       ]
     },
     ...common_options
   }
-]
+];

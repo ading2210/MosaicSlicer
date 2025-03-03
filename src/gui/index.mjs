@@ -2,8 +2,8 @@ import { CuraEngine } from "../engine/index.mjs";
 import * as python from "../python.mjs";
 
 import { resolve_machine_settings } from "../definitions.mjs";
-import { start_viewer, load_stl, models } from "./viewer.mjs";
 import { load_sidebar } from "./sidebar.mjs";
+import { load_stl, models, start_viewer } from "./viewer.mjs";
 
 const file_input = document.getElementById("stl-file");
 const slice_button = document.getElementById("slice-button");
@@ -18,14 +18,14 @@ function load_file(file) {
 
   reader.onload = (e) => {
     const array_buffer = e.target.result;
-    load_stl(array_buffer)
+    load_stl(array_buffer);
   };
 
   reader.readAsArrayBuffer(file);
 }
 
 function save_file(data, filename, type) {
-  let blob = new Blob([data], { type: type });
+  let blob = new Blob([data], {type: type});
   let a = document.createElement("a");
   a.download = filename;
   a.href = URL.createObjectURL(blob);
@@ -40,9 +40,8 @@ file_input.addEventListener("change", (event) => {
   const file = event.target.files[0];
 
   if (file) {
-    if (file.name.split(".").pop() == "stl") {
+    if (file.name.split(".").pop() == "stl")
       load_file(file);
-    }
   }
 });
 
@@ -68,9 +67,8 @@ drop_zone.addEventListener("drop", (event) => {
   const file = event.dataTransfer.files[0];
 
   if (file) {
-    if (file.name.split(".").pop() == "stl") {
+    if (file.name.split(".").pop() == "stl")
       load_file(file);
-    }
   }
 });
 
@@ -88,8 +86,8 @@ slice_button.addEventListener("click", async () => {
   }
   let resolved_settings = {
     "global": resolve_setting_values(machine_settings.printer),
-    "extruder.0": resolve_setting_values(machine_settings.extruders["0"]),
-  }
+    "extruder.0": resolve_setting_values(machine_settings.extruders["0"])
+  };
   let gcode = await engine.slice({
     stl: models[Object.keys(models)[0]].data, // TODO: Support multiple models
     settings: resolved_settings,

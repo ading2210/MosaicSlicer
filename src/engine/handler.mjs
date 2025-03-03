@@ -6,8 +6,8 @@ let cura_worker = null;
 
 async function create_worker() {
   if (!cura_worker) {
-    cura_worker = new Worker(new URL("./worker/index.mjs", import.meta.url), { type: "module" });
-    await wait_for_worker(cura_worker)
+    cura_worker = new Worker(new URL("./worker/index.mjs", import.meta.url), {type: "module"});
+    await wait_for_worker(cura_worker);
   }
 }
 

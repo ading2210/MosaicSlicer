@@ -1,5 +1,5 @@
-import pako from "pako";
 import untar from "js-untar";
+import pako from "pako";
 
 export let cura_resources = {};
 

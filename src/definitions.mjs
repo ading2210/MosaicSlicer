@@ -4,7 +4,7 @@ import { get_json } from "./resources.mjs";
 
 //https://stackoverflow.com/a/34749873/21330993
 function is_object(item) {
-  return (item && typeof item === 'object' && !Array.isArray(item));
+  return (item && typeof item === "object" && !Array.isArray(item));
 }
 export function merge_deep(target, ...sources) {
   if (!sources.length) return target;
@@ -13,10 +13,11 @@ export function merge_deep(target, ...sources) {
   if (is_object(target) && is_object(source)) {
     for (const key in source) {
       if (is_object(source[key])) {
-        if (!target[key]) Object.assign(target, { [key]: {} });
+        if (!target[key]) Object.assign(target, {[key]: {}});
         merge_deep(target[key], source[key]);
-      } else {
-        Object.assign(target, { [key]: source[key] });
+      }
+      else {
+        Object.assign(target, {[key]: source[key]});
       }
     }
   }
@@ -53,7 +54,7 @@ export function resolve_definitions(printer_id) {
   return {
     printer: resolve_printer(printer_id),
     extruders: extruders
-  }
+  };
 }
 
 export function resolve_settings(overrides, settings, resolved = {}) {
@@ -72,7 +73,7 @@ export function resolve_settings(overrides, settings, resolved = {}) {
 }
 
 export function resolve_machine_settings(printer_id) {
-  let { printer, extruders } = resolve_definitions(printer_id);
+  let {printer, extruders} = resolve_definitions(printer_id);
   let printer_settings = resolve_settings(printer.overrides, printer.settings);
   let extuder_settings = {};
   for (let [id, extuder] of Object.entries(extruders))

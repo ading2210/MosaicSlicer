@@ -1,5 +1,5 @@
 import { cura_resources } from "../resources.mjs";
-import { import_files, run_cura, read_file } from "./handler.mjs";
+import { import_files, read_file, run_cura } from "./handler.mjs";
 
 //format for settings json:
 //https://github.com/Ultimaker/CuraEngine/blob/ba89f84d0e1ebd4c0d7cb7922da33fdaafbb4091/src/communication/CommandLine.cpp#L346-L366
@@ -17,24 +17,28 @@ export class CuraEngine {
     this.initialized = true;
   }
 
-  async slice({ stl, settings }) {
+  async slice({stl, settings}) {
     if (!stl)
       throw TypeError("stl file not provided");
     await this.init();
     let engine_args = [
       "-v", //enable verbose output
       "-p", //log progress info
-      "-d", "/cura/definitions", //printer definitions search path,
-      "-r", "/tmp/settings.json", //settings json path
-      "-l", "/tmp/model.stl", //stl path
-      "-o", "/tmp/out.gcode", //output gcode path
-    ]
+      "-d",
+      "/cura/definitions", //printer definitions search path,
+      "-r",
+      "/tmp/settings.json", //settings json path
+      "-l",
+      "/tmp/model.stl", //stl path
+      "-o",
+      "/tmp/out.gcode" //output gcode path
+    ];
 
     let settings_data = new TextEncoder().encode(JSON.stringify(settings));
     let tmp_files = {
       "settings.json": settings_data,
       "model.stl": stl
-    }
+    };
     await import_files("/tmp", tmp_files);
 
     await run_cura(engine_args);
