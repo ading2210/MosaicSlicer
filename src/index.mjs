@@ -3,6 +3,7 @@ import * as engine from "./engine/index.mjs";
 import * as gui from "./gui/index.mjs";
 import * as viewer from "./gui/viewer.mjs";
 import * as python from "./python.mjs";
+import * as template from "./template.mjs";
 
 import * as resources from "./resources.mjs";
 import * as rpc from "./rpc.mjs";

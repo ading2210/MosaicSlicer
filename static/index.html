@@ -31,24 +31,26 @@
 
   <div id="sidebar-container">
     <div id="sidebar">
-      <h2 class="section-header">Print Settings</h2>
-      <div class="sections">
-        <!-- <span class="section selected">Speed</span>
-        <span class="section">Cooling</span>
-        <span class="section">Infill</span>
-        <span class="section">Travel</span>
-        <span class="section">Support</span> -->
-      </div>
-      <div class="section-settings">
-        <!-- <span class="setting">
-          <span class="label">Infill Speed</span>
-          <span class="value">
-            <input type="number">
-            <br>
-            <span>mm/s</span>
+      <h2 class="tab-header">Print Settings</h2>
+      <div class="tabs-container">
+        <template id="tab-template">
+          <span slot="tab-span" class="tab">
+            <span slot="tab-text" class="tab-text">Top/Bottom</span>
           </span>
-        </span>
-      </div> -->
+        </template>
+      </div>
+      <div class="tab-settings">
+        <template id="setting-template">
+          <span class="setting">
+            <span class="label" slot="label">Infill Speed</span>
+            <span class="value">
+              <input slot="value" type="value">
+              <br>
+              <span slot="unit">mm/s</span>
+            </span>
+          </span>
+        </template>
+      </div> 
     </div>
   </div>
 

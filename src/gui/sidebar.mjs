@@ -1,49 +1,33 @@
 import * as definitions from "../definitions.mjs";
 
 const sidebar = document.getElementById("sidebar");
-const sidebar_sections = document.querySelector("#sidebar>.sections");
-const section_settings = document.querySelector("#sidebar>.section-settings");
+const sidebar_tabs = document.querySelector("#sidebar>.tabs-container");
+const tab_settings = document.querySelector("#sidebar>.tab-settings");
+const setting_template = document.getElementById("setting-template");
+const tab_template = document.getElementById("tab-template");
 
-var selected_section = null;
+var selected_tab = null;
 
 var definition = {};
 
-function select_section(section) {
-  if (selected_section)
-    document.querySelector("#sidebar>.sections>.section.selected").classList.remove("selected");
-  selected_section = section;
-  document.querySelector(`#sidebar>.sections>.section[data-setting="${section}"]`).classList.add("selected");
+function select_tab(tab) {
+  if (selected_tab)
+    document.querySelector("#sidebar>.tabs-container>.tab.selected").classList.remove("selected");
+  selected_tab = tab;
+  document.querySelector(`#sidebar>.tabs-container>.tab[data-setting="${tab}"]`).classList.add("selected");
 }
 
 function populate_settings() {
-  section_settings.innerHTML = "";
-  let section = definition.printer.settings[selected_section];
+  tab_settings.innerHTML = "";
+  let category = definition.printer.settings[selected_tab];
 
-  for (let setting_id in section.children) {
-    //   <span class="setting">
-    //     <span class="label">Infill Speed</span>
-    //     <span class="value">
-    //     <input type="number">
-    //     <br>
-    //     <span>mm/s</span>
-    //     </span>
-    //   </span>
-    //   </div>
-    let setting = section.children[setting_id];
+  for (let setting_id in category.children) {
+    let setting = category.children[setting_id];
+    let template = setting_template.content.cloneNode(true);
+    template.get_slot("label").innerText = setting.label;
+    template.get_slot("unit").innerText = setting.unit || "";
 
-    let setting_div = document.createElement("span");
-    setting_div.classList.add("setting");
-
-    let label = document.createElement("span");
-    label.classList.add("label");
-    label.innerText = setting.label;
-    setting_div.append(label);
-
-    let value = document.createElement("span");
-    value.classList.add("value");
-
-    let input = document.createElement("input");
-    console.log(setting_id, setting.type);
+    let input = template.get_slot("value");
     if (setting.type == "float") {
       input.type = "number";
       input.step = "1";
@@ -55,14 +39,8 @@ function populate_settings() {
     else if (setting.type == "bool") {
       input.type = "checkbox";
     }
-    value.append(input);
 
-    let unit = document.createElement("span");
-    unit.innerText = setting.unit || "";
-    value.append(unit);
-
-    setting_div.append(value);
-    section_settings.append(setting_div);
+    tab_settings.append(template);
   }
 }
 
@@ -72,25 +50,22 @@ export function load_sidebar() {
 
   console.log(definition.printer.settings);
 
-  // Populate sidebar sections
+  // Populate sidebar tabs
   for (let setting in settings) {
-    // <span class="section">Cooling</span>
-    let section = document.createElement("span");
-    section.classList.add("section");
-    section.dataset.setting = setting;
-    let sectionText = document.createElement("span");
-    sectionText.classList.add("section-text");
-    sectionText.innerText = definition.printer.settings[setting].label;
-    section.append(sectionText);
-    section.onclick = () => {
+    let template = tab_template.content.cloneNode(true);
+    let tab = template.get_slot("tab-span");
+    let tab_text = template.get_slot("tab-text");
+    tab.dataset.setting = setting;
+    tab_text.innerText = definition.printer.settings[setting].label;
+    tab.onclick = () => {
       console.log("Clicked", setting);
-      select_section(setting);
+      select_tab(setting);
       populate_settings();
     };
-    sidebar_sections.append(section);
+    sidebar_tabs.append(template);
   }
 
-  select_section(Object.keys(definition.printer.settings)[8]);
+  select_tab(Object.keys(definition.printer.settings)[8]);
 
   // Populate sidebar settings
   populate_settings();
