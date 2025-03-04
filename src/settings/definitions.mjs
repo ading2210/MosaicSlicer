@@ -25,7 +25,7 @@ export function merge_deep(target, ...sources) {
   return merge_deep(target, ...sources);
 }
 
-function resolve_printer(printer_id, inheritance=[]) {
+function resolve_printer(printer_id, inheritance = []) {
   let printer = get_json(`definitions/${printer_id}.def.json`);
   inheritance.push(printer_id);
   if (printer.inherits)
@@ -34,7 +34,7 @@ function resolve_printer(printer_id, inheritance=[]) {
     return printer;
 }
 
-function resolve_extruder(extruder_id, inheritance=[]) {
+function resolve_extruder(extruder_id, inheritance = []) {
   let extruder = get_json(`extruders/${extruder_id}.def.json`);
   inheritance.push(extruder_id);
   if (!extruder)

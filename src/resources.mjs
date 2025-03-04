@@ -39,8 +39,8 @@ export function get_json(relative_path) {
 
 export function load_all_ini() {
   for (let path in cura_resources) {
-    if (!path.endsWith(".cfg")) 
-      continue
+    if (!path.endsWith(".cfg"))
+      continue;
 
     let ini_data = ini.parse(get_resource(path, true));
     let path_split = path.split("/");

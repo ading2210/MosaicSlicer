@@ -95,3 +95,7 @@ slice_button.addEventListener("click", async () => {
   });
   save_file(gcode, "out.gcode", "text/plain");
 });
+
+DocumentFragment.prototype.get_slot = function(slot_name) {
+  return this.querySelector(`[slot='${slot_name}']`);
+};
