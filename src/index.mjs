@@ -9,13 +9,16 @@ import * as resources from "./resources.mjs";
 import * as rpc from "./rpc.mjs";
 
 function define_globals() {
-  globalThis.app = {rpc, engine, gui, viewer, resources, definitions, python};
+  globalThis.app = {rpc, engine, gui, viewer, resources, definitions, python, template};
 }
 
 async function main() {
   define_globals();
-  await app.resources.download_resources();
+
+  await resources.download_resources();
+  resources.load_all_ini();
   gui.start_gui();
+
   console.log("Done loading.");
 }
 

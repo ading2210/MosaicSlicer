@@ -7,7 +7,6 @@ const setting_template = document.getElementById("setting-template");
 const tab_template = document.getElementById("tab-template");
 
 var selected_tab = null;
-
 var definition = {};
 
 function select_tab(tab) {

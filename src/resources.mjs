@@ -1,7 +1,9 @@
 import untar from "js-untar";
 import pako from "pako";
+import * as ini from "ini";
 
 export let cura_resources = {};
+export let ini_files = {};
 
 export async function download_resources() {
   let resources_url = "./dist/resources/cura_data.tar.gz";
@@ -33,4 +35,19 @@ export function get_resource(relative_path, as_str = false) {
 
 export function get_json(relative_path) {
   return JSON.parse(get_resource(relative_path, true));
+}
+
+export function load_all_ini() {
+  for (let path in cura_resources) {
+    if (!path.endsWith(".cfg")) 
+      continue
+
+    let ini_data = ini.parse(get_resource(path, true));
+    let path_split = path.split("/");
+    let type = path_split[0];
+    let filename = path_split.at(-1);
+    if (!ini_files[type])
+      ini_files[type] = {};
+    ini_files[type][filename] = ini_data;
+  }
 }

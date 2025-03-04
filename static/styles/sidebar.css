@@ -27,6 +27,7 @@ input[type="number"] {
 #sidebar {
   flex-grow: 1;
   width: 100%;
+  height: 100%;
   padding: 0;
 
   background-color: var(--background-2);
@@ -34,7 +35,6 @@ input[type="number"] {
 
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
 
   .tab-header {
     padding-left: 0.5rem;
@@ -98,6 +98,8 @@ input[type="number"] {
     flex-direction: column;
     gap: 0.5rem;
     padding: 0.5rem;
+    flex-grow: 1;
+    overflow-y: auto;
 
     .setting {
       display: flex;
