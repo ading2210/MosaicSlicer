@@ -1,4 +1,4 @@
-import * as definitions from "./definitions.mjs";
+import * as definitions from "./settings/definitions.mjs";
 import * as engine from "./engine/index.mjs";
 import * as gui from "./gui/index.mjs";
 import * as viewer from "./gui/viewer.mjs";

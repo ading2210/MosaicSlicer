@@ -1,4 +1,4 @@
-import * as definitions from "../definitions.mjs";
+import * as definitions from "../settings/definitions.mjs";
 
 const sidebar = document.getElementById("sidebar");
 const sidebar_tabs = document.querySelector("#sidebar>.tabs-container");

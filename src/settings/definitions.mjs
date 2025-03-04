@@ -1,4 +1,4 @@
-import { get_json } from "./resources.mjs";
+import { get_json } from "../resources.mjs";
 
 //module for resolving printer/extruder definitions, and their associated settings
 
@@ -25,34 +25,41 @@ export function merge_deep(target, ...sources) {
   return merge_deep(target, ...sources);
 }
 
-function resolve_printer(printer_id) {
+function resolve_printer(printer_id, inheritance=[]) {
   let printer = get_json(`definitions/${printer_id}.def.json`);
+  inheritance.push(printer_id);
   if (printer.inherits)
-    return merge_deep(resolve_printer(printer.inherits), printer);
+    return merge_deep(resolve_printer(printer.inherits, inheritance), printer);
   else
     return printer;
 }
 
-function resolve_extruder(extruder_id) {
+function resolve_extruder(extruder_id, inheritance=[]) {
   let extruder = get_json(`extruders/${extruder_id}.def.json`);
+  inheritance.push(extruder_id);
   if (!extruder)
     extruder = get_json(`definitions/${extruder_id}.def.json`);
   if (extruder.inherits)
-    return merge_deep(resolve_extruder(extruder.inherits), extruder);
+    return merge_deep(resolve_extruder(extruder.inherits, inheritance), extruder);
   else
     return extruder;
 }
 
 export function resolve_definitions(printer_id) {
-  let printer = resolve_printer(printer_id);
+  let printer_inheritance = [];
+  let printer = resolve_printer(printer_id, printer_inheritance);
+  printer.inheritance_chain = printer_inheritance;
 
   let extruder_data = printer.metadata.machine_extruder_trains;
   let extruders = {};
-  for (let [extuder_num, extruder_id] of Object.entries(extruder_data))
-    extruders[extuder_num] = resolve_extruder(extruder_id);
+  for (let [extuder_num, extruder_id] of Object.entries(extruder_data)) {
+    let extruder_inheritance = [];
+    extruders[extuder_num] = resolve_extruder(extruder_id, extruder_inheritance);
+    extruders[extuder_num].inheritance_chain = extruder_inheritance;
+  }
 
   return {
-    printer: resolve_printer(printer_id),
+    printer: printer,
     extruders: extruders
   };
 }

@@ -1,7 +1,7 @@
 import { CuraEngine } from "../engine/index.mjs";
 import * as python from "../python.mjs";
 
-import { resolve_machine_settings } from "../definitions.mjs";
+import { resolve_machine_settings } from "../settings/definitions.mjs";
 import { load_sidebar } from "./sidebar.mjs";
 import { load_stl, models, start_viewer } from "./viewer.mjs";
 

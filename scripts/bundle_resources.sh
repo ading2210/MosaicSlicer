@@ -10,6 +10,8 @@ pack_dir() {
   tar -cvf - -C "$source_dir" "$@" | gzip -9 - > "$out_path"
 }
 
+#todo: add xml material definitons to bundle
+
 mkdir -p "static/dist/resources"
 pack_dir "third_party/Cura/resources/" "static/dist/resources/cura_data.tar.gz" \
   definitions \
@@ -17,4 +19,5 @@ pack_dir "third_party/Cura/resources/" "static/dist/resources/cura_data.tar.gz" 
   i18n \
   setting_visibility \
   quality \
-  variants
+  variants \
+  intent

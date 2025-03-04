@@ -44,7 +44,7 @@ export function load_all_ini() {
 
     let ini_data = ini.parse(get_resource(path, true));
     let path_split = path.split("/");
-    let type = path_split[0];
+    let type = ini_data.metadata?.type || path_split[0];
     let filename = path_split.at(-1);
     if (!ini_files[type])
       ini_files[type] = {};
