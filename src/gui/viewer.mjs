@@ -88,7 +88,6 @@ document.addEventListener("mouseup", event => {
     raycaster.setFromCamera(mouse, renderer.camera);
 
     let intersects = raycaster.intersectObjects(Array.from(Object.values(models), (model) => model.mesh), true);
-    console.log(intersects);
     if (intersects.length > 0) {
       unfocus_model();
 

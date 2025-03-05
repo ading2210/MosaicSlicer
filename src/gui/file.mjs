@@ -39,19 +39,16 @@ const drop_zone = document.getElementById("drop-zone");
 
 window.addEventListener("dragover", (event) => {
   event.preventDefault();
-  console.log("dragover");
   drop_zone.style.display = "flex";
 });
 
 drop_zone.addEventListener("dragleave", (event) => {
   event.preventDefault();
-  console.log("dragleave");
   drop_zone.style.display = "none";
 });
 
 drop_zone.addEventListener("drop", (event) => {
   event.preventDefault();
-  console.log("drop");
   drop_zone.style.display = "none";
 
   const file = event.dataTransfer.files[0];

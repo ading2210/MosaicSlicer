@@ -18,8 +18,10 @@ async function main() {
   define_globals();
 
   await resources.download_resources();
+  console.log("Loaded resources");
   resources.load_all_ini();
   materials.load_all_materials();
+  console.log("Loaded configurations");
   gui.start_gui();
 
   console.log("Done loading.");
