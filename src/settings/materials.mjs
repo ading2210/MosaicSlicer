@@ -64,6 +64,16 @@ const __keep_serialized_settings = [ // Settings irrelevant to Cura, but that co
   "move to die distance"
 ];
 
+const __material_translations = {
+  "PLA": "generic_pla",
+  "ABS": "generic_abs",
+  "CPE": "generic_cpe",
+  "CPE+": "generic_cpe_plus",
+  "Nylon": "generic_nylon",
+  "PC": "generic_pc",
+  "TPU": "generic_tpu"
+};
+
 //this is a reimplementation of the corresponding function in the original cura source code
 //https://github.com/Ultimaker/Cura/blob/f468cd5150440c007aeebbc163bf569f055bb4c0/plugins/XmlMaterialProfile/XmlMaterialProfile.py#L523
 export function deserialize_xml(material_xml) {
@@ -169,7 +179,9 @@ export function deserialize_xml(material_xml) {
 
 export function parse_material(material_id) {
   let material_xml = get_resource(`materials/${material_id}.xml.fdm_material`, true);
-  return deserialize_xml(material_xml);
+  let material = deserialize_xml(material_xml);
+  material.id = material_id;
+  return material;
 }
 
 export function load_all_materials() {
@@ -179,6 +191,28 @@ export function load_all_materials() {
 
     let path_split = path.split("/");
     let material_id = path_split.at(-1).split(".")[0];
-    parsed_materials[material_id] = parse_material(material_id);
+    let material = parse_material(material_id);
+    parsed_materials[material_id] = material;
   }
+}
+
+export function get_material_type(material) {
+  return __material_translations[material.material];
+}
+
+export function material_to_profile(material) {
+  let material_type = __material_translations[material.material];
+  return {
+    general: {
+      name: material.name,
+      definition: material.definition
+    },
+    metadata: {
+      material: material_type,
+      type: "material",
+      info: material
+    },
+    values: material.common_setting_values,
+    id: material.id
+  };
 }
