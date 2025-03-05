@@ -1,14 +1,17 @@
-const xml_parser = new DOMParser();
-const doc = fetch("pla.xml");
+import { cura_resources, get_resource } from "../resources.mjs";
 
-var __material_metadata_setting_map = {
+export const parsed_materials = {};
+
+const xml_parser = new DOMParser();
+
+const __material_metadata_setting_map = {
   "GUID": "material_guid",
   "material": "material_type",
   "brand": "material_brand"
 };
-var __material_properties_setting_map = {"diameter": "material_diameter"};
+const __material_properties_setting_map = {"diameter": "material_diameter"};
 
-var __material_settings_setting_map = {
+const __material_settings_setting_map = {
   "print temperature": "default_material_print_temperature",
   "heated bed temperature": "default_material_bed_temperature",
   "standby temperature": "material_standby_temperature",
@@ -35,9 +38,9 @@ var __material_settings_setting_map = {
   "break temperature": "material_break_temperature"
 };
 
-var __unmapped_settings = ["hardware compatible", "hardware recommended"];
+const __unmapped_settings = ["hardware compatible", "hardware recommended"];
 
-var __keep_serialized_settings = [ // Settings irrelevant to Cura, but that could be present in the files so we must store them and keep them serialized.
+const __keep_serialized_settings = [ // Settings irrelevant to Cura, but that could be present in the files so we must store them and keep them serialized.
   "relative extrusion",
   "flow sensor detection margin",
   "different material purge volume",
@@ -61,19 +64,17 @@ var __keep_serialized_settings = [ // Settings irrelevant to Cura, but that coul
   "move to die distance"
 ];
 
-/**
- * Conve
- * @param {string} material
- */
-export function deserialize(material) {
-  const data = xml_parser.parseFromString(material, "text/xml");
+//this is a reimplementation of the corresponding function in the original cura source code
+//https://github.com/Ultimaker/Cura/blob/f468cd5150440c007aeebbc163bf569f055bb4c0/plugins/XmlMaterialProfile/XmlMaterialProfile.py#L523
+export function deserialize_xml(material_xml) {
+  const data = xml_parser.parseFromString(material_xml, "text/xml");
 
-  let meta_data = {};
-  meta_data["reserialize_settings"] = {};
+  let metadata = {};
+  metadata.reserialize_settings = {};
 
   let common_setting_values = {};
 
-  meta_data["name"] = "Unknown Material"; // In case the name tag is missing.
+  metadata.name = "Unknown Material"; // In case the name tag is missing.
 
   for (let entry of data.querySelectorAll("metadata>*")) {
     let tag_name = entry.tagName;
@@ -84,37 +85,36 @@ export function deserialize(material) {
       let label = entry.getElementsByTagName("label")[0];
 
       if (label != null && label.textContent != null)
-        meta_data["name"] = label.textContent;
+        metadata.name = label.textContent;
       else {
         if (material.textContent == null)
-          meta_data["name"] = "Unknown Material";
+          metadata.name = "Unknown Material";
         if (color.textContent != "Generic")
-          meta_data["name"] = "%s %s" % (color.textContent, material.textContent);
+          metadata.name = `${color.textContent} ${material.textContent}`;
         else
-          meta_data["name"] = material.textContent;
+          metadata.name = material.textContent;
       }
-      meta_data["brand"] = brand.textContent != null ? brand.textContent : "Unknown Brand";
-      meta_data["material"] = material.textContent != null ? material.textContent : "Unknown Type";
-      meta_data["color_name"] = color.textContent != null ? color.textContent : "Unknown Color";
+      metadata.brand = brand.textContent ?? "Unknown Brand";
+      metadata.material = material.textContent ?? "Unknown Type";
+      metadata.color_name = color.textContent ?? "Unknown Color";
       continue;
     }
 
-    if (tag_name == "setting_verion")
+    if (tag_name == "setting_version")
       continue;
+    metadata[tag_name] = entry.textContent;
 
-    meta_data[tag_name] = entry.textContent;
-
-    for (let tag_name in meta_data) {
+    for (let tag_name in metadata) {
       if (tag_name in __material_metadata_setting_map)
-        common_setting_values[__material_metadata_setting_map[tag_name]] = meta_data[tag_name];
+        common_setting_values[__material_metadata_setting_map[tag_name]] = metadata[tag_name];
     }
   }
 
-  if (!("description" in meta_data))
-    meta_data["description"] = "";
+  if (typeof metadata.description === "undefined")
+    metadata.description = "";
 
-  if (!("adhesion_info" in meta_data))
-    meta_data["adhesion_info"] = "";
+  if (typeof metadata.adhesion_info === "undefined")
+    metadata.adhesion_info = "";
 
   let property_values = {};
   let properties = data.querySelectorAll("properties>*");
@@ -125,11 +125,11 @@ export function deserialize(material) {
     if (tag_name in __material_properties_setting_map)
       common_setting_values[__material_properties_setting_map[tag_name]] = entry.textContent;
   }
-  meta_data["approximate_diameter"] = Math.round(
-    parseFloat("diameter" in property_values ? property_values["diameter"] : 2.85)
+  metadata.approximate_diameter = Math.round(
+    parseFloat("diameter" in property_values ? property_values.diameter : 2.85)
   ).toString(); // In mm
-  meta_data["properties"] = property_values;
-  meta_data["definition"] = "fdmprinter";
+  metadata.properties = property_values;
+  metadata.definition = "fdmprinter";
 
   let common_compatibility = true;
   let settings = data.querySelectorAll("settings>setting");
@@ -141,8 +141,8 @@ export function deserialize(material) {
         let graph_nodes = entry.querySelectorAll("point");
         let graph_points = [];
         for (let graph_node in graph_nodes) {
-          let flow = parseFloat(graph_node["flow"] ?? null);
-          temperature = float(graph_node["temperature"] ?? null);
+          let flow = parseFloat(graph_node.flow ?? null);
+          temperature = float(graph_node.temperature ?? null);
           graph_points.push([flow, temperature]);
         }
         common_setting_values[__material_settings_setting_map[key]] = graph_points.toString();
@@ -152,19 +152,33 @@ export function deserialize(material) {
       }
     }
     else if (key in __unmapped_settings) {
-      console.log("unmap");
       if (key == "hardware compatible")
-        common_compatibility = _parseCompatibleValue(entry.textContent) in ["yes", "unknown"];
+        common_compatibility = entry.textContent in ["yes", "unknown"];
     }
     else if (__keep_serialized_settings.includes(key)) {
-      meta_data["reserialize_settings"][key] = entry.textContent;
+      metadata.reserialize_settings[key] = entry.textContent;
     }
   }
-  meta_data["compatible"] = common_compatibility;
+  metadata.compatible = common_compatibility;
 
   // This is not in the original implementation
-  meta_data["common_setting_values"] = common_setting_values;
+  metadata.common_setting_values = common_setting_values;
 
-  return meta_data;
+  return metadata;
 }
-console.log(await doc.then(response => response.text()).then(deserialize));
+
+export function parse_material(material_id) {
+  let material_xml = get_resource(`materials/${material_id}.xml.fdm_material`, true);
+  return deserialize_xml(material_xml);
+}
+
+export function load_all_materials() {
+  for (let path in cura_resources) {
+    if (!path.endsWith(".xml.fdm_material"))
+      continue;
+
+    let path_split = path.split("/");
+    let material_id = path_split.at(-1).split(".")[0];
+    parsed_materials[material_id] = parse_material(material_id);
+  }
+}

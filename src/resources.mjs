@@ -2,6 +2,8 @@ import untar from "js-untar";
 import pako from "pako";
 import * as ini from "ini";
 
+const text_decoder = new TextDecoder();
+
 export let cura_resources = {};
 export let ini_files = {};
 
@@ -18,7 +20,12 @@ export async function extract_tar(archive_data) {
   let returned_files = {};
   for (let file of files) {
     if (file.type === "L") continue;
-    returned_files[file.name] = new Uint8Array(file.buffer);
+    let filename = file.name;
+    if (filename.indexOf("./") === 0)
+      filename = filename.substring(2);
+    if (filename.length === 0)
+      continue;
+    returned_files[filename] = new Uint8Array(file.buffer);
   }
   return returned_files;
 }
@@ -28,7 +35,7 @@ export function get_resource(relative_path, as_str = false) {
   if (!file_data)
     return null;
   if (as_str)
-    return new TextDecoder().decode(file_data);
+    return text_decoder.decode(file_data);
   else
     return file_data;
 }

@@ -1,5 +1,6 @@
 import * as definitions from "./settings/definitions.mjs";
 import * as profiles from "./settings/profiles.mjs";
+import * as materials from "./settings/materials.mjs";
 
 import * as engine from "./engine/index.mjs";
 import * as gui from "./gui/index.mjs";
@@ -10,7 +11,7 @@ import * as resources from "./resources.mjs";
 import * as rpc from "./rpc.mjs";
 
 function define_globals() {
-  globalThis.app = {rpc, engine, gui, viewer, resources, definitions, python, profiles};
+  globalThis.app = {rpc, engine, gui, viewer, resources, definitions, python, profiles, materials};
 }
 
 async function main() {
@@ -18,6 +19,7 @@ async function main() {
 
   await resources.download_resources();
   resources.load_all_ini();
+  materials.load_all_materials();
   gui.start_gui();
 
   console.log("Done loading.");
