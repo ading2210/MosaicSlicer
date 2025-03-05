@@ -49,8 +49,6 @@ export function load_sidebar() {
   definition = definitions.resolve_definitions(state.printer_id);
   let settings = definition.printer.settings;
 
-  console.log(definition.printer.settings);
-
   // Populate sidebar tabs
   for (let setting in settings) {
     let template = tab_template.content.cloneNode(true);
