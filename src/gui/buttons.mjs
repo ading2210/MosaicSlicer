@@ -2,14 +2,14 @@ import { resolve_machine_settings } from "../settings/definitions.mjs";
 import { models } from "./viewer.mjs";
 import { CuraEngine } from "../engine/index.mjs";
 
+import * as state from "../state.mjs";
+
 const slice_button = document.getElementById("slice-button");
 
 slice_button.addEventListener("click", async () => {
   let engine = new CuraEngine();
 
-  // perhaps we can store settings like this in globalThis and save to localstorage when updated (this is also used in sidebar.mjs)
-  let printer_id = "creality_ender3"; //hardcoded for testing
-  let machine_settings = resolve_machine_settings(printer_id);
+  let machine_settings = resolve_machine_settings(state.printer_id);
   function resolve_setting_values(settings) {
     let resolved = {};
     for (let [id, setting] of Object.entries(settings))
@@ -23,7 +23,7 @@ slice_button.addEventListener("click", async () => {
   let gcode = await engine.slice({
     stl: models[Object.keys(models)[0]].data, // TODO: Support multiple models
     settings: resolved_settings,
-    printer: printer_id
+    printer: state.printer_id
   });
   save_file(gcode, "out.gcode", "text/plain");
 });

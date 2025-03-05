@@ -1,5 +1,7 @@
 import * as definitions from "../settings/definitions.mjs";
 
+import * as state from "../state.mjs";
+
 const sidebar = document.getElementById("sidebar");
 const sidebar_tabs = document.querySelector("#sidebar>.tabs-container");
 const tab_settings = document.querySelector("#sidebar>.tab-settings");
@@ -44,7 +46,7 @@ function populate_settings() {
 }
 
 export function load_sidebar() {
-  definition = definitions.resolve_definitions("creality_ender3");
+  definition = definitions.resolve_definitions(state.printer_id);
   let settings = definition.printer.settings;
 
   console.log(definition.printer.settings);
