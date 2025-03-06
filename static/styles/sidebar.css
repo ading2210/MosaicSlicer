@@ -121,13 +121,12 @@ input[type="number"] {
               display: flex;
               justify-content: flex-end;
               align-items: flex-end;
-              width: 50%;
+              width: calc(0.5 * max(25vw, 20rem));
 
               background-color: var(--grey-2);
               border-bottom: 1px solid var(--grey);
 
               input {
-                /* Why the hell can't I use percents for this without the parent taking up all the room */
                 flex-grow: 1;
                 width: auto;
 
@@ -140,7 +139,6 @@ input[type="number"] {
           }
 
           &.enum {
-            /* todo: line up the input box properly (it's going to be a huge pain) */
             padding-left: 0.5rem;
           }
         }

@@ -1,26 +1,27 @@
 We should remove this once we have a decently working app
 UI:
-- Sidebar
-  - Populate values
-  - Styles
-  - Save settings to object
-- Viewer
-  - Allow moving/scaling/rotating objects
-  - Materials
-  - Apply transforms to slicer
+[ ] Sidebar
+  [ ] Populate values
+  [x] Styles
+  [ ] Save settings to object
+[ ] Viewer
+  [ ] Allow moving/scaling/rotating objects
+  [ ] Materials
+  [ ] Apply transforms to slicer
+  [ ] GCode viewer
 Misc:
-  - Import profiles and other files
-  - GCode viewer
-  - Branding
-  - GCode Export options (name)
-    - Some metadata? Do specific printers have special metadata we can add?
+  [ ] Branding
+    [ ] Make name
+  [ ] GCode Export options (eg. name, bgcode)
+    [ ] Some metadata? Do specific printers have special metadata we can add?
 
 Functionality:
-- Slicer
-  - Fix slicer to work (not sure what tasks are here you can just add here)
-- Configs
-  - Importable profile files
-    - (DONE) Load .ini files
-    - Pass loaded configs into slicer
-  - Importable machine definitions
-  - Apply settings to slicer
+[ ] Slicer
+  [ ] Fix slicer to work (not sure what tasks are here you can just add here)
+[ ] Configs
+  [x] Load .ini files
+  [x] Load material files
+  [ ] Importable files
+  [ ] Importable machine definitions
+  [x] Pass loaded configs into slicer
+  [x] Apply settings to slicer
