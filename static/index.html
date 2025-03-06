@@ -2,64 +2,101 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web Slicer</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Web Slicer</title>
 
-  <link rel="stylesheet" href="./styles/index.css">
-  <link rel="stylesheet" href="./styles/sidebar.css">
-  <script type="module" src="./dist/app.mjs" defer></script>
+	<link rel="stylesheet" href="./styles/index.css">
+	<link rel="stylesheet" href="./styles/sidebar.css">
+	<script type="module" src="./dist/app.mjs" defer></script>
 </head>
 
 <body>
-  <div id="viewer">
-    <canvas id="stl-viewer"></canvas>
+	<div id="viewer">
+		<canvas id="stl-viewer"></canvas>
 
-    <div id="actions">
-      <span class="left">
-        <input type="file" id="stl-file" accept=".stl">
-        <label for="stl-file" id="file-label">
-          <ion-icon name="document-outline"></ion-icon>
-        </label>
-      </span>
-      <div class="flex-spacer"></div>
-      <span class="right">
-        <button id="slice-button">Slice</button>
-      </span>
-    </div>
-  </div>
+		<div id="actions">
+			<span class="left">
+				<input type="file" id="stl-file" accept=".stl">
+				<label for="stl-file" id="file-label">
+					<ion-icon name="document-outline"></ion-icon>
+				</label>
+			</span>
+			<div class="flex-spacer"></div>
+			<span class="right">
+				<button id="slice-button">Slice</button>
+			</span>
+		</div>
+	</div>
 
-  <div id="sidebar-container">
-    <div id="sidebar">
-      <h2 class="tab-header">Print Settings</h2>
-      <div class="tabs-container">
-        <template id="tab-template">
-          <span slot="tab-span" class="tab">
-            <span slot="tab-text" class="tab-text">Top/Bottom</span>
-          </span>
-        </template>
-      </div>
-      <div class="tab-settings">
-        <template id="setting-template">
-          <span class="setting">
-            <span class="label" slot="label">Infill Speed</span>
-            <span class="value">
-              <input slot="value" type="value">
-              <br>
-              <span slot="unit">mm/s</span>
-            </span>
-          </span>
-        </template>
-      </div> 
-    </div>
-  </div>
+	<div id="sidebar-container">
+		<div id="sidebar">
+			<div id="profile-selector">
+				<!-- Not implemented yet -->
+				<!-- Will include saving custom profiles as well -->
+			</div>
+			<span id="searchbar">
+				<input type="text" name="setting-search" id="setting-search" placeholder="Search settings">
+			</span>
+			<div class="sections">
+				<div class="section">
+					<span class="section-title">
+						<span class="left">
+							<!-- todo: icon -->
+							<ion-icon name="help-outline" class="section-icon"></ion-icon>
+							<span>Quality</span>
+						</span>
+						<span class="right">
+							<ion-icon name="chevron-down-outline" class="section-status-icon"></ion-icon>
+						</span>
+					</span>
+					<div class="settings">
+						<span class="setting">
+							<!-- I'm making setting-bar because if the settings has children they will be below -->
+							<span class="setting-bar">
+								<span class="setting-name" slot="setting-name">Layer Height</span>
+								<span class="setting-value">
+									<input slot="value" type="number">
+									<span slot="unit">mm</span>
+								</span>
+							</span>
+						</span>
 
-  <div id="drop-zone">
-    <h1>Drop STL</h1>
-  </div>
+						<span class="setting">
+							<!-- I'm making setting-bar because if the settings has children they will be below -->
+							<span class="setting-bar">
+								<span class="setting-name" slot="setting-name">Initial Layer Height</span>
+								<span class="setting-value">
+									<input slot="value" type="number">
+									<span slot="unit">mm</span>
+								</span>
+							</span>
+						</span>
 
-  <!-- todo: don't load this from a third party cdn -->
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" defer></script>
+
+						<span class="setting">
+							<!-- I'm making setting-bar because if the settings has children they will be below -->
+							<span class="setting-bar">
+								<span class="setting-name" slot="setting-name">Line Width</span>
+								<span class="setting-value">
+									<input slot="value" type="number">
+									<span slot="unit">mm</span>
+								</span>
+							</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+	<div id="drop-zone">
+		<h1>Drop STL</h1>
+	</div>
+
+	<!-- todo: don't load this from a third party cdn -->
+	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" defer></script>
 </body>
 
 </html>

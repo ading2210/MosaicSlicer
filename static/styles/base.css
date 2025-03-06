@@ -10,6 +10,7 @@
   --background-2: #262528;
 
   --grey: #acacac;
+  --grey-2: #333333;
 
   --primary: #37d79c;
   --secondary: #1a5f5a;
@@ -19,7 +20,8 @@
   font-family: "Inter", sans-serif;
 }
 
-body, html {
+body,
+html {
   height: 100vh;
   width: 100vw;
 }
@@ -46,4 +48,20 @@ button {
 
 .flex-spacer {
   flex-grow: 1;
+}
+
+/* Inputs */
+input {
+  &:focus {
+    outline: 1px solid white;
+  }
+
+  border: none;
+  font: inherit;
+  color: var(--text);
+
+  padding: 0.25rem;
+
+  background-color: var(--grey-2);
+  border-bottom: 1px solid var(--grey);
 }

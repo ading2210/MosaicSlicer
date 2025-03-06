@@ -5,6 +5,7 @@ input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
 input[type="number"] {
   appearance: textfield;
   -moz-appearance: textfield;
@@ -17,8 +18,6 @@ input[type="number"] {
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 
   padding: 0;
   margin: 0;
@@ -35,121 +34,105 @@ input[type="number"] {
 
   display: flex;
   flex-direction: column;
+  align-items: center;
 
-  .tab-header {
-    padding-left: 0.5rem;
-    font-size: 1.2rem;
-    font-weight: 600;
+  #profile-selector {
+    height: 4rem;
   }
 
-  .tabs-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    padding: 0.5rem;
-    padding-left: 0rem;
-    height: 1.5rem;
-    min-height: 1.5rem;
+  #searchbar {
+    width: 95%;
+    padding-bottom: 1rem;
 
-    overflow-x: scroll;
-    border-bottom: 0.5px solid var(--grey);
-
-    mask: linear-gradient(90deg, rgba(0, 0, 0, 1), 90%, rgba(0, 0, 0, 0) 97%);
-
-    .tab:first-child {
-      padding-left: 0;
-      border-left: none;
-    }
-
-    .tab {
-      .tab-text {
-        font-weight: 400;
-        font-size: 0.75rem;
-
-        white-space: nowrap;
-
-        /* box-shadow: inset 0 -2px 0 var(--text); */
-      }
-
-      padding-left: 0.5rem;
-      border-left: 1px solid var(--grey);
-
-      cursor: pointer;
-
-      &.selected {
-        .tab-text {
-          font-weight: 600;
-          color: var(--primary);
-
-          /* border-bottom:  2px solid var(--primary); */
-          box-shadow: inset 0 -2px 0 var(--primary);
-        }
-      }
-    }
-
-    &::-webkit-scrollbar {
-      display: none;
+    input {
+      width: 100%;
     }
   }
 
-  .tab-settings {
+  .sections {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 0.5rem;
     flex-grow: 1;
-    overflow-y: auto;
+    width: 95%;
 
-    .setting {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
+    flex-direction: column;
 
-      .label {
-        font-size: 0.75rem;
-        max-width: 70%;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        font-weight: 400;
+    .section {
+      padding: 0.25rem;
+      border-top: 0.5px solid var(--grey);
 
-        /* I'm not a fan of this but some text is just too big */
-        &:hover {
-          overflow: visible;
+      .section-title {
+        font-size: 1.2rem;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .left {
+          display: flex;
+          align-items: center;
+          gap: 0.2rem;
+
+          font-weight: 500;
+        }
+
+        .right {
+          display: flex;
+          align-items: center;
+          gap: 0.2rem;
+
+          ion-icon {
+            transition: 0.1s ease-in-out;
+          }
         }
       }
 
-      .value {
-        /* overflow: clip; */
-        width: 30%;
+      .settings {
         display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
 
-        &:not(:has(input[type="checkbox"])) {
-          border-bottom: 1px solid var(--grey);
-        }
+        .setting {
+          width: 100%;
 
-        input {
-          font: inherit;
+          .setting-bar {
+            width: 100%;
+            display: flex;
 
-          &:not([type="checkbox"]) {
-            min-width: 30%;
+            justify-content: space-between;
+            align-items: center;
+
+            .setting-value {
+              max-width: 60%;
+              min-width: 40%;
+
+              background-color: var(--grey-2);
+              border-bottom: 1px solid var(--grey);
+
+              input {
+                /* Why the hell can't I use percents for this without the parent taking up all the room */
+                max-width: 5rem;
+
+                background-color: transparent;
+                border-bottom: none;
+              }
+            }
           }
+        }
+      }
 
-          color: var(--text);
-          background-color: transparent;
-          border: none;
-          padding: 0.1rem;
-          outline: none;
+      &.closed {
+        .settings {
+          display: none;
         }
 
-        span {
-          font-size: 0.75rem;
-          font-weight: 400;
-          color: var(--grey);
+        .section-title {
+          .right {
+            ion-icon {
+              transform: rotate(90deg);
+            }
+          }
         }
       }
     }
