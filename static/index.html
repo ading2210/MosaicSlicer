@@ -51,43 +51,22 @@
 						</span>
 					</span>
 					<div class="settings">
-						<span class="setting">
-							<!-- I'm making setting-bar because if the settings has children they will be below -->
-							<span class="setting-bar">
-								<span class="setting-name" slot="setting-name">Layer Height</span>
-								<span class="setting-value">
-									<input slot="value" type="number">
-									<span slot="unit">mm</span>
+						<template id="setting-template">
+							<span class="setting">
+								<!-- I'm making setting-bar because if the settings has children they will be below -->
+								<span class="setting-bar">
+									<span class="setting-name" slot="setting-name">Layer Height</span>
+									<span class="setting-value">
+										<input slot="value" type="number">
+										<span slot="unit">mm</span>
+									</span>
 								</span>
 							</span>
-						</span>
-
-						<span class="setting">
-							<!-- I'm making setting-bar because if the settings has children they will be below -->
-							<span class="setting-bar">
-								<span class="setting-name" slot="setting-name">Initial Layer Height</span>
-								<span class="setting-value">
-									<input slot="value" type="number">
-									<span slot="unit">mm</span>
-								</span>
-							</span>
-						</span>
-
-
-						<span class="setting">
-							<!-- I'm making setting-bar because if the settings has children they will be below -->
-							<span class="setting-bar">
-								<span class="setting-name" slot="setting-name">Line Width</span>
-								<span class="setting-value">
-									<input slot="value" type="number">
-									<span slot="unit">mm</span>
-								</span>
-							</span>
-						</span>
+						</template>
 					</div>
 				</div>
 			</div>
-			
+
 		</div>
 	</div>
 
