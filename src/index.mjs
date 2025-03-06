@@ -15,14 +15,14 @@ async function main() {
 
   await resources.download_resources();
   console.log("Loaded resources");
+
   resources.load_all_ini();
   settings.materials.load_all_materials();
   settings.load_container("creality_ender3");
-
   console.log("Loaded configurations");
-  gui.start_gui();
 
-  console.log("Done loading.");
+  gui.start_gui();
+  console.log("Loaded GUI");
 }
 
 main();

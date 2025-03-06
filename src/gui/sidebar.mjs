@@ -1,6 +1,5 @@
 import * as definitions from "../settings/definitions.mjs";
-
-import * as state from "../state.mjs";
+import { active_containers } from "../settings/index.mjs";
 
 const sidebar = document.getElementById("sidebar");
 const sidebar_tabs = document.querySelector("#sidebar>.tabs-container");
@@ -46,7 +45,7 @@ function populate_settings() {
 }
 
 export function load_sidebar() {
-  definition = definitions.resolve_definitions(state.printer_id);
+  definition = active_containers.definitions;
   let settings = definition.printer.settings;
 
   // Populate sidebar tabs

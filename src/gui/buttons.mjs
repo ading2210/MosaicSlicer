@@ -2,13 +2,12 @@ import { resolve_machine_settings } from "../settings/definitions.mjs";
 import { models } from "./viewer.mjs";
 import { CuraEngine } from "../engine/index.mjs";
 
-import * as state from "../state.mjs";
-
 const slice_button = document.getElementById("slice-button");
 
 slice_button.addEventListener("click", async () => {
   let engine = new CuraEngine();
-
+  return;
+  /*
   let machine_settings = resolve_machine_settings(state.printer_id);
   function resolve_setting_values(settings) {
     let resolved = {};
@@ -26,4 +25,5 @@ slice_button.addEventListener("click", async () => {
     printer: state.printer_id
   });
   save_file(gcode, "out.gcode", "text/plain");
+  */
 });

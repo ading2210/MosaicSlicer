@@ -43,9 +43,10 @@ export function filter_profiles(profiles, filters = {}) {
   let max_priority = 0;
   for (let profile of Object.values(profiles))
     max_priority = Math.max(max_priority, profile.priority);
-  for (let profile of Object.values(profiles))
+  for (let profile of Object.values(profiles)) {
     if (profile.priority < max_priority)
       delete filtered[profile.id];
+  }
 
   if (Object.keys(filtered).length > 0)
     return filtered;
