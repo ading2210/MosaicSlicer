@@ -16,12 +16,25 @@ import Experiment from "cura_icons/default/Experiment.svg";
 import DocumentFilled from "cura_icons/default/DocumentFilled.svg";
 
 export const icons = {
-  Printer, PrintQuality, PrintShell, PrintTopBottom, Infill1, Spool, SpeedOMeter,
-  PrintTravel, Fan, Support, Adhesion, DualExtrusion, Bandage, BlackMagic,
-  Experiment, DocumentFilled
-}
+  Printer,
+  PrintQuality,
+  PrintShell,
+  PrintTopBottom,
+  Infill1,
+  Spool,
+  SpeedOMeter,
+  PrintTravel,
+  Fan,
+  Support,
+  Adhesion,
+  DualExtrusion,
+  Bandage,
+  BlackMagic,
+  Experiment,
+  DocumentFilled
+};
 
-export function generate_css() {
+function generate_css() {
   let css_rules = `
     .cura-icon {
       background-repeat: no-repeat;

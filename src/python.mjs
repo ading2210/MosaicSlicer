@@ -3,6 +3,7 @@ import mp_wasm from "@micropython/micropython-webassembly-pyscript/micropython.w
 
 export const micropython = await loadMicroPython({url: mp_wasm});
 const name_error_regex = /NameError: name '(\S+)' isn't defined/;
+const preserved_globals = [];
 
 export class PythonNameError extends Error {
   constructor(message) {
@@ -12,8 +13,10 @@ export class PythonNameError extends Error {
 }
 
 function clean_globals() {
-  for (let key of Object.keys(micropython.globals.__dict__))
-    micropython.globals.delete(key);
+  for (let key of Object.keys(micropython.globals.__dict__)) {
+    if (!preserved_globals.includes(key))
+      micropython.globals.delete(key);
+  }
 }
 
 export function eval_py(expression, vars = {}) {
@@ -35,3 +38,13 @@ export function eval_py(expression, vars = {}) {
   clean_globals();
   return micropython.globals.get("__eval_ret");
 }
+
+export function convert_py_list(list) {
+}
+
+export function import_libraries() {
+  micropython.runPython(`import math;`);
+  preserved_globals.push(...Object.keys(micropython.globals.__dict__));
+}
+
+import_libraries();

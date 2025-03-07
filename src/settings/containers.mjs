@@ -58,9 +58,12 @@ export class ContainerStack {
   }
   resolve_setting_definition(setting_id) {
     let setting = this.settings[setting_id];
-    if (setting)
+    if (typeof setting !== "undefined")
       return setting;
-    return this.parent.containers.global.settings[setting_id];
+    setting = this.parent.containers.global.settings[setting_id];
+    if (typeof setting !== "undefined")
+      return setting;
+    throw TypeError(`setting ${setting_id} not found`);
   }
   resolve_value(value, setting) {
     if (typeof value === "string") {
@@ -68,7 +71,7 @@ export class ContainerStack {
       if (value.startsWith("="))
         return this.resolve_py_expression(value.substring(1));
       //array types
-      if (setting.type[0] === "[" && type.at(-1) === "]")
+      if (setting.type[0] === "[" && setting.type.at(-1) === "]")
         return this.resolve_py_expression(value);
       //unexpected string in these types
       if (["float", "int", "bool"].includes(setting.type))
@@ -81,7 +84,6 @@ export class ContainerStack {
   }
   resolve_py_expression(expression) {
     let vars = {};
-    console.log("resolving py expression:", expression);
     while (true) {
       try {
         return eval_py(expression, vars);

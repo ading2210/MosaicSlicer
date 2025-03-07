@@ -12,44 +12,48 @@ export function load_sidebar() {
   for (let section in settings) {
     let category = settings[section];
     let template = section_template.content.cloneNode(true);
-    
+
     let section_title = template.get_slot("section-title");
     let section_icon = template.get_slot("section-icon");
     let title_container = template.get_slot("title-container");
     section_title.innerText = category.label;
     section_icon.classList.add(`cura-icon-${category.icon}`);
-
-    for (let setting in category.children) {
-      let setting_element = generate_setting(category.children[setting]);
+    for (let [setting_id, setting] of Object.entries(category.children)) {
+      let setting_element = generate_setting(setting_id, setting);
       template.get_slot("children").append(setting_element);
     }
 
-    section_title.onclick = () => {
+    title_container.onclick = () => {
       title_container.parentElement.classList.toggle("closed");
     };
+
+    sections.append(template);
   }
+
+  populate_values();
 }
 
-function generate_setting(setting_obj) {
+function generate_setting(setting_id, setting) {
   let template = setting_template.content.cloneNode(true);
   let value = template.get_slot("value");
   let unit = template.get_slot("unit");
-  unit.innerText = setting_obj.unit ?? "";
+  unit.innerText = setting.unit ?? "";
 
-  template.get_slot("setting-name").innerText = setting_obj.label;
-  template.get_slot("setting-value").dataset.type = setting_obj.type;
+  template.get_slot("setting-name").innerText = setting.label;
+  template.get_slot("setting-value").dataset.type = setting.type;
+  template.get_slot("setting-container").dataset.setting_id = setting_id;
 
-  if (setting_obj.type === "float") {
+  if (setting.type === "float") {
     value.type = "number";
     value.step = "0.01";
   }
-  else if (setting_obj.type === "int") {
+  else if (setting.type === "int") {
     value.type = "number";
     value.step = "0.01";
   }
-  else if (setting_obj.type === "enum") {
+  else if (setting.type === "enum") {
     let select = document.createElement("select");
-    for (let [enum_value, pretty_value] of Object.entries(setting_obj.options)) {
+    for (let [enum_value, pretty_value] of Object.entries(setting.options)) {
       let option = document.createElement("option");
       option.value = enum_value;
       option.innerText = pretty_value;
@@ -58,18 +62,55 @@ function generate_setting(setting_obj) {
     value.replaceWith(select);
     unit.remove();
   }
-  else if (setting_obj.type === "bool")
+  else if (setting.type === "bool")
     value.type = "checkbox";
-  else if (setting_obj.type === "str")
+  else if (setting.type === "str")
     value.type = "text";
 
-  if (setting_obj.children) {
-    for (let setting_child in setting_obj.children) {
-      let child = generate_setting(setting_obj.children[setting_child]);
-      child.firstElementChild.classList.add("enum");
+  if (setting.children) {
+    for (let [child_id, child_setting] of Object.entries(setting.children)) {
+      let child = generate_setting(child_id, child_setting);
+      child.firstElementChild.classList.add("indented");
       template.firstElementChild.appendChild(child);
     }
   }
 
   return template;
+}
+
+function populate_values() {
+  let start = performance.now();
+  let container_stack = app.settings.active_containers.containers.extruders[0];
+  let setting_elements = document.querySelectorAll("span[data-setting_id]");
+
+  for (let i = 0; i < setting_elements.length; i++) {
+    let setting_element = setting_elements[i];
+    let setting_id = setting_element.dataset.setting_id;
+    let setting_bar = setting_element.children[0];
+    let value_element = setting_bar.querySelector(".setting-value");
+    let input_element = value_element.children[0];
+
+    try {
+      let setting_value = container_stack.resolve_setting(setting_id);
+      if (typeof setting_value.pop !== "undefined") {
+        if (Array.isArray(setting_value))
+          setting_value = JSON.stringify(setting_value);
+        else
+          throw TypeError("reading python lists not implemented");
+      }
+
+      if (input_element instanceof HTMLInputElement && input_element.type === "checkbox")
+        input_element.checked = !!setting_value;
+      else
+        input_element.value = setting_value;
+    }
+    catch (e) {
+      if (e.message.includes("stringToUTF8Array"))
+        debugger;
+      console.warn(`skipping setting ${setting_id}`);
+      console.warn(e);
+    }
+  }
+  let end = performance.now();
+  console.log("loaded all settings values in ", Math.round((end - start) * 100) / 100, "ms");
 }

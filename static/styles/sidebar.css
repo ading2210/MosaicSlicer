@@ -204,7 +204,7 @@ input[type="number"] {
     }
   }
 
-  &.enum {
+  &.indented {
     padding-left: 0.5rem;
   }
 }
