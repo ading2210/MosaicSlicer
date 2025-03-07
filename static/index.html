@@ -1,81 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Slicer</title>
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Web Slicer</title>
+    <link rel="stylesheet" href="./styles/index.css">
+    <link rel="stylesheet" href="./styles/sidebar.css">
+    <script type="module" src="./dist/app.mjs" defer></script>
+  </head>
 
-	<link rel="stylesheet" href="./styles/index.css">
-	<link rel="stylesheet" href="./styles/sidebar.css">
-	<script type="module" src="./dist/app.mjs" defer></script>
-</head>
+  <body>
+    <div id="viewer">
+      <canvas id="stl-viewer"></canvas>
 
-<body>
-	<div id="viewer">
-		<canvas id="stl-viewer"></canvas>
+      <div id="actions">
+        <span class="left">
+          <input type="file" id="stl-file" accept=".stl">
+          <label for="stl-file" id="file-label">
+            <ion-icon name="document-outline"></ion-icon>
+          </label>
+        </span>
+        <div class="flex-spacer"></div>
+        <span class="right">
+          <button id="slice-button">Slice</button>
+        </span>
+      </div>
+    </div>
 
-		<div id="actions">
-			<span class="left">
-				<input type="file" id="stl-file" accept=".stl">
-				<label for="stl-file" id="file-label">
-					<ion-icon name="document-outline"></ion-icon>
-				</label>
-			</span>
-			<div class="flex-spacer"></div>
-			<span class="right">
-				<button id="slice-button">Slice</button>
-			</span>
-		</div>
-	</div>
+    <div id="sidebar-container">
+      <div id="sidebar">
+        <h3>Print Settings</h3>
+        <div id="profile-selector">
+          <span>Profile</span>
+        </div>
+        <span id="searchbar">
+          <input type="text" name="setting-search" id="setting-search" placeholder="Search settings">
+        </span>
+        <div id="sections">
+          <template id="section-template">
+            <div class="section closed">
+              <span class="section-title">
+                <span class="left">
+                  <ion-icon name="help-outline" class="section-icon" slot="section-icon"></ion-icon>
+                  <span slot="section-title">Quality</span>
+                </span>
+                <span class="right">
+                  <ion-icon name="chevron-down-outline" class="section-status-icon"></ion-icon>
+                </span>
+              </span>
+              <div class="settings" slot="children"></div>
+            </div>
+          </template>
 
-	<div id="sidebar-container">
-		<div id="sidebar">
-			<h3>Print Settings</h3>
-			<div id="profile-selector">
-				<span>Profile</span>
-			</div>
-			<span id="searchbar">
-				<input type="text" name="setting-search" id="setting-search" placeholder="Search settings">
-			</span>
-			<div id="sections">
-				<template id="section-template">
-					<div class="section closed">
-						<span class="section-title">
-							<span class="left">
-								<ion-icon name="help-outline" class="section-icon" slot="section-icon"></ion-icon>
-								<span slot="section-title">Quality</span>
-							</span>
-							<span class="right">
-								<ion-icon name="chevron-down-outline" class="section-status-icon"></ion-icon>
-							</span>
-						</span>
-						<div class="settings" slot="children">
-						</div>
-					</div>
-				</template>
+          <template id="setting-template">
+            <span class="setting">
+              <span class="setting-bar">
+                <span class="setting-name" slot="setting-name">Layer Height</span>
+                <span class="setting-value" slot="setting-value">
+                  <input slot="value" type="number">
+                  <span class="unit-text" slot="unit">mm</span>
+                </span>
+              </span>
+            </span>
+          </template>
+        </div>
+      </div>
+    </div>
 
-				<template id="setting-template">
-					<span class="setting">
-						<span class="setting-bar">
-							<span class="setting-name" slot="setting-name">Layer Height</span>
-							<span class="setting-value" slot="setting-value">
-								<input slot="value" type="number">
-								<span class="unit-text" slot="unit">mm</span>
-							</span>
-						</span>
-					</span>
-				</template>
-			</div>
-		</div>
-	</div>
+    <div id="drop-zone">
+      <h1>Drop STL</h1>
+    </div>
 
-	<div id="drop-zone">
-		<h1>Drop STL</h1>
-	</div>
-
-	<!-- todo: don't load this from a third party cdn -->
-	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" defer></script>
-</body>
-
+    <!-- todo: don't load this from a third party cdn -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" defer></script>
+  </body>
 </html>
