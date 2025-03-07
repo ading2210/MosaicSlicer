@@ -1,7 +1,7 @@
 We should remove this once we have a decently working app
 UI:
 [ ] Sidebar
-  [ ] Populate values
+  [x] Populate values
   [x] Styles
   [ ] Save settings to object
 [ ] Viewer
