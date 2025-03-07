@@ -30,19 +30,17 @@ function generate_setting(setting_obj) {
   template.get_slot("setting-name").innerText = setting_obj.label;
   template.get_slot("unit").innerText = setting_obj.unit ?? "";
   if (setting_obj.type == "float") {
-    template.get_slot("value").type = "number"
-    template.get_slot("value").step = "0.01"
+    template.get_slot("value").type = "number";
+    template.get_slot("value").step = "0.01";
   }
   else if (setting_obj.type == "int") {
-    template.get_slot("value").type = "number"
-    template.get_slot("value").step = "0.01"
+    template.get_slot("value").type = "number";
+    template.get_slot("value").step = "0.01";
   }
-  else if (setting_obj.type == "bool") {
-    template.get_slot("value").type = "checkbox"
-  }
-  else if (setting_obj.type == "str") {
-    template.get_slot("value").type = "text"
-  }
+  else if (setting_obj.type == "bool")
+    template.get_slot("value").type = "checkbox";
+  else if (setting_obj.type == "str")
+    template.get_slot("value").type = "text";
 
   if (setting_obj.children) {
     for (let setting_child in setting_obj.children) {
