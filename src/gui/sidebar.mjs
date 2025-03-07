@@ -49,7 +49,7 @@ function generate_setting(setting_id, setting) {
   }
   else if (setting.type === "int") {
     value.type = "number";
-    value.step = "0.01";
+    value.step = "1";
   }
   else if (setting.type === "enum") {
     let select = document.createElement("select");
@@ -82,6 +82,7 @@ function populate_values() {
   let start = performance.now();
   let container_stack = app.settings.active_containers.containers.extruders[0];
   let setting_elements = document.querySelectorAll("span[data-setting_id]");
+  container_stack.cache.clear();
 
   for (let i = 0; i < setting_elements.length; i++) {
     let setting_element = setting_elements[i];
@@ -92,13 +93,9 @@ function populate_values() {
 
     try {
       let setting_value = container_stack.resolve_setting(setting_id);
-      if (typeof setting_value.pop !== "undefined") {
-        if (Array.isArray(setting_value))
-          setting_value = JSON.stringify(setting_value);
-        else
-          throw TypeError("reading python lists not implemented");
-      }
-
+      if (Array.isArray(setting_value)) 
+        setting_value = JSON.stringify(setting_value);
+      
       if (input_element instanceof HTMLInputElement && input_element.type === "checkbox")
         input_element.checked = !!setting_value;
       else

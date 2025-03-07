@@ -5,6 +5,17 @@ export const micropython = await loadMicroPython({url: mp_wasm});
 const name_error_regex = /NameError: name '(\S+)' isn't defined/;
 const preserved_globals = [];
 
+export const py_api = {
+  extruderValues: () => {},
+  extruderValue: () => {},
+  anyExtruderWithMaterial: () => {},
+  anyExtruderNrWithOrDefault: () => {},
+  resolveOrValue: () => {},
+  defaultExtruderPosition: () => {},
+  valueFromContainer: () => {},
+  valueFromExtruderContainer: () => {}
+};
+
 export class PythonNameError extends Error {
   constructor(message) {
     super(message);
@@ -20,13 +31,15 @@ function clean_globals() {
 }
 
 export function eval_py(expression, vars = {}) {
-  let python = `__eval_ret = (${expression})`;
-
-  for (let [var_name, value] of Object.entries(vars))
-    micropython.globals.set(var_name, value);
+  console.log(expression, vars);
+  for (let [var_name, value] of Object.entries(vars)) {
+    micropython.globals.set(var_name, JSON.stringify(value));
+    micropython.runPython(`${var_name} = json.loads(${var_name})`);
+  }
 
   try {
-    micropython.runPython(python);
+    micropython.runPython(`__eval_ret = (${expression})`);
+    micropython.runPython(`__eval_ret = json.dumps(__eval_ret)`);
   }
   catch (py_error) {
     clean_globals();
@@ -36,15 +49,30 @@ export function eval_py(expression, vars = {}) {
       throw py_error;
   }
   clean_globals();
-  return micropython.globals.get("__eval_ret");
+  let ret = micropython.globals.get("__eval_ret");
+  return JSON.parse(ret);
 }
 
-export function convert_py_list(list) {
-}
-
-export function import_libraries() {
-  micropython.runPython(`import math;`);
+export function whitelist_globals() {
+  preserved_globals.length = 0;
   preserved_globals.push(...Object.keys(micropython.globals.__dict__));
 }
 
-import_libraries();
+export function setup() {
+  const py_api_private = {};
+  for (let py_func in py_api) {
+    py_api_private[py_func] = (...args) => {
+      return JSON.stringify(py_api[py_func](...args))
+    };
+  }
+
+  micropython.runPython(`import math, json`);
+  micropython.registerJsModule("__cura_api", py_api_private);
+  micropython.runPython(`import __cura_api`);
+  for (let py_func in py_api) {
+    micropython.runPython(`def ${py_func}(*args): return json.loads(__cura_api.${py_func}(*args))`);
+  }
+  whitelist_globals();
+}
+
+setup();
