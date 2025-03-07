@@ -31,9 +31,9 @@
 
 	<div id="sidebar-container">
 		<div id="sidebar">
+			<h3>Print Settings</h3>
 			<div id="profile-selector">
-				<!-- Not implemented yet -->
-				<!-- Will include saving custom profiles as well -->
+				<span>Profile</span>
 			</div>
 			<span id="searchbar">
 				<input type="text" name="setting-search" id="setting-search" placeholder="Search settings">
@@ -57,12 +57,11 @@
 
 				<template id="setting-template">
 					<span class="setting">
-						<!-- I'm making setting-bar because if the settings has children they will be below -->
 						<span class="setting-bar">
 							<span class="setting-name" slot="setting-name">Layer Height</span>
-							<span class="setting-value">
+							<span class="setting-value" slot="setting-value">
 								<input slot="value" type="number">
-								<span slot="unit">mm</span>
+								<span class="unit-text" slot="unit">mm</span>
 							</span>
 						</span>
 					</span>

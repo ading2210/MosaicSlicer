@@ -27,20 +27,36 @@ export function load_sidebar() {
 
 function generate_setting(setting_obj) {
   let template = setting_template.content.cloneNode(true);
+  let value = template.get_slot("value");
+  let unit = template.get_slot("unit");
+  unit.innerText = setting_obj.unit ?? "";
+
   template.get_slot("setting-name").innerText = setting_obj.label;
-  template.get_slot("unit").innerText = setting_obj.unit ?? "";
-  if (setting_obj.type == "float") {
-    template.get_slot("value").type = "number";
-    template.get_slot("value").step = "0.01";
+  template.get_slot("setting-value").dataset.type = setting_obj.type;
+
+  if (setting_obj.type === "float") {
+    value.type = "number";
+    value.step = "0.01";
   }
-  else if (setting_obj.type == "int") {
-    template.get_slot("value").type = "number";
-    template.get_slot("value").step = "0.01";
+  else if (setting_obj.type === "int") {
+    value.type = "number";
+    value.step = "0.01";
   }
-  else if (setting_obj.type == "bool")
-    template.get_slot("value").type = "checkbox";
-  else if (setting_obj.type == "str")
-    template.get_slot("value").type = "text";
+  else if (setting_obj.type === "enum") {
+    let select = document.createElement("select");
+    for (let [enum_value, pretty_value] of Object.entries(setting_obj.options)) {
+      let option = document.createElement("option");
+      option.value = enum_value;
+      option.innerText = pretty_value;
+      select.append(option);
+    }
+    value.replaceWith(select);
+    unit.remove();
+  }
+  else if (setting_obj.type === "bool")
+    value.type = "checkbox";
+  else if (setting_obj.type === "str")
+    value.type = "text";
 
   if (setting_obj.children) {
     for (let setting_child in setting_obj.children) {
