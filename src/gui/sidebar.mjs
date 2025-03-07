@@ -1,52 +1,40 @@
-import * as definitions from "../settings/definitions.mjs";
 import { active_containers } from "../settings/index.mjs";
 
-const sidebar = document.getElementById("sidebar");
+const sections = document.getElementById("sections");
+const section_template = document.getElementById("section-template");
 const setting_template = document.getElementById("setting-template");
 
-var selected_tab = null;
-var definition = {};
-
 export function load_sidebar() {
-  definition = active_containers.definitions;
+  let definition = active_containers.definitions;
   let settings = definition.printer.settings;
 
   // Populate sidebar tabs
-  for (let setting in settings) {
+  for (let section in settings) {
+    let template = section_template.content.cloneNode(true);
+    template.get_slot("section-title").innerText = settings[section].label;
+
+    for (let setting in settings[section].children)
+      template.get_slot("children").appendChild(generate_setting(settings[section].children[setting]));
+    sections.appendChild(template);
+  }
+  // I'm not sure why, but I can't figure out why I can't add the eventListener in the above loop
+  for (let section of sections.querySelectorAll(".section>.section-title")) {
+    section.addEventListener("click", () => {
+      section.parentElement.classList.toggle("closed");
+    });
   }
 }
 
-let setting = {
-  name: "Line Width",
-  unit: "mm",
-  children: [
-    {
-      name: "Wall Line Width",
-      unit: "mm",
-      children: [
-        {
-          name: "Outer Wall Line Width",
-          unit: "mm"
-        },
-        {
-          name: "Inner Wall Line Width",
-          unit: "mm"
-        }
-      ]
-    }
-  ]
-};
-
 function generate_setting(setting_obj) {
   let template = setting_template.content.cloneNode(true);
-  template.get_slot("setting-name").innerText = setting_obj.name;
-  template.get_slot("unit").innerText = setting_obj.unit;
-  
-  // todo: input type
+  template.get_slot("setting-name").innerText = setting_obj.label;
+  template.get_slot("unit").innerText = setting_obj.unit ?? "";
 
+  // todo: input type (checkbox, float/int)
   if (setting_obj.children) {
-    for (let setting_child of setting_obj.children) {
-      let child = generate_setting(setting_child, true);
+    for (let setting_child in setting_obj.children) {
+      console.log(setting_child);
+      let child = generate_setting(setting_obj.children[setting_child]);
       child.firstElementChild.classList.add("enum");
       template.firstElementChild.appendChild(child);
     }
@@ -54,15 +42,3 @@ function generate_setting(setting_obj) {
 
   return template;
 }
-
-// This should be when the settings are populated
-// I'm sorry for using forEach, but its temporary
-document.querySelectorAll(".section-title").forEach((el) => {
-  el.addEventListener("click", () => {
-    el.parentElement.classList.toggle("closed");
-  });
-});
-
-window.onload = () => {
-  document.querySelector(".settings").appendChild(generate_setting(setting));
-};

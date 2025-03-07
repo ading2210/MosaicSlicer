@@ -38,35 +38,36 @@
 			<span id="searchbar">
 				<input type="text" name="setting-search" id="setting-search" placeholder="Search settings">
 			</span>
-			<div class="sections">
-				<div class="section">
-					<span class="section-title">
-						<span class="left">
-							<!-- todo: icon -->
-							<ion-icon name="help-outline" class="section-icon"></ion-icon>
-							<span>Quality</span>
+			<div id="sections">
+				<template id="section-template">
+					<div class="section closed">
+						<span class="section-title">
+							<span class="left">
+								<ion-icon name="help-outline" class="section-icon" slot="section-icon"></ion-icon>
+								<span slot="section-title">Quality</span>
+							</span>
+							<span class="right">
+								<ion-icon name="chevron-down-outline" class="section-status-icon"></ion-icon>
+							</span>
 						</span>
-						<span class="right">
-							<ion-icon name="chevron-down-outline" class="section-status-icon"></ion-icon>
+						<div class="settings" slot="children">
+						</div>
+					</div>
+				</template>
+
+				<template id="setting-template">
+					<span class="setting">
+						<!-- I'm making setting-bar because if the settings has children they will be below -->
+						<span class="setting-bar">
+							<span class="setting-name" slot="setting-name">Layer Height</span>
+							<span class="setting-value">
+								<input slot="value" type="number">
+								<span slot="unit">mm</span>
+							</span>
 						</span>
 					</span>
-					<div class="settings">
-						<template id="setting-template">
-							<span class="setting">
-								<!-- I'm making setting-bar because if the settings has children they will be below -->
-								<span class="setting-bar">
-									<span class="setting-name" slot="setting-name">Layer Height</span>
-									<span class="setting-value">
-										<input slot="value" type="number">
-										<span slot="unit">mm</span>
-									</span>
-								</span>
-							</span>
-						</template>
-					</div>
-				</div>
+				</template>
 			</div>
-
 		</div>
 	</div>
 

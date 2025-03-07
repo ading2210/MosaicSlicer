@@ -49,7 +49,7 @@ input[type="number"] {
     }
   }
 
-  .sections {
+  #sections {
     display: flex;
     flex-grow: 1;
     width: 95%;
