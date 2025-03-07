@@ -17,6 +17,9 @@ module.exports = [
         "fs": false,
         "path": false,
         "module": false
+      },
+      alias: {
+        "cura_icons": path.join(__dirname, "./third_party/Cura/resources/themes/cura-light/icons")
       }
     },
     module: {
@@ -24,6 +27,10 @@ module.exports = [
         {
           test: /\.wasm/,
           type: "asset/resource"
+        },
+        {
+          test: /\.svg/,
+          type: "asset/inline"
         }
       ]
     },

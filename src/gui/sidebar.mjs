@@ -8,20 +8,25 @@ export function load_sidebar() {
   let definition = active_containers.definitions;
   let settings = definition.printer.settings;
 
-  // Populate sidebar tabs
+  // Populate sidebar sections
   for (let section in settings) {
+    let category = settings[section];
     let template = section_template.content.cloneNode(true);
-    template.get_slot("section-title").innerText = settings[section].label;
+    
+    let section_title = template.get_slot("section-title");
+    let section_icon = template.get_slot("section-icon");
+    let title_container = template.get_slot("title-container");
+    section_title.innerText = category.label;
+    section_icon.classList.add(`cura-icon-${category.icon}`);
 
-    for (let setting in settings[section].children)
-      template.get_slot("children").appendChild(generate_setting(settings[section].children[setting]));
-    sections.appendChild(template);
-  }
-  // I'm not sure why, but I can't figure out why I can't add the eventListener in the above loop
-  for (let section of sections.querySelectorAll(".section>.section-title")) {
-    section.addEventListener("click", () => {
-      section.parentElement.classList.toggle("closed");
-    });
+    for (let setting in category.children) {
+      let setting_element = generate_setting(category.children[setting]);
+      template.get_slot("children").append(setting_element);
+    }
+
+    section_title.onclick = () => {
+      title_container.parentElement.classList.toggle("closed");
+    };
   }
 }
 

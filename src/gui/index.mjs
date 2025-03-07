@@ -3,6 +3,7 @@ export * as file from "./file.mjs";
 export * as renderer from "./renderer.mjs";
 export * as siderbar from "./sidebar.mjs";
 export * as viewer from "./viewer.mjs";
+export * as icons from "./icons.mjs";
 
 import { load_sidebar } from "./sidebar.mjs";
 import { start_viewer } from "./viewer.mjs";

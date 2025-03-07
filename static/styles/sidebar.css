@@ -76,7 +76,7 @@ input[type="number"] {
   border-top: 0.5px solid var(--grey);
   margin-right: 0.25rem;
 
-  .section-title {
+  .section-title-container {
     font-size: 1rem;
 
     display: flex;
@@ -85,10 +85,16 @@ input[type="number"] {
 
     padding: 0.4rem;
 
+    .cura-icon {
+      height: 1.5rem;
+      width: 1.5rem;
+      filter: invert();
+    }
+
     .left {
       display: flex;
       align-items: center;
-      gap: 0.2rem;
+      gap: 0.5rem;
 
       font-weight: 500;
     }
@@ -127,7 +133,7 @@ input[type="number"] {
       display: none;
     }
 
-    .section-title {
+    .section-title-container {
       .right {
         ion-icon {
           transform: rotate(90deg);
