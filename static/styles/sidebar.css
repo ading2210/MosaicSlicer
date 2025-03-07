@@ -13,7 +13,7 @@ input[type="number"] {
 
 #sidebar-container {
   height: 100vh;
-  width: max(25vw, 20rem);
+  width: max(30vw, 25rem);
   flex-grow: 1;
 
   display: flex;
@@ -34,15 +34,17 @@ input[type="number"] {
 
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
 
   #profile-selector {
-    height: 4rem;
+    min-height: 4rem;
   }
 
   #searchbar {
     width: 95%;
-    padding-bottom: 1rem;
+
+    margin-bottom: 1rem;
 
     input {
       width: 100%;
@@ -55,6 +57,12 @@ input[type="number"] {
     width: 95%;
 
     flex-direction: column;
+
+    overflow-y: scroll;
+    scrollbar-width: none;
+    /* &::-webkit-scrollbar {
+      display: none;
+    } */
 
     .section {
       padding: 0.25rem;
@@ -69,7 +77,13 @@ input[type="number"] {
         justify-content: space-between;
         align-items: center;
 
-        margin-bottom: 0.5rem;
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+
+        /* I'm not sure how I feel about this underline */
+        /* I just think the UI is too monochromatic right now */
+        /* text-decoration: underline;
+        text-decoration-color: var(--primary); */
 
         .left {
           display: flex;
@@ -121,10 +135,12 @@ input[type="number"] {
               display: flex;
               justify-content: flex-end;
               align-items: flex-end;
-              width: calc(0.5 * max(25vw, 20rem));
+              width: calc(0.35 * max(30vw, 25rem));
 
               background-color: var(--grey-2);
               border-bottom: 1px solid var(--grey);
+
+              /* todo: style checkboxes */
 
               input {
                 flex-grow: 1;

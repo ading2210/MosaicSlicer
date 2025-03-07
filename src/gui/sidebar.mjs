@@ -29,11 +29,23 @@ function generate_setting(setting_obj) {
   let template = setting_template.content.cloneNode(true);
   template.get_slot("setting-name").innerText = setting_obj.label;
   template.get_slot("unit").innerText = setting_obj.unit ?? "";
+  if (setting_obj.type == "float") {
+    template.get_slot("value").type = "number"
+    template.get_slot("value").step = "0.01"
+  }
+  else if (setting_obj.type == "int") {
+    template.get_slot("value").type = "number"
+    template.get_slot("value").step = "0.01"
+  }
+  else if (setting_obj.type == "bool") {
+    template.get_slot("value").type = "checkbox"
+  }
+  else if (setting_obj.type == "str") {
+    template.get_slot("value").type = "text"
+  }
 
-  // todo: input type (checkbox, float/int)
   if (setting_obj.children) {
     for (let setting_child in setting_obj.children) {
-      console.log(setting_child);
       let child = generate_setting(setting_obj.children[setting_child]);
       child.firstElementChild.classList.add("enum");
       template.firstElementChild.appendChild(child);
