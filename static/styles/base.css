@@ -20,6 +20,8 @@
   --secondary: #1a5f5a;
   --accent: #37d2d7;
 
+  --sidebar-width: max(30vw, 25rem);
+
   font-size: 1rem;
   font-family: "Inter", sans-serif;
 }
