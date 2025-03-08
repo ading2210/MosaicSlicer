@@ -32,7 +32,7 @@ export function load_sidebar() {
     sections.append(template);
   }
 
-  populate_values();
+  populate_values(sections);
 }
 
 function generate_setting(setting_id, setting) {
@@ -40,15 +40,23 @@ function generate_setting(setting_id, setting) {
   let value = template.get_slot("value");
   let unit = template.get_slot("unit");
   unit.innerText = setting.unit ?? "";
+  value.name = setting_id;
 
   template.get_slot("setting-name").innerText = setting.label;
   template.get_slot("setting-value").dataset.type = setting.type;
   template.get_slot("setting-container").dataset.setting_id = setting_id;
 
-  if (["float", "int"].includes(setting.type))
+  if (setting.type === "float") {
     value.type = "number";
+    value.step = "0.0001";
+  }
+  else if (setting.type === "int") {
+    value.type = "number";
+    value.step = "1";
+  }
   else if (setting.type === "enum") {
     let select = document.createElement("select");
+    select.name = setting_id;
     for (let [enum_value, pretty_value] of Object.entries(setting.options)) {
       let option = document.createElement("option");
       option.value = enum_value;
@@ -76,10 +84,10 @@ function generate_setting(setting_id, setting) {
   return template;
 }
 
-function populate_values() {
+function populate_values(settings_container) {
   let start = performance.now();
   let container_stack = app.settings.active_containers.containers.extruders[0];
-  let setting_elements = document.querySelectorAll("span[data-setting_id]");
+  let setting_elements = settings_container.querySelectorAll("span[data-setting_id]");
   container_stack.cache.clear();
 
   for (let i = 0; i < setting_elements.length; i++) {
@@ -91,8 +99,11 @@ function populate_values() {
 
     try {
       let setting_value = container_stack.resolve_setting(setting_id);
+
       if (Array.isArray(setting_value))
         setting_value = JSON.stringify(setting_value);
+      if (typeof setting_value === "number")
+        setting_value = Math.round(setting_value * 10000) / 10000
 
       if (input_element instanceof HTMLInputElement && input_element.type === "checkbox")
         input_element.checked = !!setting_value;
