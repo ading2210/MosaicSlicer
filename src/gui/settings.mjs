@@ -2,7 +2,7 @@ export const setting_template = document.getElementById("setting-template");
 
 /**
  * Create category element
- * @param {object} category 
+ * @param {object} category
  * @returns Element
  */
 export function create_group_element(category) {
@@ -17,7 +17,7 @@ export function create_group_element(category) {
 
 /**
  * Create setting element
- * @param {object} setting 
+ * @param {object} setting
  * @returns Element
  */
 export function create_setting_element(setting) {

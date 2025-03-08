@@ -63,20 +63,38 @@ body {
   }
 }
 
-#drop-zone {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
+.fullscreen {
   position: absolute;
-
-  background-color: rgba(0, 0, 0, 0.5);
 
   top: 0;
   left: 0;
 
   width: 100vw;
   height: 100vh;
+}
+
+#drop-zone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   display: none;
+
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#loading {
+  /* display: none; */
+  backdrop-filter: blur(10px) brightness(50%);
+  /* animation: blur-out 1s forwards; */
+}
+
+@keyframes blur-out {
+  0% {
+    backdrop-filter: blur(10px) brightness(50%);
+  }
+
+  100% {
+    backdrop-filter: blur(0px) brightness(100%);
+  }
 }

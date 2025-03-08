@@ -25,7 +25,7 @@ export function load_file(file) {
  * @param {string} type eg. "text/plain"
  */
 export function save_file(data, filename, type) {
-  let blob = new Blob([data], { type: type });
+  let blob = new Blob([data], {type: type});
   let a = document.createElement("a");
   a.download = filename;
   a.href = URL.createObjectURL(blob);
