@@ -40,6 +40,7 @@ export class ContainerStack {
 
     this.cache = new Map();
     this.settings = resolve_settings(this.definition.overrides, this.definition.settings);
+    this.setting_categories = this.find_categories();
     this.materials = this.available_materials();
     this.profiles = this.available_profiles();
   }
@@ -280,6 +281,22 @@ export class ContainerStack {
     if (profile_type)
       return filter_profiles(profiles[profile_type], this.filters);
     return profiles;
+  }
+
+  find_categories(category_map = {}, settings=null, category_id=null) {
+    if (settings == null)
+      settings = this.definition.settings;
+    for (let [setting_id, setting] of Object.entries(settings)) {
+      if (setting.type === "category") {
+        this.find_categories(category_map, setting.children, setting_id);
+        continue;
+      }
+      if (setting.children) {
+        this.find_categories(category_map, setting.children, category_id);
+      }
+      category_map[setting_id] = category_id;
+    }
+    return category_map;
   }
 }
 

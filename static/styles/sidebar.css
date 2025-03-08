@@ -133,3 +133,7 @@ input[type="number"] {
     }
   }
 }
+
+.section-hidden {
+  display: none;
+}

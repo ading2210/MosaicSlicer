@@ -57,10 +57,9 @@ export function create_setting_element(setting) {
   return template;
 }
 
-
 export function populate_values(sections, container_stack) {
   let start = performance.now();
-  let setting_elements = sections.querySelectorAll("span[data-setting_id]");
+  let setting_elements = sections.querySelectorAll("div[data-setting_id]");
   container_stack.cache.clear();
 
   for (let i = 0; i < setting_elements.length; i++) {
@@ -76,7 +75,7 @@ export function populate_values(sections, container_stack) {
       if (Array.isArray(setting_value))
         setting_value = JSON.stringify(setting_value);
       if (typeof setting_value === "number")
-        setting_value = Math.round(setting_value * 10000) / 10000
+        setting_value = Math.round(setting_value * 10000) / 10000;
 
       if (input_element instanceof HTMLInputElement && input_element.type === "checkbox")
         input_element.checked = !!setting_value;

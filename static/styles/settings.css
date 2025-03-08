@@ -86,9 +86,6 @@
   }
 }
 
-.setting-disabled {
-  display: none;
-}
-.setting-hidden {
+.setting-disabled, .setting-hidden {
   display: none;
 }
