@@ -57,9 +57,10 @@ export function create_setting_element(setting) {
   return template;
 }
 
-export function populate_values(sections, container_stack) {
+export function update_values(sections, container_stack) {
   let start = performance.now();
   let setting_elements = sections.querySelectorAll("div[data-setting_id]");
+  let section_elements = sections.getElementsByClassName("section");
   container_stack.cache.clear();
 
   for (let i = 0; i < setting_elements.length; i++) {
@@ -71,6 +72,8 @@ export function populate_values(sections, container_stack) {
 
     try {
       let setting_value = container_stack.resolve_setting(setting_id);
+      let is_enabled = container_stack.is_setting_enabled(setting_id);
+      setting_element.dataset.is_enabled = is_enabled;
 
       if (Array.isArray(setting_value))
         setting_value = JSON.stringify(setting_value);
@@ -89,6 +92,13 @@ export function populate_values(sections, container_stack) {
       console.warn(e);
     }
   }
+
+  for (let i = 0; i < section_elements.length; i++) {
+    let section_element = section_elements[i];
+    let is_enabled = section_element.querySelector(".setting[data-is_enabled='true']") != null;
+    section_element.dataset.is_enabled = is_enabled;
+  }
+
   let end = performance.now();
-  console.log("populated settings values in ", Math.round((end - start) * 100) / 100, "ms");
+  console.log("updated settings in", Math.round((end - start) * 100) / 100, "ms");
 }

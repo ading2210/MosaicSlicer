@@ -188,6 +188,15 @@ export class ContainerStack {
     return extruder_stack._resolve_setting(key, true, index);
   }
 
+  is_setting_enabled(setting_id) {
+    let setting = this.resolve_setting_definition(setting_id);
+    if (typeof setting.enabled === "undefined")
+      return true;
+    if (typeof setting.enabled === "boolean")
+      return setting.enabled;
+    return this.resolve_py_expression(setting.enabled, true);
+  }
+
   set_material(material_id = null) {
     if (this.type === "machine")
       throw TypeError("material profile not allowed on global container");
@@ -283,7 +292,7 @@ export class ContainerStack {
     return profiles;
   }
 
-  find_categories(category_map = {}, settings=null, category_id=null) {
+  find_categories(category_map = {}, settings = null, category_id = null) {
     if (settings == null)
       settings = this.definition.settings;
     for (let [setting_id, setting] of Object.entries(settings)) {
@@ -291,9 +300,8 @@ export class ContainerStack {
         this.find_categories(category_map, setting.children, setting_id);
         continue;
       }
-      if (setting.children) {
+      if (setting.children)
         this.find_categories(category_map, setting.children, category_id);
-      }
       category_map[setting_id] = category_id;
     }
     return category_map;

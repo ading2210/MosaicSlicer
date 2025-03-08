@@ -86,6 +86,9 @@
   }
 }
 
-.setting-disabled, .setting-hidden {
+.setting-disabled {
+  display: none;
+}
+.setting[data-is_enabled="false"] {
   display: none;
 }
