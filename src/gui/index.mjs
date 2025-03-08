@@ -11,8 +11,8 @@ import { start_viewer } from "./viewer.mjs";
 export function start_gui() {
   start_viewer();
   load_sidebar();
-  document.getElementById('loading').style.animation = 'blur-out 0.5s ease-in-out forwards';
-  setTimeout(() => document.getElementById('loading').style.display = 'none', 500)
+  document.getElementById("loading").style.animation = "blur-out 0.5s ease-in-out forwards";
+  setTimeout(() => document.getElementById("loading").style.display = "none", 500);
 }
 
 DocumentFragment.prototype.get_slot = function(slot_name) {
