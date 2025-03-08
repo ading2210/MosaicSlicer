@@ -1,11 +1,10 @@
-import { temp } from "three/tsl";
 import { active_containers } from "../settings/index.mjs";
 
 const sections = document.getElementById("sections");
 const section_template = document.getElementById("section-template");
 const setting_template = document.getElementById("setting-template");
 
-var search_index = {}
+var search_index = {};
 
 export function load_sidebar() {
   let definition = active_containers.definitions;
@@ -37,7 +36,6 @@ export function load_sidebar() {
 }
 
 function generate_setting(setting_id, setting) {
-
   let template = setting_template.content.cloneNode(true);
   let value = template.get_slot("value");
   let unit = template.get_slot("unit");
@@ -47,14 +45,8 @@ function generate_setting(setting_id, setting) {
   template.get_slot("setting-value").dataset.type = setting.type;
   template.get_slot("setting-container").dataset.setting_id = setting_id;
 
-  if (setting.type === "float") {
+  if (["float", "int"].includes(setting.type))
     value.type = "number";
-    value.step = "0.01";
-  }
-  else if (setting.type === "int") {
-    value.type = "number";
-    value.step = "1";
-  }
   else if (setting.type === "enum") {
     let select = document.createElement("select");
     for (let [enum_value, pretty_value] of Object.entries(setting.options)) {
@@ -79,8 +71,7 @@ function generate_setting(setting_id, setting) {
     }
   }
 
-
-  search_index[setting.label] = template.firstElementChild
+  search_index[setting.label] = template.firstElementChild;
 
   return template;
 }
@@ -121,7 +112,7 @@ function populate_values() {
 
 // Search
 function filter_settings(terms) {
-  terms = terms.toLowerCase().split(" ")
+  terms = terms.toLowerCase().split(" ");
 
   let result_names = [];
   for (let setting_name in search_index) {
@@ -132,18 +123,17 @@ function filter_settings(terms) {
         break;
       }
     }
-    if (valid) {
-      result_names.push(setting_name)
-    }
+    if (valid)
+      result_names.push(setting_name);
   }
-  console.log(result_names)
+  console.log(result_names);
   // todo: render them
   //  - find the sections of each setting
   //  - hide everything except relevent sections
   //  - open the relevent sections and hide everything except the setting names
   //  - make sure this is all undone when the search is cleared/editted
 }
-const search_input = document.getElementById('setting-search')
-search_input.addEventListener('input', () => {
-  filter_settings(search_input.value)
-})
+const search_input = document.getElementById("setting-search");
+search_input.addEventListener("input", () => {
+  filter_settings(search_input.value);
+});

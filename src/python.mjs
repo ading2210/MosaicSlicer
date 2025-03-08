@@ -1,7 +1,11 @@
 import { loadMicroPython } from "@micropython/micropython-webassembly-pyscript";
 import mp_wasm from "@micropython/micropython-webassembly-pyscript/micropython.wasm";
 
-export const micropython = await loadMicroPython({url: mp_wasm});
+export const micropython = await loadMicroPython({
+  url: mp_wasm,
+  pystack: 1024 * 1024,
+  heapsize: 16 * 1024 * 1024
+});
 const name_error_regex = /NameError: name '(\S+)' isn't defined/;
 const preserved_globals = [];
 
@@ -31,7 +35,6 @@ function clean_globals() {
 }
 
 export function eval_py(expression, vars = {}) {
-  console.log(expression, vars);
   for (let [var_name, value] of Object.entries(vars)) {
     micropython.globals.set(var_name, JSON.stringify(value));
     micropython.runPython(`${var_name} = json.loads(${var_name})`);

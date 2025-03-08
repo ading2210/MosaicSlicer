@@ -30,8 +30,8 @@ export class ContainerStack {
     this.bound_py_funcs = {
       extruderValues: this.py_extruderValues.bind(this),
       extruderValue: this.py_extruderValue.bind(this),
-      //anyExtruderWithMaterial: this.py_anyExtruderWithMaterial.bind(this),
-      //anyExtruderNrWithOrDefault: this.py_anyExtruderNrWithOrDefault.bind(this),
+      anyExtruderWithMaterial: this.py_anyExtruderWithMaterial.bind(this),
+      anyExtruderNrWithOrDefault: this.py_anyExtruderNrWithOrDefault.bind(this),
       resolveOrValue: this.py_resolveOrValue.bind(this),
       defaultExtruderPosition: this.py_defaultExtruderPosition.bind(this),
       valueFromContainer: this.py_valueFromContainer.bind(this),
@@ -55,7 +55,7 @@ export class ContainerStack {
       debugger;
     return ret;
   }
-  _resolve_setting(setting_id, call_resolve = true, profile_num = 0) {
+  _resolve_setting(setting_id, call_resolve, profile_num = 0) {
     let setting = this.resolve_setting_definition(setting_id);
     if (setting.resolve && call_resolve)
       return this.resolve_py_expression(setting.resolve, call_resolve);
@@ -65,7 +65,7 @@ export class ContainerStack {
       //check the setting definitions first
       let value = setting.value ?? setting.default_value;
       if (typeof value !== "undefined")
-        return this.resolve_value(value, setting);
+        return this.resolve_value(value, setting, call_resolve);
       //otherwise check the global stack
       if (this.type === "machine")
         throw new ReferenceError("setting value not set");
@@ -87,6 +87,13 @@ export class ContainerStack {
       return setting;
     throw TypeError(`setting ${setting_id} not found`);
   }
+  resolve_extruder_num(extruder, call_resolve) {
+    while (!is_int(extruder))
+      extruder = this.resolve_py_expression(extruder, call_resolve);
+    if (extruder == "-1")
+      extruder = this.py_defaultExtruderPosition();
+    return extruder;
+  }
   resolve_value(value, setting, call_resolve) {
     if (typeof value === "string") {
       //explicit python expressions
@@ -98,8 +105,9 @@ export class ContainerStack {
       //unexpected string in these types
       if (["float", "int", "bool"].includes(setting.type))
         return this.resolve_py_expression(value, call_resolve);
-      if (setting.type === "extruder" && isNaN(parseInt(value)))
-        return this.resolve_py_expression(value, call_resolve);
+      //unresolved extruder number expression
+      if (["extruder", "optional_extruder"].includes(setting.type) && !is_int(value))
+        return this.resolve_extruder_num(value, call_resolve);
       //unexpected enum value
       if (setting.type === "enum" && !Object.keys(setting.options).includes(value))
         return this.resolve_py_expression(value, call_resolve);
@@ -107,6 +115,17 @@ export class ContainerStack {
     return value;
   }
   resolve_py_expression(expression, call_resolve) {
+    //check if the expression is a constant
+    if (is_num(expression))
+      return parseFloat(expression);
+    if (expression === "True")
+      return true;
+    if (expression === "False")
+      return false;
+    //check if the expression is just a single variable
+    if (is_var(expression))
+      return this.resolve_setting(expression, call_resolve);
+
     this.setup_py_api();
     let vars = {};
     while (true) {
@@ -121,6 +140,7 @@ export class ContainerStack {
     }
   }
 
+  //these functions are called from the python formulas
   setup_py_api() {
     Object.assign(py_api, this.bound_py_funcs);
   }
@@ -131,26 +151,40 @@ export class ContainerStack {
     return ret;
   }
   py_extruderValue(extruder, key) {
+    extruder = this.resolve_extruder_num(extruder, false);
     let extruder_stack = this.parent.containers.extruders[extruder];
+    if (typeof extruder_stack === "undefined")
+      return null;
     return extruder_stack.resolve_setting(key, false);
   }
-  py_anyExtruderWithMaterial() {
-    throw Error("not implemented: py_anyExtruderWithMaterial");
+  py_anyExtruderWithMaterial(filter = null) {
+    for (let [extruder_num, extruder_stack] of Object.entries(this.parent.containers.extruders)) {
+      if (filter == null)
+        return extruder_num;
+      if (extruder_stack.resolve_setting(filter, false))
+        return extruder_num;
+    }
+    return this.py_defaultExtruderPosition();
   }
-  py_anyExtruderNrWithOrDefault() {
-    throw Error("not implemented: py_anyExtruderNrWithOrDefault");
+  py_anyExtruderNrWithOrDefault(filter = null) {
+    return this.py_anyExtruderWithMaterial(filter);
   }
   py_resolveOrValue(key) {
-    throw Error("not implemented: py_resolveOrValue");
+    return this.parent.containers.global.resolve_setting(key);
   }
   py_defaultExtruderPosition() {
-    throw Error("not implemented: py_defaultExtruderPosition");
+    //the behavior of this is not correct
+    return this.resolve_setting("extruder_nr", false);
   }
   py_valueFromContainer(key, index) {
-    throw Error("not implemented: py_valueFromContainer");
+    return this.parent.containers.global._resolve_setting(key, true, index);
   }
-  py_valueFromExtruderContainer(key, index) {
-    throw Error("not implemented: py_valueFromExtruderContainer");
+  py_valueFromExtruderContainer(extruder, key, index) {
+    extruder = this.resolve_extruder_num(extruder, false);
+    let extruder_stack = this.parent.containers.extruders[extruder];
+    if (typeof extruder_stack === "undefined")
+      return null;
+    return extruder_stack._resolve_setting(key, true, index);
   }
 
   set_material(material_id = null) {
@@ -278,4 +312,14 @@ export class ContainerStackGroup {
       this.containers.extruders[extuder_id] = extruder_stack;
     }
   }
+}
+
+function is_int(str) {
+  return /^[-\d]*$/.test(str);
+}
+function is_num(str) {
+  return /^-?\d+(\.\d+)?$/.test(str);
+}
+function is_var(str) {
+  return /^[a-zA-Z_][a-zA-Z_\d]*$/.test(str);
 }
