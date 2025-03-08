@@ -49,20 +49,20 @@
                   <ion-icon name="chevron-down-outline" class="section-status-icon"></ion-icon>
                 </span>
               </span>
-              <div class="settings-group" slot="children"></div>
+              <div class="settings-group" slot="settings-group"></div>
             </div>
           </template>
 
           <template id="setting-template">
-            <span class="setting" slot="setting-container">
-              <span class="setting-bar">
+            <div class="setting" slot="setting-container">
+              <div class="setting-bar">
                 <span class="setting-name" slot="setting-name">Layer Height</span>
                 <span class="setting-value" slot="setting-value">
                   <input slot="value" type="text">
                   <span class="unit-text" slot="unit">mm</span>
                 </span>
-              </span>
-            </span>
+              </div>
+            </div>
           </template>
         </div>
       </div>

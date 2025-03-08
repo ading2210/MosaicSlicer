@@ -66,6 +66,7 @@ export function resolve_definitions(printer_id) {
 
 export function resolve_settings(overrides, settings, resolved = {}) {
   for (let [id, setting] of Object.entries(settings)) {
+    setting.id = id;
     if (setting.type !== "category") {
       if (typeof overrides[id] === "object")
         resolved[id] = merge_deep(setting, overrides[id]);
