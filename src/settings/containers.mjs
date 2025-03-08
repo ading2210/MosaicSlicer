@@ -28,15 +28,15 @@ export class ContainerStack {
       quality_type: null
     };
     this.bound_py_funcs = {
-      extruderValues : this.py_extruderValues.bind(this),
-      extruderValue : this.py_extruderValue.bind(this),
+      extruderValues: this.py_extruderValues.bind(this),
+      extruderValue: this.py_extruderValue.bind(this),
       //anyExtruderWithMaterial: this.py_anyExtruderWithMaterial.bind(this),
       //anyExtruderNrWithOrDefault: this.py_anyExtruderNrWithOrDefault.bind(this),
-      resolveOrValue : this.py_resolveOrValue.bind(this),
-      defaultExtruderPosition : this.py_defaultExtruderPosition.bind(this),
-      valueFromContainer : this.py_valueFromContainer.bind(this),
-      valueFromExtruderContainer : this.py_valueFromExtruderContainer.bind(this),
-    }
+      resolveOrValue: this.py_resolveOrValue.bind(this),
+      defaultExtruderPosition: this.py_defaultExtruderPosition.bind(this),
+      valueFromContainer: this.py_valueFromContainer.bind(this),
+      valueFromExtruderContainer: this.py_valueFromExtruderContainer.bind(this)
+    };
 
     this.cache = new Map();
     this.settings = resolve_settings(this.definition.overrides, this.definition.settings);
@@ -96,9 +96,8 @@ export class ContainerStack {
       if (setting.type[0] === "[" && setting.type.at(-1) === "]")
         return this.resolve_py_expression(value, call_resolve);
       //unexpected string in these types
-      if (["float", "int", "bool"].includes(setting.type)) {
+      if (["float", "int", "bool"].includes(setting.type))
         return this.resolve_py_expression(value, call_resolve);
-      }
       if (setting.type === "extruder" && isNaN(parseInt(value)))
         return this.resolve_py_expression(value, call_resolve);
       //unexpected enum value

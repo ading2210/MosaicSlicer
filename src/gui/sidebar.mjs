@@ -93,9 +93,9 @@ function populate_values() {
 
     try {
       let setting_value = container_stack.resolve_setting(setting_id);
-      if (Array.isArray(setting_value)) 
+      if (Array.isArray(setting_value))
         setting_value = JSON.stringify(setting_value);
-      
+
       if (input_element instanceof HTMLInputElement && input_element.type === "checkbox")
         input_element.checked = !!setting_value;
       else

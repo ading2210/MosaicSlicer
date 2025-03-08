@@ -62,16 +62,15 @@ export function setup() {
   const py_api_private = {};
   for (let py_func in py_api) {
     py_api_private[py_func] = (...args) => {
-      return JSON.stringify(py_api[py_func](...args))
+      return JSON.stringify(py_api[py_func](...args));
     };
   }
 
   micropython.runPython(`import math, json`);
   micropython.registerJsModule("__cura_api", py_api_private);
   micropython.runPython(`import __cura_api`);
-  for (let py_func in py_api) {
+  for (let py_func in py_api)
     micropython.runPython(`def ${py_func}(*args): return json.loads(__cura_api.${py_func}(*args))`);
-  }
   whitelist_globals();
 }
 
