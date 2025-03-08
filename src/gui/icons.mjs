@@ -1,3 +1,6 @@
+/**
+ * Populates icons from Cura
+ */
 import Printer from "cura_icons/default/Printer.svg";
 import PrintQuality from "cura_icons/default/PrintQuality.svg";
 import PrintShell from "cura_icons/default/PrintShell.svg";

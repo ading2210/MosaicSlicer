@@ -1,4 +1,4 @@
-export * as buttons from "./buttons.mjs";
+export * as buttons from "./actions.mjs";
 export * as file from "./file.mjs";
 export * as renderer from "./renderer.mjs";
 export * as siderbar from "./sidebar.mjs";

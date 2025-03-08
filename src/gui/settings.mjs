@@ -1,5 +1,10 @@
 export const setting_template = document.getElementById("setting-template");
 
+/**
+ * Create category element
+ * @param {object} category 
+ * @returns Element
+ */
 export function create_group_element(category) {
   let group_div = document.createElement("div");
   group_div.className = "settings-group";
@@ -10,6 +15,11 @@ export function create_group_element(category) {
   return group_div;
 }
 
+/**
+ * Create setting element
+ * @param {object} setting 
+ * @returns Element
+ */
 export function create_setting_element(setting) {
   let template = setting_template.content.cloneNode(true);
   let value = template.get_slot("value");

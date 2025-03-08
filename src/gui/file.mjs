@@ -1,8 +1,13 @@
+/**
+ * File I/O
+ */
 import { load_stl } from "./viewer.mjs";
 
-const file_input = document.getElementById("stl-file");
-
-function load_file(file) {
+/**
+ * Handle file imports (only STLs for now)
+ * @param {File} file File object to import
+ */
+export function load_file(file) {
   const reader = new FileReader();
 
   reader.onload = (e) => {
@@ -13,8 +18,14 @@ function load_file(file) {
   reader.readAsArrayBuffer(file);
 }
 
-function save_file(data, filename, type) {
-  let blob = new Blob([data], {type: type});
+/**
+ * Save raw blob data to file
+ * @param {BlobPart} data
+ * @param {string} filename
+ * @param {string} type eg. "text/plain"
+ */
+export function save_file(data, filename, type) {
+  let blob = new Blob([data], { type: type });
   let a = document.createElement("a");
   a.download = filename;
   a.href = URL.createObjectURL(blob);
@@ -24,37 +35,3 @@ function save_file(data, filename, type) {
   a.click();
   a.remove();
 }
-
-file_input.addEventListener("change", (event) => {
-  const file = event.target.files[0];
-
-  if (file) {
-    if (file.name.split(".").pop() == "stl")
-      load_file(file);
-  }
-});
-
-//listeners for file drop
-const drop_zone = document.getElementById("drop-zone");
-
-window.addEventListener("dragover", (event) => {
-  event.preventDefault();
-  drop_zone.style.display = "flex";
-});
-
-drop_zone.addEventListener("dragleave", (event) => {
-  event.preventDefault();
-  drop_zone.style.display = "none";
-});
-
-drop_zone.addEventListener("drop", (event) => {
-  event.preventDefault();
-  drop_zone.style.display = "none";
-
-  const file = event.dataTransfer.files[0];
-
-  if (file) {
-    if (file.name.split(".").pop() == "stl")
-      load_file(file);
-  }
-});
