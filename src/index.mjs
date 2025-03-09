@@ -4,14 +4,14 @@ import * as gui from "./gui/index.mjs";
 
 import * as python from "./python.mjs";
 import * as resources from "./resources.mjs";
-import * as rpc from "./rpc.mjs";
 
 function define_globals() {
-  globalThis.app = {settings, engine, gui, python, resources, rpc};
+  globalThis.app = {settings, engine, gui, python, resources};
 }
 
 async function main() {
   define_globals();
+  console.log("Loaded JS");
 
   await resources.download_resources();
   console.log("Loaded resources");

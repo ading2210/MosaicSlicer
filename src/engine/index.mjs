@@ -22,14 +22,9 @@ export class CuraEngine {
       throw TypeError("stl file not provided");
     await this.init();
     let engine_args = [
-      "-v", //enable verbose output
       "-p", //log progress info
-      "-d",
-      "/cura/definitions", //printer definitions search path,
       "-r",
       "/tmp/settings.json", //settings json path
-      "-l",
-      "/tmp/model.stl", //stl path
       "-o",
       "/tmp/out.gcode" //output gcode path
     ];
@@ -41,7 +36,9 @@ export class CuraEngine {
     };
     await import_files("/tmp", tmp_files);
 
-    await run_cura(engine_args);
+    let ret = await run_cura(engine_args);
+    if (ret !== 0) 
+      throw new Error("CuraEngine returned bad status code " + ret);
     return await read_file("/tmp/out.gcode");
   }
 }

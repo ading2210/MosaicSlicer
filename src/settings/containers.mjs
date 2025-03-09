@@ -337,6 +337,42 @@ export class ContainerStackGroup {
       this.containers.extruders[extuder_id] = extruder_stack;
     }
   }
+
+  export_settings() {
+    let settings = {
+      "global": {}
+    };
+    for (let [extruder_id, extruder_stack] of Object.entries(this.containers.extruders)) {
+      settings[`extruder.${extruder_id}`] = {};
+      for (let [setting_id, category_id] of Object.entries(extruder_stack.setting_categories)) {
+        if (category_id !== "machine_settings") 
+          continue;
+        let value = extruder_stack.resolve_setting(setting_id);
+        settings[`extruder.${extruder_id}`][setting_id] = value;
+      }
+    }
+
+    let global_stack = this.containers.global;
+    for (let [setting_id, category_id] of Object.entries(global_stack.setting_categories)) {
+      let setting = global_stack.settings[setting_id];
+      if (category_id === "machine_settings") {
+        let value = global_stack.resolve_setting(setting_id);
+        settings.global[setting_id] = value;
+      }
+      else if (setting.settable_per_extruder) {
+        for (let [extruder_id, extruder_stack] of Object.entries(this.containers.extruders)) {
+          let value = extruder_stack.resolve_setting(setting_id);
+          settings[`extruder.${extruder_id}`][setting_id] = value;
+        }  
+      }
+      
+      let extruder_stack = this.containers.extruders[0];
+      let value = extruder_stack.resolve_setting(setting_id);
+      settings.global[setting_id] = value;
+    }
+
+    return settings;
+  }
 }
 
 function is_int(str) {
