@@ -37,7 +37,7 @@ export class CuraEngine {
     await import_files("/tmp", tmp_files);
 
     let ret = await run_cura(engine_args);
-    if (ret !== 0) 
+    if (ret !== 0)
       throw new Error("CuraEngine returned bad status code " + ret);
     return await read_file("/tmp/out.gcode");
   }

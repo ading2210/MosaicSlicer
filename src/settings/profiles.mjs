@@ -24,8 +24,14 @@ export function resolve_profiles(definition) {
 
 function check_filter(profile, filters) {
   for (let [filter_key, filter_value] of Object.entries(filters)) {
-    if (filter_value == null)
+    if (filter_value === undefined)
       continue;
+    if (filter_value === null) {
+      if (profile.metadata[filter_key] == null)
+        continue;
+      else
+        return false;
+    }
     if (profile.metadata[filter_key] !== filter_value)
       return false;
   }

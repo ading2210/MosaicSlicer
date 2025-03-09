@@ -80,27 +80,27 @@ export function update_values(sections, container_stack) {
     let value_element = setting_bar.querySelector(".setting-value");
     let input_element = value_element.children[0];
 
-    try {
-      let setting_value = container_stack.resolve_setting(setting_id);
-      let is_enabled = container_stack.is_setting_enabled(setting_id);
-      setting_element.dataset.is_enabled = is_enabled;
+    //try {
+    let setting_value = container_stack.resolve_setting(setting_id);
+    let is_enabled = container_stack.is_setting_enabled(setting_id);
+    setting_element.dataset.is_enabled = is_enabled;
 
-      if (Array.isArray(setting_value))
-        setting_value = JSON.stringify(setting_value);
-      if (typeof setting_value === "number")
-        setting_value = Math.round(setting_value * 10000) / 10000;
+    if (Array.isArray(setting_value))
+      setting_value = JSON.stringify(setting_value);
+    if (typeof setting_value === "number")
+      setting_value = Math.round(setting_value * 10000) / 10000;
 
-      if (input_element instanceof HTMLInputElement && input_element.type === "checkbox")
-        input_element.checked = !!setting_value;
-      else
-        input_element.value = setting_value;
-    }
+    if (input_element instanceof HTMLInputElement && input_element.type === "checkbox")
+      input_element.checked = !!setting_value;
+    else
+      input_element.value = setting_value;
+    /*}
     catch (e) {
-      if (e.message.includes("stringToUTF8Array"))
-        debugger;
       console.warn(`skipping setting ${setting_id}`);
       console.warn(e);
-    }
+      debugger;
+
+    }*/
   }
 
   for (let i = 0; i < section_elements.length; i++) {

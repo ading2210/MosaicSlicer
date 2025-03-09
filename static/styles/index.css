@@ -14,17 +14,18 @@ body {
 }
 
 #actions {
-  height: 4.5rem;
-
   position: relative;
+  height: 6rem;
   left: 0rem;
-  bottom: 4.5rem;
-
+  bottom: 6.5rem;
   padding: 0.5rem;
 
   display: flex;
+  align-items: end;
+  pointer-events: none;
 
   .left {
+    pointer-events: auto;
     height: 3.5rem;
 
     #stl-file {
@@ -46,9 +47,16 @@ body {
   }
 
   .right {
+    pointer-events: auto;
+    background-color: var(--background-2);
+    padding: 0.5rem;
+    width: 12rem;
+
+    display: flex;
+    flex-direction: column;
+
     #slice-button {
-      font-size: 1.5rem;
-      height: 90%;
+      font-size: 1rem;
 
       &:hover {
         border-color: var(--primary);

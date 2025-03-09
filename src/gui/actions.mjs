@@ -4,7 +4,7 @@
 import { models } from "./viewer.mjs";
 import { CuraEngine } from "../engine/index.mjs";
 
-import { save_file, load_file } from "./file.mjs";
+import { load_file, save_file } from "./file.mjs";
 import { active_containers } from "../settings/index.mjs";
 
 const slice_button = document.getElementById("slice-button");
@@ -16,7 +16,7 @@ slice_button.addEventListener("click", async () => {
   let settings = active_containers.export_settings();
   settings["/tmp/model.stl"] = {
     extruder_nr: "0"
-  }
+  };
 
   console.log("Starting slice with settings:", settings);
   let gcode = await engine.slice({

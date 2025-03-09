@@ -46,7 +46,7 @@ function rpc_call(func_name, ...args) {
   return new Promise((resolve, reject) => {
     rpc_promises[func_name] = {resolve, reject};
     cura_worker.postMessage([func_name, args]);
-  })
+  });
 }
 
 export async function run_cura(new_args) {
