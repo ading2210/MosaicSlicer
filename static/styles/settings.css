@@ -86,9 +86,9 @@
   }
 }
 
-.setting-disabled {
+.setting[data-is_enabled="false"] {
   display: none;
 }
-.setting[data-is_enabled="false"] {
+.setting[data-should_show="false"] {
   display: none;
 }

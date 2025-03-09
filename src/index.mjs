@@ -21,7 +21,7 @@ async function main() {
   settings.load_container("creality_ender3");
   console.log("Loaded configurations");
 
-  gui.start_gui();
+  await gui.start_gui();
   console.log("Loaded GUI");
 }
 

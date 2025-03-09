@@ -38,8 +38,6 @@ body {
       ion-icon {
         font-size: 3rem;
 
-        transition: 0.2s ease-out;
-
         &:hover {
           color: var(--primary);
         }
@@ -51,8 +49,6 @@ body {
     #slice-button {
       font-size: 1.5rem;
       height: 90%;
-
-      transition: 0.2s ease-out;
 
       &:hover {
         border-color: var(--primary);
@@ -84,17 +80,17 @@ body {
 }
 
 #loading {
-  /* display: none; */
-  backdrop-filter: blur(10px) brightness(50%);
-  /* animation: blur-out 1s forwards; */
+  background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 @keyframes blur-out {
   0% {
-    backdrop-filter: blur(10px) brightness(50%);
+    filter: opacity(100%);
   }
-
   100% {
-    backdrop-filter: blur(0px) brightness(100%);
+    filter: opacity(0%);
   }
 }

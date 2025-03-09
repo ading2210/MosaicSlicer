@@ -13,15 +13,12 @@ function show_all_settings() {
   let section_elements = sections.getElementsByClassName("section");
   for (let i = 0; i < setting_elements.length; i++) {
     let setting_div = setting_elements[i];
-    setting_div.classList.remove("setting-hidden");
+    setting_div.dataset.should_show = true;
   }
   for (let i = 0; i < section_elements.length; i++) {
     let section_div = section_elements[i];
-    section_div.classList.remove("section-hidden");
-    if (section_div.dataset.was_closed === "true")
-      section_div.classList.add("closed");
-    else
-      section_div.classList.remove("closed");
+    section_div.dataset.closed = section_div.dataset.was_closed;
+    section_div.dataset.should_show = true;
     delete section_div.dataset.was_closed;
   }
 }
@@ -49,12 +46,12 @@ function filter_settings(query) {
 
   for (let i = 0; i < setting_elements.length; i++) {
     let setting_div = setting_elements[i];
-    setting_div.classList.add("setting-hidden");
+    setting_div.dataset.should_show = false;
   }
   for (let setting_id of result_ids) {
     let setting_div = sections.querySelector(`div[data-setting_id="${setting_id}"]`);
     while (!setting_div.classList.contains("settings-group")) {
-      setting_div.classList.remove("setting-hidden");
+      setting_div.dataset.should_show = true;
       setting_div = setting_div.parentElement;
     }
   }
@@ -63,11 +60,13 @@ function filter_settings(query) {
     let section_div = section_elements[i];
     let category_id = section_div.dataset.category_id;
     if (!section_div.dataset.was_closed)
-      section_div.dataset.was_closed = section_div.classList.contains("closed");
-    if (result_categories.has(category_id))
-      section_div.classList.remove("closed", "section-hidden");
-    else
-      section_div.classList.add("closed", "section-hidden");
+      section_div.dataset.was_closed = section_div.dataset.closed === "true";
+
+    let children_showing = !!section_div.querySelector(`div[data-is_enabled="true"][data-should_show="true"]`);
+    let should_show = result_categories.has(category_id) && children_showing;
+
+    section_div.dataset.closed = !should_show;
+    section_div.dataset.should_show = should_show;
   }
 }
 search_input.addEventListener("input", () => {

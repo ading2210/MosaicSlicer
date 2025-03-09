@@ -118,22 +118,25 @@ input[type="number"] {
     margin-bottom: 0.5rem;
     margin-top: 0.5rem;
   }
+}
 
-  &.closed {
-    .settings-group {
-      display: none;
-    }
+.section[data-closed="true"] {
+  .settings-group {
+    display: none;
+  }
 
-    .section-title-container {
-      .right {
-        ion-icon {
-          transform: rotate(90deg);
-        }
+  .section-title-container {
+    .right {
+      ion-icon {
+        transform: rotate(90deg);
       }
     }
   }
 }
 
+.section[data-should_show="false"] {
+  display: none;
+}
 .section[data-is_enabled="false"] {
   display: none;
 }

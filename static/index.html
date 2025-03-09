@@ -39,7 +39,7 @@
         </span>
         <div id="sections">
           <template id="section-template">
-            <div class="section closed" slot="section">
+            <div class="section" slot="section" data-closed="true">
               <span class="section-title-container" slot="title-container">
                 <span class="left">
                   <div class="cura-icon" slot="section-icon"></div>
@@ -73,7 +73,9 @@
     </div>
 
     <div class="fullscreen" id="loading">
-      <div class="cura-icon" slot="section-icon"></div>
+      <div class="flex-spacer"></div>
+      <p>Loading...</p>
+      <div class="flex-spacer"></div>
     </div>
 
     <!-- todo: don't load this from a third party cdn -->

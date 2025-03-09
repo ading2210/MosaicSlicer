@@ -25,7 +25,8 @@ export function load_sidebar() {
     section_title.innerText = category.label;
     section_icon.classList.add(`cura-icon-${category.icon}`);
     title_container.onclick = () => {
-      title_container.parentElement.classList.toggle("closed");
+      let closed = title_container.parentElement.dataset.closed === "true";
+      title_container.parentElement.dataset.closed = !closed;
     };
 
     let group_div = create_group_element(category, extruder_stack);
