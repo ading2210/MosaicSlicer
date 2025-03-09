@@ -76,6 +76,24 @@ const __material_translations = {
 
 //this is a reimplementation of the corresponding function in the original cura source code
 //https://github.com/Ultimaker/Cura/blob/f468cd5150440c007aeebbc163bf569f055bb4c0/plugins/XmlMaterialProfile/XmlMaterialProfile.py#L523
+//todo: please refactor
+function setting_entry(entry) {
+  let key = entry.getAttribute("key") ?? null;
+  if (key == "processing temperature graph") {
+    // This setting has no setting text but subtags.
+    let graph_nodes = entry.querySelectorAll("point");
+    let graph_points = [];
+    for (let graph_node in graph_nodes) {
+      let flow = parseFloat(graph_node.flow ?? null);
+      let temperature = parseFloat(graph_node.temperature ?? null);
+      graph_points.push([flow, temperature]);
+    }
+    return graph_points.toString();
+  }
+  else {
+    return entry.textContent;
+  }
+}
 export function deserialize_xml(material_xml) {
   const data = xml_parser.parseFromString(material_xml, "text/xml");
 
@@ -145,22 +163,8 @@ export function deserialize_xml(material_xml) {
   let settings = data.querySelectorAll("settings>setting");
   for (let entry of settings) {
     let key = entry.getAttribute("key") ?? null;
-    if (key in __material_settings_setting_map) {
-      if (key == "processing temperature graph") {
-        // This setting has no setting text but subtags.
-        let graph_nodes = entry.querySelectorAll("point");
-        let graph_points = [];
-        for (let graph_node in graph_nodes) {
-          let flow = parseFloat(graph_node.flow ?? null);
-          temperature = float(graph_node.temperature ?? null);
-          graph_points.push([flow, temperature]);
-        }
-        common_setting_values[__material_settings_setting_map[key]] = graph_points.toString();
-      }
-      else {
-        common_setting_values[__material_settings_setting_map[key]] = entry.textContent;
-      }
-    }
+    if (key in __material_settings_setting_map)
+      common_setting_values[__material_settings_setting_map[key]] = setting_entry(entry);
     else if (key in __unmapped_settings) {
       if (key == "hardware compatible")
         common_compatibility = entry.textContent in ["yes", "unknown"];
@@ -171,8 +175,28 @@ export function deserialize_xml(material_xml) {
   }
   metadata.compatible = common_compatibility;
 
+  let machine_settings = [];
+  let machine_elements = data.querySelectorAll("settings>machine");
+  for (let machine_element of machine_elements) {
+    let machine_setting = {
+      ids: [],
+      settings: {}
+    };
+    for (let child of machine_element.children) {
+      if (child.tagName === "machine_identifier")
+        machine_setting.ids.push(child.getAttribute("product"));
+      else if (child.tagName === "setting") {
+        let key = child.getAttribute("key") ?? null;
+        let setting_key = __material_settings_setting_map[key];
+        machine_setting.settings[setting_key] = setting_entry(child);
+      }
+    }
+    machine_settings.push(machine_setting);
+  }
+
   // This is not in the original implementation
   metadata.common_setting_values = common_setting_values;
+  metadata.machine_settings = machine_settings;
 
   return metadata;
 }
@@ -200,8 +224,16 @@ export function get_material_type(material) {
   return __material_translations[material.material];
 }
 
-export function material_to_profile(material) {
+export function material_to_profile(material, printer_id) {
   let material_type = __material_translations[material.material];
+
+  let values = material.common_setting_values;
+  for (let {ids, settings} of material.machine_settings) {
+    if (!ids.includes(printer_id))
+      continue;
+    Object.assign(values, settings);
+  }
+
   return {
     general: {
       name: material.name,

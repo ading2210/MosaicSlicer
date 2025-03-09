@@ -210,7 +210,7 @@ export class ContainerStack {
     if (!material_id)
       material = this.preferred_material();
     this.filters.material = material.id.replace("_175", "");
-    this.active_profiles.material = material_to_profile(material);
+    this.active_profiles.material = material_to_profile(material, this.parent.printer_id);
   }
   set_quality(quality_id = null) {
     let quality = this.profiles[quality_id];
