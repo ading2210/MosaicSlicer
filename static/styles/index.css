@@ -17,7 +17,7 @@ body {
   position: relative;
   height: 6rem;
   left: 0rem;
-  bottom: 6.5rem;
+  bottom: 6.25rem;
   padding: 0.5rem;
 
   display: flex;
@@ -48,9 +48,11 @@ body {
 
   .right {
     pointer-events: auto;
-    background-color: var(--background-2);
     padding: 0.5rem;
     width: 15rem;
+    
+    background-color: var(--background-2);
+    border: 1px var(--grey-2) solid;
 
     & > div {
       display: flex;

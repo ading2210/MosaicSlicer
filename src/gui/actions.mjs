@@ -78,7 +78,10 @@ rpc_callbacks.slice_info = (info) => {
   let hours = Math.floor(seconds / 3600);
   let minutes_str = minutes === 1 ? "minute" : "minutes";
   let hours_str = hours === 1 ? "hour" : "hours";
-  gcode_time_estimate.innerText = `${hours} ${hours_str} ${minutes} ${minutes_str}`;
+  if (hours === 0)
+    gcode_time_estimate.innerText = `${minutes} ${minutes_str}`;
+  else
+    gcode_time_estimate.innerText = `${hours} ${hours_str} ${minutes} ${minutes_str}`;
 };
 
 // ---- File imports
