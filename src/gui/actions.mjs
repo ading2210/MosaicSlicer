@@ -16,17 +16,17 @@ const cancel_button = document.getElementById("cancel-button");
 const export_gcode_button = document.getElementById("export-gcode-button");
 const file_input = document.getElementById("stl-file");
 
-const slice_button_div = document.getElementById("slice-button-container");
-const slice_progress_div = document.getElementById("slice-progress-container");
-const slice_export_div = document.getElementById("slice-export-container");
+export const slice_button_div = document.getElementById("slice-button-container");
+export const slice_progress_div = document.getElementById("slice-progress-container");
+export const slice_export_div = document.getElementById("slice-export-container");
 
 const slice_progress_bar = document.getElementById("slice-progress-bar");
 const gcode_time_estimate = document.getElementById("gcode-time-estimate");
 
-const cura_engine = new CuraEngine();
+export const cura_engine = new CuraEngine();
 let exported_gcode = null;
 
-function set_active_state(active_div) {
+export function set_active_state(active_div) {
   for (let div of [slice_button_div, slice_progress_div, slice_export_div])
     div.dataset.active = false;
   active_div.dataset.active = true;

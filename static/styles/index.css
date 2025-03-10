@@ -50,7 +50,7 @@ body {
     pointer-events: auto;
     padding: 0.5rem;
     width: 15rem;
-    
+
     background-color: var(--background-2);
     border: 1px var(--grey-2) solid;
 

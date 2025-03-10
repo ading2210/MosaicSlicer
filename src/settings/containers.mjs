@@ -16,7 +16,7 @@ export class ContainerStack {
 
     this.profile_order = ["user", "custom", "intent", "quality", "material", "nozzle"];
     this.active_profiles = {
-      user: null,
+      user: {values: {}},
       custom: null,
       intent: null,
       quality: null,
@@ -388,6 +388,35 @@ export class ContainerStackGroup {
     }
 
     return settings;
+  }
+
+  update_settings() {
+    let start = performance.now();
+    let global_stack = this.containers.global;
+
+    global_stack.cache.clear();
+    for (let [setting_id, category_id] of Object.entries(global_stack.setting_categories)) {
+      if (category_id !== "machine_settings")
+        continue;
+      global_stack.resolve_setting(setting_id);
+    }
+
+    for (let extruder_stack of Object.values(this.containers.extruders)) {
+      extruder_stack.cache.clear();
+      for (let [setting_id, category_id] of Object.entries(extruder_stack.setting_categories)) {
+        if (category_id !== "machine_settings")
+          continue;
+        extruder_stack.resolve_setting(setting_id);
+      }
+      for (let [setting_id, category_id] of Object.entries(global_stack.setting_categories)) {
+        if (category_id === "machine_settings")
+          continue;
+        extruder_stack.resolve_setting(setting_id);
+      }
+    }
+
+    let end = performance.now();
+    console.log("updated settings in", Math.round((end - start) * 100) / 100, "ms");
   }
 }
 

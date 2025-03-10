@@ -6,7 +6,12 @@ import { import_files, kill_worker, read_file, run_cura } from "./handler.mjs";
 //https://github.com/Ultimaker/CuraEngine/blob/ba89f84d0e1ebd4c0d7cb7922da33fdaafbb4091/src/Application.cpp#L115
 
 export class CuraEngine {
+  constructor() {
+    this.active = false;
+  }
+
   async slice({stl, settings}) {
+    this.active = true;
     if (!stl)
       throw TypeError("stl file not provided");
 
@@ -26,6 +31,7 @@ export class CuraEngine {
     await import_files("/tmp/input", tmp_files);
 
     let ret = await run_cura(engine_args);
+    this.active = false;
     if (ret !== 0)
       throw new Error("CuraEngine returned bad status code " + ret);
     return await read_file("/tmp/out.gcode");
@@ -33,5 +39,6 @@ export class CuraEngine {
 
   cancel() {
     kill_worker();
+    this.active = false;
   }
 }

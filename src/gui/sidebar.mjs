@@ -1,5 +1,5 @@
 import { active_containers } from "../settings/index.mjs";
-import { create_group_element, update_values } from "./settings.mjs";
+import { create_group_element, update_sections, update_values } from "./settings.mjs";
 import { fuse } from "./search.mjs";
 
 const sections = document.getElementById("sections");
@@ -29,12 +29,13 @@ export function load_sidebar() {
       title_container.parentElement.dataset.closed = !closed;
     };
 
-    let group_div = create_group_element(category, extruder_stack);
+    let group_div = create_group_element(extruder_stack, sections, category);
     template.get_slot("settings-group").replaceWith(group_div);
 
     sections.append(template);
   }
 
   update_values(sections, extruder_stack);
+  update_sections(sections, extruder_stack);
   fuse.setCollection(Object.values(global_stack.settings));
 }
