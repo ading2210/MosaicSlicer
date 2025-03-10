@@ -8,7 +8,7 @@ export * as icons from "./icons.mjs";
 import { load_sidebar } from "./sidebar.mjs";
 import { start_viewer } from "./viewer.mjs";
 
-function sleep(ms) {
+export function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });

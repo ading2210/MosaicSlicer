@@ -1,7 +1,7 @@
 import * as cura from "./cura.mjs";
 import * as vfs from "./vfs.mjs";
 
-//all the code in this directory runs inside a seperate worker
+//all the code in this directory runs inside a separate worker
 
 const rpc_functions = {
   "cura_engine": cura.run_cura_engine,
@@ -22,3 +22,4 @@ globalThis.addEventListener("message", (event) => {
 
 //notify the host that the worker has finished loading
 globalThis.postMessage(true);
+globalThis.worker = {cura, vfs};

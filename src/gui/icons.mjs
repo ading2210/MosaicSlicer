@@ -1,6 +1,8 @@
 /**
  * Populates icons from Cura
  */
+
+//setting icons
 import Printer from "cura_icons/default/Printer.svg";
 import PrintQuality from "cura_icons/default/PrintQuality.svg";
 import PrintShell from "cura_icons/default/PrintShell.svg";
@@ -18,6 +20,9 @@ import BlackMagic from "cura_icons/default/BlackMagic.svg";
 import Experiment from "cura_icons/default/Experiment.svg";
 import DocumentFilled from "cura_icons/default/DocumentFilled.svg";
 
+//icons for slice button gui
+import Clock from "cura_icons/default/Clock.svg";
+
 export const icons = {
   Printer,
   PrintQuality,
@@ -34,7 +39,9 @@ export const icons = {
   Bandage,
   BlackMagic,
   Experiment,
-  DocumentFilled
+  DocumentFilled,
+
+  Clock
 };
 
 function generate_css() {

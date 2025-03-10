@@ -50,18 +50,49 @@ body {
     pointer-events: auto;
     background-color: var(--background-2);
     padding: 0.5rem;
-    width: 12rem;
+    width: 15rem;
 
-    display: flex;
-    flex-direction: column;
+    & > div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    & > div[data-active="false"] {
+      display: none;
+    }
 
-    #slice-button {
+    button {
       font-size: 1rem;
 
       &:hover {
         border-color: var(--primary);
         background-color: var(--primary);
         color: var(--background);
+      }
+    }
+
+    #slice-progress-container {
+      #slice-progress {
+        height: 0.5rem;
+        background-color: grey;
+      }
+      #slice-progress-bar {
+        height: 100%;
+        transition: width 0.2s ease-in-out;
+        background-color: var(--primary);
+      }
+    }
+
+    #slice-export-container {
+      .cura-icon {
+        height: 1.25rem;
+        width: 1.25rem;
+        filter: invert();
+      }
+      .icon-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
       }
     }
   }

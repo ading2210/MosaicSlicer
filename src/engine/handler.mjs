@@ -1,8 +1,8 @@
 //code for interfacing with the cura engine worker
 
-let cura_worker = null;
 let rpc_promises = {};
-let rpc_callbacks = {};
+export let cura_worker = null;
+export let rpc_callbacks = {};
 
 function wait_for_worker(worker) {
   return new Promise(resolve => {
@@ -21,6 +21,13 @@ async function create_worker() {
     await wait_for_worker(cura_worker);
     cura_worker.addEventListener("message", handle_msg);
   }
+}
+
+export function kill_worker() {
+  cura_worker.terminate();
+  cura_worker = null;
+  for (let promise of Object.values(rpc_promises))
+    promise.reject(new Error("worker was killed"));
 }
 
 function handle_msg(event) {

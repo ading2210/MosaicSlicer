@@ -22,8 +22,25 @@
           </label>
         </div>
         <div class="flex-spacer"></div>
+
         <div class="right">
-          <button id="slice-button">Slice</button>
+          <div id="slice-button-container">
+            <button id="slice-button">Slice</button>
+          </div>
+          <div id="slice-progress-container">
+            <span>Slicing...</span>
+            <div id="slice-progress">
+              <div id="slice-progress-bar"></div>
+            </div>
+            <button id="cancel-button">Cancel</button>
+          </div>
+          <div id="slice-export-container">
+            <div class="icon-row">
+              <div class="cura-icon cura-icon-Clock"></div>
+              <span id="gcode-time-estimate"></span>
+            </div>
+            <button id="export-gcode-button">Export G-code</button>
+          </div>
         </div>
       </div>
     </div>
