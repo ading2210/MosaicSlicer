@@ -9,6 +9,8 @@ import { sleep } from "./index.mjs";
 import { load_file, save_file } from "./file.mjs";
 import { active_containers } from "../settings/index.mjs";
 
+import { notify } from "./notifications.mjs";
+
 const drop_zone = document.getElementById("drop-zone");
 
 const slice_button = document.getElementById("slice-button");
@@ -35,7 +37,7 @@ export function set_active_state(active_div) {
 // ---- Slice
 slice_button.addEventListener("click", async () => {
   if (Object.keys(models).length === 0) {
-    alert("No STL selected.");
+    notify("No STLs to Slice", "Please add one or more STL files to slice");
     return;
   }
 
