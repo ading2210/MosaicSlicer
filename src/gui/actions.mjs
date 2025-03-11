@@ -1,7 +1,7 @@
 /**
  * Listeners for actions (eg. slice button, file input, etc)
  */
-import { models } from "./viewer.mjs";
+import { models } from "./viewer/viewer.mjs";
 import { CuraEngine } from "../engine/index.mjs";
 import { rpc_callbacks } from "../engine/handler.mjs";
 

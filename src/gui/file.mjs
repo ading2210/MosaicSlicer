@@ -1,7 +1,7 @@
 /**
  * File I/O
  */
-import { load_stl } from "./viewer.mjs";
+import { load_stl } from "./viewer/viewer.mjs";
 
 /**
  * Handle file imports (only STLs for now)
