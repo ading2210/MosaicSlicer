@@ -10,8 +10,8 @@ var raycaster = new THREE.Raycaster();
 export var scene_objects = {};
 export const SceneObject = {
   mesh: null,
-  held: false,
   onclick: null,
+  onclickout: null,
   ondrag: null
 };
 
@@ -29,7 +29,11 @@ function get_mouse_intersects(mouse_x, mouse_y) {
 }
 
 var currently_held = null;
+var last_held = null;
 renderer.viewport.addEventListener("mousedown", (e) => {
+  if (last_held)
+    scene_objects[last_held].onclickout();
+
   let intersection = get_mouse_intersects(e.clientX, e.clientY);
   if (intersection) {
     currently_held = intersection;
@@ -52,5 +56,6 @@ renderer.viewport.addEventListener("mouseup", (e) => {
   }
   renderer.controls.enabled = true;
 
+  last_held = currently_held;
   currently_held = null;
 });
