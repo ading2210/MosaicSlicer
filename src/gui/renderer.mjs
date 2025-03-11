@@ -2,7 +2,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-const viewport = document.getElementById("viewer");
+export const viewport = document.getElementById("viewer");
 
 export var view_width = viewport.clientWidth;
 export var view_height = viewport.clientHeight;
@@ -26,7 +26,7 @@ renderer.setClearColor(0xffffff, 0);
 renderer.setSize(view_width, view_height);
 
 // ---- Controls
-const controls = new OrbitControls(camera, renderer.domElement);
+export const controls = new OrbitControls(camera, renderer.domElement);
 
 // ---- Three.js Updating and Rendering
 function resize() {
