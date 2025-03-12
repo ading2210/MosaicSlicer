@@ -1,5 +1,5 @@
 /**
- * Controls and mamanger for viewer
+ * Manage interactions in viewer
  */
 import * as renderer from "./renderer.mjs";
 

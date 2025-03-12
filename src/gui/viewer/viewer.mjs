@@ -6,6 +6,10 @@ import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 
 const loader = new STLLoader();
 
+const movement_button = document.getElementById("movement-button");
+const rotate_button = document.getElementById("rotate-button");
+const scale_button = document.getElementById("scale-button");
+
 export var models = {};
 var focused = null;
 
@@ -32,12 +36,16 @@ function focus_stl(uuid) {
   focused = uuid;
   models[uuid].mesh.material.color.set(0x37d79c);
   models[uuid].mesh.material.emissive.set(0x37d79c);
+  show_movement();
 }
 
 function unfocus_stl(uuid) {
   focused = null;
   models[uuid].mesh.material.color.set(0x1a5f5a);
   models[uuid].mesh.material.emissive.set(0x1a5f5a);
+}
+
+function show_movement() {
 }
 
 export function load_stl(stl_data) {
