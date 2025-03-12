@@ -31,9 +31,6 @@ function get_mouse_intersects(mouse_x, mouse_y) {
 var currently_held = null;
 var last_held = null;
 renderer.viewport.addEventListener("mousedown", (e) => {
-  if (last_held)
-    scene_objects[last_held].onclickout();
-
   let intersection = get_mouse_intersects(e.clientX, e.clientY);
   if (intersection) {
     currently_held = intersection;
@@ -51,6 +48,10 @@ renderer.viewport.addEventListener("mousemove", (e) => {
 });
 renderer.viewport.addEventListener("mouseup", (e) => {
   if (currently_held) {
+    if (last_held) {
+      if (scene_objects[last_held].onclickout)
+        scene_objects[last_held].onclickout();
+    }
     if (scene_objects[currently_held].onclick != null)
       scene_objects[currently_held].onclick(e);
   }
