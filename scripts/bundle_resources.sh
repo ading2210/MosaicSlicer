@@ -20,3 +20,4 @@ cp -r "third_party/fdm_materials/"*.xml.fdm_material "/tmp/cura_resources/materi
 
 pack_dir "/tmp/cura_resources" "static/dist/resources/cura_data.tar.gz" "."
 rm -rf "/tmp/cura_resources"
+gzip -l "static/dist/resources/cura_data.tar.gz"
