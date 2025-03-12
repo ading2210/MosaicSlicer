@@ -1,4 +1,4 @@
-import { eval_py, py_api, PythonNameError } from "../python.mjs";
+import { clean_globals, eval_py, PythonNameError, setup_ctx } from "../python.mjs";
 import { merge_deep, resolve_definitions, resolve_settings } from "./definitions.mjs";
 import { get_material_type, material_to_profile, parsed_materials } from "./materials.mjs";
 import { filter_profiles, resolve_profiles } from "./profiles.mjs";
@@ -38,12 +38,19 @@ export class ContainerStack {
       valueFromContainer: this.py_valueFromContainer.bind(this),
       valueFromExtruderContainer: this.py_valueFromExtruderContainer.bind(this)
     };
+    this.setup_py_api();
 
     this.cache = new Map();
     this.settings = resolve_settings(this.definition.overrides, this.definition.settings);
     this.setting_categories = this.find_categories();
     this.materials = this.available_materials();
     this.profiles = this.available_profiles();
+  }
+
+  //clear memoization cache and python variables
+  clear_cache() {
+    this.cache.clear();
+    clean_globals(this.name);
   }
 
   //memoization to improve performance
@@ -72,7 +79,7 @@ export class ContainerStack {
       }
       //otherwise check the global stack
       if (this.type === "machine")
-        throw new ReferenceError("setting value not set");
+        throw new ReferenceError("setting value not set: " + setting_id);
       return this.parent.containers.global.resolve_setting(setting_id, call_resolve, ctx);
     }
 
@@ -133,11 +140,10 @@ export class ContainerStack {
     if (is_var(expression))
       return selected_stack.resolve_setting(expression, call_resolve);
 
-    this.setup_py_api();
     let vars = {};
     while (true) {
       try {
-        return eval_py(expression, vars);
+        return eval_py(expression, ctx, vars);
       }
       catch (py_error) {
         if (!(py_error instanceof PythonNameError))
@@ -149,7 +155,7 @@ export class ContainerStack {
 
   //these functions are called from the python formulas
   setup_py_api() {
-    Object.assign(py_api, this.bound_py_funcs);
+    setup_ctx(this.name, this.bound_py_funcs);
   }
   py_extruderValues(key) {
     let ret = [];
@@ -394,7 +400,7 @@ export class ContainerStackGroup {
     let start = performance.now();
     let global_stack = this.containers.global;
 
-    global_stack.cache.clear();
+    global_stack.clear_cache();
     for (let [setting_id, category_id] of Object.entries(global_stack.setting_categories)) {
       if (category_id !== "machine_settings")
         continue;
@@ -402,7 +408,7 @@ export class ContainerStackGroup {
     }
 
     for (let extruder_stack of Object.values(this.containers.extruders)) {
-      extruder_stack.cache.clear();
+      extruder_stack.clear_cache();
       for (let [setting_id, category_id] of Object.entries(extruder_stack.setting_categories)) {
         if (category_id !== "machine_settings")
           continue;
