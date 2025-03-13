@@ -7,7 +7,17 @@ import * as THREE from "three";
 
 var raycaster = new THREE.Raycaster();
 
-export var scene_objects = {};
+/**
+ * @typedef {Object} SceneObject
+ * @property {THREE.Mesh} mesh
+ * @property {() => {}} onclick
+ * @property {() => {}} onclickout When another object is clicked after this one
+ * @property {(event: Event) => void} ondrag
+ */
+
+/**
+ * @type {SceneObject}
+ */
 export const SceneObject = {
   mesh: null,
   onclick: null,
@@ -15,6 +25,17 @@ export const SceneObject = {
   ondrag: null
 };
 
+/**
+ * @type {Record<string, SceneObject>}
+ */
+export var scene_objects = {};
+
+/**
+ * Check if mouse is colliding with any `SceneObject` in the viewer
+ * @param {number} mouse_x
+ * @param {number} mouse_y
+ * @returns {string | null} UUID of object, otherwise `null`
+ */
 function get_mouse_intersects(mouse_x, mouse_y) {
   var mouse = new THREE.Vector2(
     mouse_x / renderer.view_width * 2 - 1,

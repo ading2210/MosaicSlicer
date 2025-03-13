@@ -23,14 +23,16 @@ export class PythonNameError extends Error {
 
 export function clean_globals(ctx) {
   let ctx_name = `ctx_${ctx}`;
-  if (!micropython.globals.get(ctx_name)) 
+  if (!micropython.globals.get(ctx_name))
     return;
-  app.python.micropython.runPython(`for key, val in ${ctx_name}.items():\n  if not callable(val) and not type(val) is types.ModuleType: del ${ctx_name}[key]`)
+  app.python.micropython.runPython(
+    `for key, val in ${ctx_name}.items():\n  if not callable(val) and not type(val) is types.ModuleType: del ${ctx_name}[key]`
+  );
 }
 
 export function eval_py(expression, ctx, vars = {}) {
   let ctx_name = `ctx_${ctx}`;
-  if (!micropython.globals.get(ctx_name)) 
+  if (!micropython.globals.get(ctx_name))
     micropython.runPython(`${ctx_name} = {}`);
 
   for (let [var_name, value] of Object.entries(vars)) {
@@ -79,7 +81,6 @@ export function setup_ctx(ctx, py_api) {
   let ctx_name = `ctx_${ctx}`;
   if (!micropython.globals.get(ctx_name))
     micropython.runPython(`${ctx_name} = dict(**cura_api_${ctx}, math=math)`);
-
 }
 
 setup();

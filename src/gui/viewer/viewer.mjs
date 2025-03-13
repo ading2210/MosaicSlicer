@@ -14,9 +14,19 @@ const x_axis = new THREE.Vector3(1, 0, 0);
 const y_axis = new THREE.Vector3(0, 1, 0);
 const z_axis = new THREE.Vector3(0, 0, 1);
 
+/** @type {THREE.ArrowHelper[]} */
 var helpers = [];
 
+/**
+ * @typedef {Object} Model
+ * @property {THREE.Mesh} mesh
+ * @property {Uint8Array} data
+ */
+
+/** @type {Record<string, Model} */
 export var models = {};
+
+/** @type {string} */
 var focused = null;
 
 export function start_viewer() {
@@ -39,12 +49,18 @@ const material = {
 };
 
 // ---- Model Focusing
+/**
+ * @param {string} uuid
+ */
 function focus_stl(uuid) {
   focused = uuid;
   models[uuid].mesh.material.color.set(0x37d79c);
   models[uuid].mesh.material.emissive.set(0x37d79c);
 }
 
+/**
+ * @param {string} uuid
+ */
 function unfocus_stl(uuid) {
   focused = null;
   models[uuid].mesh.material.color.set(0x1a5f5a);
