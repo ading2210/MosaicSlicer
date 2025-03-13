@@ -10,6 +10,7 @@ import { load_file, save_file } from "./file.mjs";
 import { active_containers } from "../settings/index.mjs";
 
 import { notify } from "./notifications.mjs";
+import { file_name } from "./options.mjs";
 
 const drop_zone = document.getElementById("drop-zone");
 
@@ -65,7 +66,7 @@ cancel_button.addEventListener("click", () => {
   set_active_state(slice_button_div);
 });
 export_gcode_button.addEventListener("click", () => {
-  save_file(exported_gcode, "out.gcode", "text/plain");
+  save_file(exported_gcode, (file_name.value || "Unnamed") + ".gcode", "text/plain");
 });
 
 rpc_callbacks.progress = (progress) => {
