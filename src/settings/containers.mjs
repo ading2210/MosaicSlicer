@@ -148,6 +148,7 @@ export class ContainerStack {
       catch (py_error) {
         if (!(py_error instanceof PythonNameError))
           throw py_error;
+        vars = {};
         vars[py_error.var_name] = selected_stack.resolve_setting(py_error.var_name, call_resolve, ctx);
       }
     }

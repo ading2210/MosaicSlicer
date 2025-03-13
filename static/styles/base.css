@@ -71,3 +71,11 @@ input {
   background-color: var(--grey-2);
   border-bottom: 1px solid var(--grey);
 }
+
+/* svg icons */
+cura-icon {
+  color: white;
+  svg {
+    height: 100%;
+  }
+}

@@ -23,7 +23,7 @@ export function load_sidebar() {
 
     section_div.dataset.category_id = category_id;
     section_title.innerText = category.label;
-    section_icon.classList.add(`cura-icon-${category.icon}`);
+    section_icon.setAttribute("icon-name", category.icon);
     title_container.onclick = () => {
       let closed = title_container.parentElement.dataset.closed === "true";
       title_container.parentElement.dataset.closed = !closed;

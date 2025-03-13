@@ -43,8 +43,7 @@ export function eval_py(expression, ctx, vars = {}) {
 
   try {
     let expression_str = JSON.stringify(expression);
-    micropython.runPython(`__eval_ret = eval(${expression_str}, ${ctx_name})`);
-    micropython.runPython(`print(json.dumps(__eval_ret))`);
+    micropython.runPython(`print(json.dumps(eval(${expression_str}, ${ctx_name})))`);
   }
   catch (py_error) {
     if (name_error_regex.test(py_error.message))

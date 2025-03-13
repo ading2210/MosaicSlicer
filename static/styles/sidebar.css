@@ -1,6 +1,3 @@
-@import "./base.css";
-@import "./settings.css";
-
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -85,10 +82,9 @@ input[type="number"] {
 
     padding: 0.4rem;
 
-    .cura-icon {
+    cura-icon {
       height: 1.5rem;
       width: 1.5rem;
-      filter: invert();
     }
 
     .left {

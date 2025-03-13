@@ -1,4 +1,6 @@
 @import "./base.css";
+@import "./settings.css";
+@import "./sidebar.css";
 
 body {
   display: flex;
@@ -124,10 +126,9 @@ body {
     }
 
     #slice-export-container {
-      .cura-icon {
+      cura-icon {
         height: 1.25rem;
         width: 1.25rem;
-        filter: invert();
       }
 
       .icon-row {

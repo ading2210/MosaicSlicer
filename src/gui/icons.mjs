@@ -23,7 +23,7 @@ import DocumentFilled from "cura_icons/default/DocumentFilled.svg";
 //icons for slice button gui
 import Clock from "cura_icons/default/Clock.svg";
 
-export const icons = {
+const icons_raw = {
   Printer,
   PrintQuality,
   PrintShell,
@@ -43,24 +43,43 @@ export const icons = {
 
   Clock
 };
+export const icons = {};
+const parser = new DOMParser();
 
-function generate_css() {
-  let css_rules = `
-    .cura-icon {
-      background-repeat: no-repeat;
-      background-size: auto 100%;
-    }
-  `;
-  for (let [icon_name, svg_url] of Object.entries(icons)) {
-    css_rules += `
-      .cura-icon-${icon_name} {
-        background-image: url("${svg_url}");
-      }
-    `;
+class CuraIconElement extends HTMLElement {
+  constructor() {
+    super();
   }
-  let style = document.createElement("style");
-  style.innerHTML = css_rules;
-  document.head.append(style);
+
+  connectedCallback() {
+    let icon_name = this.getAttribute("icon-name");
+    if (icon_name)
+      this.attributeChangedCallback("icon-name", null, icon_name);
+  }
+
+  attributeChangedCallback(name, old_value, new_value) {
+    if (name !== "icon-name")
+      return;
+    let icon_svg = icons[new_value];
+    if (!icon_svg)
+      return;
+
+    this.replaceChildren();
+    this.append(icon_svg);
+  }
 }
 
-generate_css();
+function init() {
+  for (let [icon_name, icon_data_url] of Object.entries(icons_raw)) {
+    let icon_b64 = icon_data_url.replace("data:image/svg+xml;base64,", "");
+    let icon_str = atob(icon_b64);
+
+    let svg_doc = parser.parseFromString(icon_str, "image/svg+xml");
+    let svg = svg_doc.getElementsByTagName("svg")[0];
+    svg.setAttribute("fill", "currentColor");
+    icons[icon_name] = svg;
+  }
+  window.customElements.define("cura-icon", CuraIconElement);
+}
+
+init();
