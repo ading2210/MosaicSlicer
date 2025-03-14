@@ -6,7 +6,6 @@ module.exports = [
     entry: "./src/index.mjs",
     output: {
       filename: "app.mjs",
-      path: path.join(__dirname, "./static/dist"),
       library: {
         type: "module"
       }
@@ -24,6 +23,13 @@ module.exports = [
     },
     module: {
       rules: [
+        {
+          test: /\.html$/i,
+          loader: "file-loader",
+          options: {
+            name: "[name].[ext]"
+          }
+        },
         {
           test: /\.wasm/,
           type: "asset/resource"
