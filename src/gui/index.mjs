@@ -1,3 +1,5 @@
+import "/styles/index.scss";
+
 export * as buttons from "./actions.mjs";
 export * as file from "./file.mjs";
 export * as renderer from "./viewer/renderer.mjs";

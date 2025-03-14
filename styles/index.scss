@@ -1,6 +1,6 @@
-@import "./base.css";
-@import "./settings.css";
-@import "./sidebar.css";
+@use "./base.scss";
+@use "./settings.scss";
+@use "./sidebar.scss";
 
 body {
   display: flex;
