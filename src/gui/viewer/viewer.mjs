@@ -66,7 +66,7 @@ function focus_stl(uuid) {
  */
 function unfocus_stl() {
   if (focused) {
-    remove_transform_helpers()
+    remove_transform_helpers();
     models[focused].mesh.material.color.set(0x1a5f5a);
     models[focused].mesh.material.emissive.set(0x1a5f5a);
     focused = null;
@@ -148,12 +148,12 @@ export function load_stl(stl_data) {
   let sceneobj = Object.create(controls.SceneObject);
   sceneobj.mesh = mesh;
   sceneobj.onclick = () => {
-    console.log("clicked model")
+    console.log("clicked model");
     unfocus_stl(mesh.uuid);
     focus_stl(mesh.uuid);
   };
   sceneobj.onclickout = () => {
-    console.log("unclicked model")
+    console.log("unclicked model");
 
     unfocus_stl(mesh.uuid);
   };
