@@ -7,10 +7,11 @@ module.exports = [
     name: "app_main",
     entry: "./src/index.mjs",
     output: {
-      filename: "app.mjs",
+      filename: "js/app.mjs",
       library: {
         type: "module"
-      }
+      },
+      assetModuleFilename: "wasm/[name][ext]"
     },
     plugins: [new MiniCssExtractPlugin()],
     resolve: {
