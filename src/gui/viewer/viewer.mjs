@@ -55,6 +55,7 @@ const material = {
  * @param {string} uuid
  */
 function focus_stl(uuid) {
+  unfocus_stl();
   focused = uuid;
   models[uuid].mesh.material.color.set(0x37d79c);
   models[uuid].mesh.material.emissive.set(0x37d79c);
@@ -63,12 +64,14 @@ function focus_stl(uuid) {
 /**
  * @param {string} uuid
  */
-function unfocus_stl(uuid) {
-  focused = null;
-  models[uuid].mesh.material.color.set(0x1a5f5a);
-  models[uuid].mesh.material.emissive.set(0x1a5f5a);
+function unfocus_stl() {
+  if (focused) {
+    remove_transform_helpers()
+    models[focused].mesh.material.color.set(0x1a5f5a);
+    models[focused].mesh.material.emissive.set(0x1a5f5a);
+    focused = null;
+  }
 }
-
 // ---- Transformations
 function remove_transform_helpers() {
   if (helpers) {
@@ -145,9 +148,13 @@ export function load_stl(stl_data) {
   let sceneobj = Object.create(controls.SceneObject);
   sceneobj.mesh = mesh;
   sceneobj.onclick = () => {
+    console.log("clicked model")
+    unfocus_stl(mesh.uuid);
     focus_stl(mesh.uuid);
   };
   sceneobj.onclickout = () => {
+    console.log("unclicked model")
+
     unfocus_stl(mesh.uuid);
   };
 

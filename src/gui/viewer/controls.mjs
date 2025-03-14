@@ -54,11 +54,16 @@ var last_held = null;
 renderer.viewport.addEventListener("mousedown", (e) => {
   let intersection = get_mouse_intersects(e.clientX, e.clientY);
   if (intersection) {
+    if (last_held && last_held != currently_held) {
+      if (scene_objects[last_held].onclickout)
+        scene_objects[last_held].onclickout();
+    }
+    last_held = currently_held;
     currently_held = intersection;
     renderer.controls.enabled = false;
   }
   else {
-    currently_held = null;
+    // currently_held = null;
   }
 });
 renderer.viewport.addEventListener("mousemove", (e) => {
@@ -69,15 +74,10 @@ renderer.viewport.addEventListener("mousemove", (e) => {
 });
 renderer.viewport.addEventListener("mouseup", (e) => {
   if (currently_held) {
-    if (last_held) {
-      if (scene_objects[last_held].onclickout)
-        scene_objects[last_held].onclickout();
-    }
     if (scene_objects[currently_held].onclick != null)
       scene_objects[currently_held].onclick(e);
   }
   renderer.controls.enabled = true;
 
-  last_held = currently_held;
   currently_held = null;
 });
