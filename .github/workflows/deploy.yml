@@ -13,12 +13,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-
+      
+      # https://github.com/npm/cli/issues/4828
       - name: build
         run: |
+          rm -f package-lock.json
           bash scripts/build_all.sh
+          sudo npm i -g wrangler
 
-      - uses: actions/checkout@v4
       - name: deploy
         uses: cloudflare/wrangler-action@v3
         with:
