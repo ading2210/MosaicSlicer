@@ -5,7 +5,7 @@ import * as THREE from "three";
 import { file_name } from "../options.mjs";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 
-const loader = new STLLoader();
+const stl_loader = new STLLoader();
 
 const movement_button = document.getElementById("movement-button");
 const rotate_button = document.getElementById("rotate-button");
@@ -43,12 +43,17 @@ spotLight.intensity = 10;
 renderer.scene.add(spotLight);
 
 // ---- Model Material
-const material = {
+const model_material = {
   color: 0x1a5f5a,
   // A bit of constant light to dampen the shadows
   emissive: 0x1a5f5a,
   emissiveIntensity: 0.3
 };
+
+const printer_material = {
+  color: 0x646464,
+  opacity: 0.7
+}
 
 // ---- Model Focusing
 /**
@@ -133,7 +138,7 @@ export function load_stl(stl_data) {
   if (!file_name.value)
     file_name.value = "Unnamed";
 
-  const mesh = new THREE.Mesh(loader.parse(stl_data), new THREE.MeshPhysicalMaterial(material));
+  const mesh = new THREE.Mesh(stl_loader.parse(stl_data), new THREE.MeshPhysicalMaterial(model_material));
   // These settings are specific to the 3DBenchy model
   mesh.scale.set(0.01, 0.01, 0.01);
   mesh.rotateX(-Math.PI / 2);
