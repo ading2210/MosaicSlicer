@@ -1,16 +1,19 @@
 const path = require("path");
 
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 module.exports = [
   {
     name: "app_main",
     entry: "./src/index.mjs",
     output: {
-      filename: "app.mjs",
-      path: path.join(__dirname, "./static/dist"),
+      filename: "js/app.mjs",
       library: {
         type: "module"
-      }
+      },
+      assetModuleFilename: "wasm/[name][ext]"
     },
+    plugins: [new MiniCssExtractPlugin()],
     resolve: {
       fallback: {
         "url": false,
@@ -25,12 +28,27 @@ module.exports = [
     module: {
       rules: [
         {
+          test: /\.html$/i,
+          loader: "file-loader",
+          options: {
+            name: "[name].[ext]"
+          }
+        },
+        {
           test: /\.wasm/,
           type: "asset/resource"
         },
         {
           test: /\.svg/,
           type: "asset/inline"
+        },
+        {
+          test: /\.s[ac]ss$/i,
+          use: [
+            MiniCssExtractPlugin.loader,
+            "css-loader",
+            "sass-loader"
+          ]
         }
       ]
     },

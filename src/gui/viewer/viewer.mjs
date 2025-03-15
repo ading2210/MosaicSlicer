@@ -2,9 +2,10 @@
 import * as renderer from "./renderer.mjs";
 import * as controls from "./controls.mjs";
 import * as THREE from "three";
+import { file_name } from "../options.mjs";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 
-const loader = new STLLoader();
+const stl_loader = new STLLoader();
 
 const movement_button = document.getElementById("movement-button");
 const rotate_button = document.getElementById("rotate-button");
@@ -42,18 +43,24 @@ spotLight.intensity = 10;
 renderer.scene.add(spotLight);
 
 // ---- Model Material
-const material = {
+const model_material = {
   color: 0x1a5f5a,
   // A bit of constant light to dampen the shadows
   emissive: 0x1a5f5a,
   emissiveIntensity: 0.3
 };
 
+const printer_material = {
+  color: 0x646464,
+  opacity: 0.7
+}
+
 // ---- Model Focusing
 /**
  * @param {string} uuid
  */
 function focus_stl(uuid) {
+  unfocus_stl();
   focused = uuid;
   models[uuid].mesh.material.color.set(0x37d79c);
   models[uuid].mesh.material.emissive.set(0x37d79c);
@@ -62,12 +69,14 @@ function focus_stl(uuid) {
 /**
  * @param {string} uuid
  */
-function unfocus_stl(uuid) {
-  focused = null;
-  models[uuid].mesh.material.color.set(0x1a5f5a);
-  models[uuid].mesh.material.emissive.set(0x1a5f5a);
+function unfocus_stl() {
+  if (focused) {
+    remove_transform_helpers();
+    models[focused].mesh.material.color.set(0x1a5f5a);
+    models[focused].mesh.material.emissive.set(0x1a5f5a);
+    focused = null;
+  }
 }
-
 // ---- Transformations
 function remove_transform_helpers() {
   if (helpers) {
@@ -126,7 +135,10 @@ function toggle_movement() {
 }
 
 export function load_stl(stl_data) {
-  const mesh = new THREE.Mesh(loader.parse(stl_data), new THREE.MeshPhysicalMaterial(material));
+  if (!file_name.value)
+    file_name.value = "Unnamed";
+
+  const mesh = new THREE.Mesh(stl_loader.parse(stl_data), new THREE.MeshPhysicalMaterial(model_material));
   // These settings are specific to the 3DBenchy model
   mesh.scale.set(0.01, 0.01, 0.01);
   mesh.rotateX(-Math.PI / 2);
@@ -141,9 +153,13 @@ export function load_stl(stl_data) {
   let sceneobj = Object.create(controls.SceneObject);
   sceneobj.mesh = mesh;
   sceneobj.onclick = () => {
+    console.log("clicked model");
+    unfocus_stl(mesh.uuid);
     focus_stl(mesh.uuid);
   };
   sceneobj.onclickout = () => {
+    console.log("unclicked model");
+
     unfocus_stl(mesh.uuid);
   };
 

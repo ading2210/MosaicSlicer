@@ -10,6 +10,7 @@ import { load_file, save_file } from "./file.mjs";
 import { active_containers } from "../settings/index.mjs";
 
 import { notify } from "./notifications.mjs";
+import { file_name } from "./options.mjs";
 
 const drop_zone = document.getElementById("drop-zone");
 
@@ -48,8 +49,11 @@ slice_button.addEventListener("click", async () => {
 
   let settings = active_containers.export_settings();
   settings["/tmp/input/model.stl"] = {
-    extruder_nr: "0"
+    extruder_nr: "0",
   };
+  settings["extruder.0"]["mesh_position_x"] = models[Object.keys(models)[0]].mesh.position.x * 100
+  settings["extruder.0"]["mesh_position_y"] = models[Object.keys(models)[0]].mesh.position.y * 100
+
 
   console.log("Starting slice with settings:", settings);
   exported_gcode = await cura_engine.slice({
@@ -65,7 +69,7 @@ cancel_button.addEventListener("click", () => {
   set_active_state(slice_button_div);
 });
 export_gcode_button.addEventListener("click", () => {
-  save_file(exported_gcode, "out.gcode", "text/plain");
+  save_file(exported_gcode, (file_name.value || "Unnamed") + ".gcode", "text/plain");
 });
 
 rpc_callbacks.progress = (progress) => {

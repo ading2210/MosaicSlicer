@@ -5,14 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Slicer</title>
 
-    <link rel="stylesheet" href="./styles/index.css">
-    <script type="module" src="./dist/app.mjs" defer></script>
+    <link rel="stylesheet" href="main.css">
+    <script type="module" src="js/app.mjs" defer></script>
   </head>
 
   <body>
     <div id="viewer">
       <canvas id="stl-viewer"></canvas>
 
+      <div id="options">
+        <span>
+          <input type="text" name="output-name" id="output-name" placeholder="File Name">
+        </span>
+      </div>
       <div id="controls">
         <div class="control" id="movement-button">
           <ion-icon name="move-outline" title="Move"></ion-icon>
