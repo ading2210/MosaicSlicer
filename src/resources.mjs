@@ -10,6 +10,8 @@ export let ini_files = {};
 export async function download_resources() {
   let resources_url = "./resources/cura_data.tar.gz";
   let response = await fetch(resources_url);
+  if (!response.ok)
+    throw Error("Fetching cura_data failed.");
   let compressed_tar = await response.arrayBuffer();
   cura_resources = await extract_tar(compressed_tar);
 }
