@@ -49,11 +49,10 @@ slice_button.addEventListener("click", async () => {
 
   let settings = active_containers.export_settings();
   settings["/tmp/input/model.stl"] = {
-    extruder_nr: "0",
+    extruder_nr: "0"
   };
-  settings["extruder.0"]["mesh_position_x"] = models[Object.keys(models)[0]].mesh.position.x * 100
-  settings["extruder.0"]["mesh_position_y"] = models[Object.keys(models)[0]].mesh.position.y * 100
-
+  settings["extruder.0"]["mesh_position_x"] = models[Object.keys(models)[0]].mesh.position.x * 100;
+  settings["extruder.0"]["mesh_position_y"] = models[Object.keys(models)[0]].mesh.position.y * 100;
 
   console.log("Starting slice with settings:", settings);
   exported_gcode = await cura_engine.slice({

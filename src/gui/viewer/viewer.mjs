@@ -53,7 +53,7 @@ const model_material = {
 const printer_material = {
   color: 0x646464,
   opacity: 0.7
-}
+};
 
 // ---- Model Focusing
 /**
