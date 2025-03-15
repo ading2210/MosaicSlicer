@@ -4,6 +4,7 @@ import { fuse } from "./search.mjs";
 
 const sections = document.getElementById("sections");
 const section_template = document.getElementById("section-template");
+const profile_selector = document.getElementById("profile-selector");
 
 export function load_sidebar() {
   let definition = active_containers.definitions;
@@ -38,4 +39,24 @@ export function load_sidebar() {
   update_values(sections, extruder_stack);
   update_sections(sections, extruder_stack);
   fuse.setCollection(Object.values(global_stack.settings));
+
+
+  //populate available quality profiles
+  //todo: also consider intent profiles in the selector
+  let quality_types = active_containers.allowed_quality_types();
+  for (let quality_type of quality_types) {
+    let global_quality = global_stack.get_quality(quality_type);
+    let extruder_quality = extruder_stack.get_quality(quality_type);
+    let layer_height = extruder_quality.values.layer_height || global_quality.values.layer_height;
+    let quality_name = extruder_quality.general.name || global_quality.general.name;
+    if (!layer_height) 
+      layer_height = global_stack.resolve_setting("layer_height");
+
+    let option = document.createElement("option");
+    option.value = quality_type;
+    option.innerText = `${quality_name} - ${layer_height}mm`;
+    profile_selector.append(option);
+  }
+  let active_quality = extruder_stack.active_profiles.quality.metadata.quality_type;
+  profile_selector.value = active_quality;
 }

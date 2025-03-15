@@ -6,7 +6,6 @@
     <title>Web Slicer</title>
 
     <link rel="stylesheet" href="./styles/index.css">
-    <link rel="stylesheet" href="./styles/sidebar.css">
     <script type="module" src="./dist/app.mjs" defer></script>
   </head>
 
@@ -61,8 +60,11 @@
     <div id="sidebar-container">
       <div id="sidebar">
         <h3>Print Settings</h3>
-        <div id="profile-selector">
+        <div id="profile-selector-div">
           <span>Profile</span>
+          <span id="profile-selector-span" class="setting-value">
+            <select id="profile-selector"></select>
+          </span>
         </div>
         <span id="searchbar">
           <input type="text" name="setting-search" id="setting-search" placeholder="Search settings">

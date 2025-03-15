@@ -255,10 +255,28 @@ export class ContainerStack {
     return available_materials;
   }
   available_qualities() {
-    return this.available_profiles("quality");
+    let qualities = this.available_profiles().quality;
+    return filter_profiles(qualities, {
+      material: this.filters.material,
+      variant: this.filters.variant
+    });
   }
   available_variants() {
-    return this.available_profiles("variant");
+    let variants = this.available_profiles().variant;
+    return filter_profiles(variants, {
+      material: this.filters.material,
+      quality_type: this.filters.quality_type
+    });
+  }
+  resolve_profile_inheritance(profiles, key_1, key_2) {
+    let resolved = {};
+    for (let profile of Object.values(profiles)) {
+      let meta_value = profile[key_1][key_2];
+      if (!resolved[meta_value])
+        resolved[meta_value] = {};
+      resolved[meta_value] = merge_deep(resolved[meta_value], profile);
+    }
+    return resolved;
   }
 
   preferred_material() {
@@ -302,7 +320,7 @@ export class ContainerStack {
     this.set_quality();
   }
 
-  available_profiles(profile_type) {
+  available_profiles() {
     let profiles = {};
     let definitions = [
       this.parent.definitions.printer,
@@ -310,8 +328,6 @@ export class ContainerStack {
     ];
     for (let definition of definitions)
       profiles = merge_deep(profiles, resolve_profiles(definition));
-    if (profile_type)
-      return filter_profiles(profiles[profile_type], this.filters);
     return profiles;
   }
 
@@ -328,6 +344,14 @@ export class ContainerStack {
       category_map[setting_id] = category_id;
     }
     return category_map;
+  }
+
+  get_quality(quality_type) {
+    for (let quality of Object.values(this.available_qualities())) {
+      if (quality.metadata.quality_type === quality_type)
+        return quality;
+    }
+    return null;
   }
 }
 
@@ -425,6 +449,24 @@ export class ContainerStackGroup {
     let end = performance.now();
     console.log("updated settings in", Math.round((end - start) * 100) / 100, "ms");
   }
+
+  allowed_quality_types() {
+    let all_qualities = [];
+    let all_stacks = [this.containers.global, ...Object.values(this.containers.extruders)];
+    for (let extruder_stack of all_stacks) {
+      let available_qualities = extruder_stack.available_qualities();
+      let quality_types = new Set();
+      for (let quality of Object.values(available_qualities))
+        quality_types.add(quality.metadata.quality_type);
+      all_qualities[extruder_stack.name] = quality_types;
+    }
+
+    if (all_qualities.length === 0)
+      return [];
+    if (all_qualities.length === 1)
+      return Array.from(all_qualities[0]);
+    return set_intersect(...all_qualities);
+  }
 }
 
 function is_int(str) {
@@ -435,4 +477,12 @@ function is_num(str) {
 }
 function is_var(str) {
   return /^[a-zA-Z_][a-zA-Z_\d]*$/.test(str);
+}
+
+//https://stackoverflow.com/a/70291510
+function set_intersect(set_a, set_b, ...args) {
+  const result = new Set([...set_a].filter((i) => set_b.has(i)));
+  if (args.length === 0)
+    return result;
+  return set_intersect(result, args.shift(), ...args);
 }
