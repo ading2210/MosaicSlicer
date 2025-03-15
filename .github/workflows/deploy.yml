@@ -9,12 +9,17 @@ jobs:
       deployments: write
       
     steps:
-      - name: Build
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: build
         run: |
-          scripts/build_all.sh
+          bash scripts/build_all.sh
 
       - uses: actions/checkout@v4
-      - name: Deploy
+      - name: deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
