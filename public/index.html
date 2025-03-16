@@ -10,121 +10,137 @@
   </head>
 
   <body>
-    <div id="viewer">
-      <canvas id="stl-viewer"></canvas>
-
-      <div id="options">
-        <!--unused space-->
-      </div>
-      <div id="controls">
-        <div class="control" id="movement-button">
-          <ion-icon name="move-outline" title="Move"></ion-icon>
-        </div>
-        <div class="control" id="rotate-button">
-          <ion-icon name="reload-outline" title="Rotate"></ion-icon>
-        </div>
-
-        <div class="control" id="scale-button">
-          <ion-icon name="resize-outline" title="Scale"></ion-icon>
-        </div>
-      </div>
-
-      <div id="actions">
-        <div class="left">
-          <input type="file" id="stl-file" accept=".stl">
-          <label for="stl-file" id="file-label">
-            <ion-icon name="document-outline"></ion-icon>
-          </label>
-        </div>
-        <div class="flex-spacer"></div>
-
-        <div class="right">
-          <div id="slice-button-container">
-            <button id="slice-button">Slice</button>
-          </div>
-          <div id="slice-progress-container">
-            <span>Slicing...</span>
-            <div id="slice-progress">
-              <div id="slice-progress-bar"></div>
-            </div>
-            <button id="cancel-button">Cancel</button>
-          </div>
-          <div id="slice-export-container">
-            <div class="icon-row">
-              <cura-icon icon-name="Clock"></cura-icon>
-              <span id="gcode-time-estimate"></span>
-            </div>
-            <button id="export-gcode-button">Export G-code</button>
-          </div>
-        </div>
-      </div>
+    <div id="tab-strip">
+      <h1>Web Slicer</h1>
+      <a class="tab selected">Prepare</a>
+      <a class="tab">Preview</a>
+      <a class="tab">Settings</a>
+      <div class="flex-spacer"></div>
+      <a class="info-link" href="https://github.com/ading2210/web-slicer" target="_blank">
+        About
+      </a>
+      <a class="info-link" href="https://github.com/ading2210/web-slicer" target="_blank">
+        Source Code
+      </a>
     </div>
 
-    <div id="sidebar-container">
-      <div id="sidebar">
-        <h3>Print Settings</h3>
-        <div id="profile-selector-div">
-          <span>Profile</span>
-          <span id="profile-selector-span" class="setting-value">
-            <select id="profile-selector"></select>
-          </span>
-        </div>
-        <span id="searchbar">
-          <input type="text" name="setting-search" id="setting-search" placeholder="Search settings">
-        </span>
-        <div id="sections">
-          <template id="section-template">
-            <div class="section" slot="section" data-closed="true">
-              <span class="section-title-container" slot="title-container">
-                <span class="left">
-                  <cura-icon slot="section-icon"></cura-icon>
-                  <span slot="section-title">Quality</span>
-                </span>
-                <span class="right">
-                  <ion-icon name="chevron-down-outline" class="section-status-icon"></ion-icon>
-                </span>
-              </span>
-              <div class="settings-group" slot="settings-group"></div>
-            </div>
-          </template>
+    <div id="main-tab">
+      <div id="viewer">
+        <canvas id="stl-viewer"></canvas>
 
-          <template id="setting-template">
-            <div class="setting" slot="setting-container">
-              <div class="setting-bar">
-                <span class="setting-name" slot="setting-name">Layer Height</span>
-                <span class="setting-value" slot="setting-value">
-                  <input slot="value" type="text">
-                  <span class="unit-text" slot="unit">mm</span>
-                </span>
+        <div id="options">
+          <!--unused space-->
+        </div>
+        <div id="controls">
+          <div class="control" id="movement-button">
+            <ion-icon name="move-outline" title="Move"></ion-icon>
+          </div>
+          <div class="control" id="rotate-button">
+            <ion-icon name="reload-outline" title="Rotate"></ion-icon>
+          </div>
+
+          <div class="control" id="scale-button">
+            <ion-icon name="resize-outline" title="Scale"></ion-icon>
+          </div>
+        </div>
+
+        <div id="actions">
+          <div class="left">
+            <input type="file" id="stl-file" accept=".stl">
+            <label for="stl-file" id="file-label">
+              <ion-icon name="document-outline"></ion-icon>
+            </label>
+          </div>
+          <div class="flex-spacer"></div>
+
+          <div class="right">
+            <div id="slice-button-container">
+              <button id="slice-button">Slice</button>
+            </div>
+            <div id="slice-progress-container">
+              <span>Slicing...</span>
+              <div id="slice-progress">
+                <div id="slice-progress-bar"></div>
               </div>
+              <button id="cancel-button">Cancel</button>
             </div>
-          </template>
+            <div id="slice-export-container">
+              <div class="icon-row">
+                <cura-icon icon-name="Clock"></cura-icon>
+                <span id="gcode-time-estimate"></span>
+              </div>
+              <button id="export-gcode-button">Export G-code</button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div id="notifications">
-      <template id="notification-template">
-        <div class="notification" slot="notification">
-          <span class="title-bar">
-            <span class="title" slot="title">Title Here</span>
-            <span class="close-icon">
-              <ion-icon name="close-outline" slot="close"></ion-icon>
+      <div id="sidebar-container">
+        <div id="sidebar">
+          <h3>Print Settings</h3>
+          <div id="profile-selector-div">
+            <span>Profile</span>
+            <span id="profile-selector-span" class="setting-value">
+              <select id="profile-selector"></select>
             </span>
+          </div>
+          <span id="searchbar">
+            <input type="text" name="setting-search" id="setting-search" placeholder="Search settings">
           </span>
-          <span class="description" slot="description">Description Here</span>
+          <div id="sections">
+            <template id="section-template">
+              <div class="section" slot="section" data-closed="true">
+                <span class="section-title-container" slot="title-container">
+                  <span class="left">
+                    <cura-icon slot="section-icon"></cura-icon>
+                    <span slot="section-title">Quality</span>
+                  </span>
+                  <span class="right">
+                    <ion-icon name="chevron-down-outline" class="section-status-icon"></ion-icon>
+                  </span>
+                </span>
+                <div class="settings-group" slot="settings-group"></div>
+              </div>
+            </template>
+
+            <template id="setting-template">
+              <div class="setting" slot="setting-container">
+                <div class="setting-bar">
+                  <span class="setting-name" slot="setting-name">Layer Height</span>
+                  <span class="setting-value" slot="setting-value">
+                    <input slot="value" type="text">
+                    <span class="unit-text" slot="unit">mm</span>
+                  </span>
+                </div>
+              </div>
+            </template>
+          </div>
         </div>
-      </template>
-    </div>
+      </div>
 
-    <div class="fullscreen" id="drop-zone">
-      <h1>Drop STL Here</h1>
-    </div>
+      <div id="notifications">
+        <template id="notification-template">
+          <div class="notification" slot="notification">
+            <span class="title-bar">
+              <span class="title" slot="title">Title Here</span>
+              <span class="close-icon">
+                <ion-icon name="close-outline" slot="close"></ion-icon>
+              </span>
+            </span>
+            <span class="description" slot="description">Description Here</span>
+          </div>
+        </template>
+      </div>
 
-    <div class="fullscreen" id="loading">
-      <div class="flex-spacer"></div>
-      <p>Loading...</p>
-      <div class="flex-spacer"></div>
+      <div class="fullscreen" id="drop-zone">
+        <h1>Drop STL Here</h1>
+      </div>
+
+      <div class="fullscreen" id="loading">
+        <div class="flex-spacer"></div>
+        <p>Loading...</p>
+        <div class="flex-spacer"></div>
+      </div>
     </div>
 
     <!-- todo: don't load this from a third party cdn -->

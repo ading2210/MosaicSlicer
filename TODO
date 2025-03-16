@@ -6,6 +6,8 @@ UI:
   [ ] Save settings to object
 [ ] Viewer
   [ ] Allow moving/scaling/rotating objects
+  [ ] Render printer build volume
+  [ ] When importing STLs, center them
   [ ] Merge all objects into single STL for slicing
   [ ] Support 3mf files
   [ ] Materials
