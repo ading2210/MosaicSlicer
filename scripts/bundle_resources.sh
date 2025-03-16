@@ -23,4 +23,4 @@ rm -rf "/tmp/cura_resources"
 gzip -l "dist/resources/cura_data.tar.gz"
 
 #copy mesh files
-cp -r "third_party/Cura/resources/meshes/" "./dist/resources"
+cp -r "third_party/Cura/resources/meshes" "./dist/resources/"

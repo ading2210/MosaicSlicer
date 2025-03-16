@@ -38,8 +38,12 @@ var focused = null;
 export function start_viewer() {
   renderer.animate();
 
-  fetch("resources/" + active_containers.definitions.printer.metadata.platform).then((res) => {
-    res.arrayBuffer().then(load_3mf);
+  fetch("resources/meshes/" + active_containers.definitions.printer.metadata.platform).then((res) => {
+    if (active_containers.definitions.printer.metadata.platform.endsWith(".3mf"))
+      res.arrayBuffer().then(load_3mf);
+    else if (active_containers.definitions.printer.metadata.platform.endsWith(".stl")) {
+      // todo: fix stl function
+    }
   });
 }
 
