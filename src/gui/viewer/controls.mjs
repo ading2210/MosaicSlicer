@@ -3,6 +3,8 @@
  */
 import * as renderer from "./renderer.mjs";
 
+import { tab_strip } from "../tabs.mjs";
+
 import * as THREE from "three";
 
 var raycaster = new THREE.Raycaster();
@@ -52,7 +54,7 @@ function get_mouse_intersects(mouse_x, mouse_y) {
 var currently_held = null;
 var last_held = null;
 renderer.viewport.addEventListener("mousedown", (e) => {
-  let intersection = get_mouse_intersects(e.clientX, e.clientY);
+  let intersection = get_mouse_intersects(e.clientX, e.clientY - tab_strip.clientHeight);
   if (intersection) {
     if (last_held && last_held != currently_held) {
       if (scene_objects[last_held].onclickout)
