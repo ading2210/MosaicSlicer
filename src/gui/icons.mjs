@@ -64,8 +64,9 @@ class CuraIconElement extends HTMLElement {
     if (!icon_svg)
       return;
 
+    let new_svg = icon_svg.cloneNode(true);
     this.replaceChildren();
-    this.append(icon_svg);
+    this.append(new_svg);
   }
 }
 

@@ -25,6 +25,7 @@ export const slice_export_div = document.getElementById("slice-export-container"
 
 const slice_progress_bar = document.getElementById("slice-progress-bar");
 const gcode_time_estimate = document.getElementById("gcode-time-estimate");
+const material_estimate = document.getElementById("material-estimate");
 
 export const cura_engine = new CuraEngine();
 let exported_gcode = null;
@@ -55,10 +56,17 @@ slice_button.addEventListener("click", async () => {
   settings["extruder.0"]["mesh_position_y"] = models[Object.keys(models)[0]].mesh.position.y * 100;
 
   console.log("Starting slice with settings:", settings);
-  exported_gcode = await cura_engine.slice({
+  let gcode_header = "";
+  rpc_callbacks.gcode_header = (header) => {
+    gcode_header = header;
+  }
+
+  let gcode_bytes = await cura_engine.slice({
     stl: models[Object.keys(models)[0]].data, // TODO: Support multiple models
     settings: settings
   });
+  exported_gcode = new TextDecoder().decode(gcode_bytes);
+  exported_gcode = gcode_header + "\n\n" + exported_gcode;
 
   await sleep(250);
   set_active_state(slice_export_div);
@@ -79,6 +87,7 @@ rpc_callbacks.progress = (progress) => {
   slice_progress_bar.style.width = `${progress * 100}%`;
 };
 rpc_callbacks.slice_info = (info) => {
+  //time estimate
   let seconds = 0;
   for (let time of Object.values(info.time_estimates))
     seconds += time;
@@ -91,6 +100,22 @@ rpc_callbacks.slice_info = (info) => {
     gcode_time_estimate.innerText = `${minutes} ${minutes_str}`;
   else
     gcode_time_estimate.innerText = `${hours} ${hours_str} ${minutes} ${minutes_str}`;
+
+  //material estimate
+  let total_length = 0;
+  let total_mass = 0;
+  for (let [extruder_id, material_volume] of Object.entries(info.material_estimates)) {
+    let extruder_stack = active_containers.containers.extruders[extruder_id];
+    let active_material = extruder_stack.active_profiles.material;
+    let material_density = parseFloat(active_material.metadata.info.properties.density);
+
+    let material_diameter = extruder_stack.resolve_setting("material_diameter");
+    let material_cross_section = Math.PI * Math.pow(material_diameter / 2, 2);
+    let volume_cubic_cm = material_volume / 1000;
+    total_length += (material_volume / material_cross_section) / 1000;
+    total_mass += (material_density * volume_cubic_cm);
+  }
+  material_estimate.innerText = `${Math.round(total_mass)}g \u2022 ${total_length.toFixed(2)}m`
 };
 
 // ---- File imports

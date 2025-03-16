@@ -21,6 +21,8 @@ body, html {
   h1 {
     margin-right: 1rem;
     font-size: 1.5rem;
+    text-decoration: underline;
+    text-decoration-color: var(--primary);
   }
 
   .tab {
@@ -29,7 +31,7 @@ body, html {
     padding-left: 2.5rem;
     padding-right: 2.5rem;
     background-color: var(--background-2);
-    clip-path: polygon(0.5rem 0%, calc(100% - 0.5rem) 0%, 100% 100%, 0% 100%);
+    clip-path: polygon(0.4rem 0%, calc(100% - 0.4rem) 0%, 100% 100%, 0% 100%);
   }
   .tab.selected {
     background-color: var(--grey-2);
@@ -56,6 +58,7 @@ body, html {
   overflow: hidden;
   flex-grow: 1;
   height: calc(100vh - var(--tab-height));
+  background-color: var(--background-3);
 }
 
 #controls {
@@ -197,6 +200,13 @@ body, html {
         display: flex;
         align-items: center;
         gap: 0.5rem;
+      }
+      .icon-row-small {
+        font-size: 0.8rem;
+        cura-icon {
+          height: 1.1rem;
+          width: 1.1rem;  
+        }
       }
     }
   }
