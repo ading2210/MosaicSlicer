@@ -2,7 +2,6 @@
 import * as renderer from "./renderer.mjs";
 import * as controls from "./controls.mjs";
 import * as THREE from "three";
-import { file_name } from "../options.mjs";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 import { ThreeMFLoader } from "three/examples/jsm/loaders/3MFLoader.js";
 
@@ -159,9 +158,6 @@ function toggle_movement() {
 }
 
 export function load_stl(stl_data) {
-  if (!file_name.value)
-    file_name.value = "Unnamed";
-
   const mesh = new THREE.Mesh(stl_loader.parse(stl_data), new THREE.MeshPhysicalMaterial(model_material));
   // These settings are specific to the 3DBenchy model
   mesh.scale.set(0.01, 0.01, 0.01);

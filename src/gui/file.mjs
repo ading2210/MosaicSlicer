@@ -3,15 +3,19 @@
  */
 import { load_stl } from "./viewer/viewer.mjs";
 
+export let stl_file_name = null;
+
 /**
  * Handle file imports (only STLs for now)
  * @param {File} file File object to import
  */
 export function load_file(file) {
   const reader = new FileReader();
+  reader.file_name = file.name;
 
   reader.onload = (e) => {
-    const array_buffer = e.target.result;
+    const array_buffer = reader.result;
+    stl_file_name = reader.file_name;
     load_stl(array_buffer);
   };
 

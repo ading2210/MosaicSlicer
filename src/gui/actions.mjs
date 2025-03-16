@@ -10,7 +10,7 @@ import { load_file, save_file } from "./file.mjs";
 import { active_containers } from "../settings/index.mjs";
 
 import { notify } from "./notifications.mjs";
-import { file_name } from "./options.mjs";
+import { stl_file_name } from "./file.mjs";
 
 const drop_zone = document.getElementById("drop-zone");
 
@@ -68,7 +68,11 @@ cancel_button.addEventListener("click", () => {
   set_active_state(slice_button_div);
 });
 export_gcode_button.addEventListener("click", () => {
-  save_file(exported_gcode, (file_name.value || "Unnamed") + ".gcode", "text/plain");
+  let stl_name = stl_file_name.replace(".", "_");
+  let printer_name = active_containers.printer_id;
+  let gcode_name = `${printer_name}_${stl_name}.gcode`;
+
+  save_file(exported_gcode, gcode_name, "text/plain");
 });
 
 rpc_callbacks.progress = (progress) => {
