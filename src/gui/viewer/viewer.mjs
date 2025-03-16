@@ -11,7 +11,6 @@ import { active_containers } from "../../settings/index.mjs";
 const stl_loader = new STLLoader();
 const mf_loader = new ThreeMFLoader();
 
-
 const movement_button = document.getElementById("movement-button");
 const rotate_button = document.getElementById("rotate-button");
 const scale_button = document.getElementById("scale-button");
@@ -39,9 +38,9 @@ var focused = null;
 export function start_viewer() {
   renderer.animate();
 
-  fetch('resources/' + active_containers.definitions.printer.metadata.platform).then((res) => {
-    res.arrayBuffer().then(load_3mf)
-  })
+  fetch("resources/" + active_containers.definitions.printer.metadata.platform).then((res) => {
+    res.arrayBuffer().then(load_3mf);
+  });
 }
 
 // ---- STL Viewer
@@ -67,14 +66,13 @@ const model_material = {
 const printer_material = {
   color: 0xdedede,
   opacity: 0.8,
-  transparent: true,
+  transparent: true
 };
-
 
 const printer_shell_material = {
   color: 0x646464,
   opacity: 0.7,
-  transparent: true,
+  transparent: true
 };
 
 // ---- Model Focusing
@@ -194,21 +192,24 @@ export function load_stl(stl_data) {
 export function load_3mf(mf_data) {
   // Why does ThreeMFLoader work completly differently from STLLoader
   // const mesh = mf_loader.parse(mf_data).children[0].children[0]
-  const mesh = new THREE.Mesh(mf_loader.parse(mf_data).children[0].children[0].geometry, new THREE.MeshPhysicalMaterial(printer_material));
-  mesh.scale.set(0.01, 0.01, 0.01)
-  renderer.scene.add(mesh)
+  const mesh = new THREE.Mesh(
+    mf_loader.parse(mf_data).children[0].children[0].geometry,
+    new THREE.MeshPhysicalMaterial(printer_material)
+  );
+  mesh.scale.set(0.01, 0.01, 0.01);
+  renderer.scene.add(mesh);
 
   // This is to replicate Cura and how it handles the hole in the model
   mesh.geometry.computeBoundingBox();
-  const size = new THREE.Vector3()
-  mesh.geometry.boundingBox.getSize(size)
+  const size = new THREE.Vector3();
+  mesh.geometry.boundingBox.getSize(size);
 
-  const rect = new THREE.BoxGeometry(size.x * 0.01, size.y * 0.005, size.z * 0.01)
-  
-  let shell_mesh = new THREE.Mesh(rect, new THREE.MeshPhysicalMaterial(printer_shell_material))
-  shell_mesh.position.y -= 0.0025
+  const rect = new THREE.BoxGeometry(size.x * 0.01, size.y * 0.005, size.z * 0.01);
 
-  renderer.scene.add(shell_mesh)
+  let shell_mesh = new THREE.Mesh(rect, new THREE.MeshPhysicalMaterial(printer_shell_material));
+  shell_mesh.position.y -= 0.0025;
+
+  renderer.scene.add(shell_mesh);
 
   return mesh;
 }
