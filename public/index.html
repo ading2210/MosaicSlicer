@@ -28,8 +28,13 @@
       <div id="viewer">
         <canvas id="stl-viewer"></canvas>
 
-        <div id="options">
-          <!--unused space-->
+        <div id="options-bar">
+          <div id="file-div">
+            <input type="file" id="stl-file" accept=".stl">
+            <label for="stl-file" id="file-label">
+              <ion-icon name="folder-outline"></ion-icon>
+            </label>
+          </div>
         </div>
         <div id="controls">
           <div class="control" id="movement-button">
@@ -45,14 +50,7 @@
         </div>
 
         <div id="actions">
-          <div class="left">
-            <input type="file" id="stl-file" accept=".stl">
-            <label for="stl-file" id="file-label">
-              <ion-icon name="document-outline"></ion-icon>
-            </label>
-          </div>
           <div class="flex-spacer"></div>
-
           <div class="right">
             <div id="slice-button-container">
               <button id="slice-button">Slice</button>

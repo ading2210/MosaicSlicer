@@ -8,6 +8,12 @@ Compile CuraEngine:
 $ scripts/build_cura.sh
 ```
 
+Bundle Resourdces:
+
+```
+$ scripts/bundle_resources.sh
+```
+
 Install JS dependencies:
 
 ```

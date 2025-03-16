@@ -35,7 +35,6 @@ function handle_msg(event) {
   let type = msg.shift();
   if (type === "callback") {
     let callback = msg.shift();
-    console.log("rpc callback:", callback, msg);
     if (rpc_callbacks[callback])
       rpc_callbacks[callback](...msg);
   }

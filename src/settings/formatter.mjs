@@ -20,16 +20,14 @@ const py_api = {
       stack = active_containers.containers.extruders[extruder_nr];
     else
       throw TypeError("gcode expression error: extruder_nr not found: " + extruder_nr);
-
-    return stack.resolve_py_expression(expression, true, stack.name) + "";
+    return stack.resolve_py_expression(expression, true, stack.name);
   }
 };
 
 export function format_gcode(gcode) {
+  //use the regex to get chunks from gcode
   let remaining_text = gcode;
   let chunks = [];
-
-  //use the regex to get chunks from gcode
   while (remaining_text.length > 0) {
     let match = instruction_regex.exec(remaining_text);
     if (match != null) {
@@ -44,7 +42,7 @@ export function format_gcode(gcode) {
     }
   }
 
-  //generate a python expression from those chunks
+  //generate a python script from those chunks
   let lines = [[0, `gcode = ""`]];
   let indent = 0;
   for (let chunk of chunks) {
@@ -54,7 +52,7 @@ export function format_gcode(gcode) {
     if (typeof chunk === "string")
       lines.push([indent, `gcode += ${JSON.stringify(chunk)}`]);
     else if (chunk.condition == null)
-      lines.push([indent, `gcode += resolve(${expression_str}, ${extruder_nr_str})`]);
+      lines.push([indent, `gcode += str(resolve(${expression_str}, ${extruder_nr_str}))`]);
     else if (chunk.condition === "if") {
       lines.push([indent, `if resolve(${expression_str}, ${extruder_nr_str}):`]);
       indent += 2;
@@ -71,9 +69,8 @@ export function format_gcode(gcode) {
   for (let [indent, line] of lines)
     python_str += " ".repeat(indent) + line + "\n";
   python_str += `print(json.dumps(gcode))`;
-  console.log(python_str);
 
-  //evaluate the python expression
+  //evaluate the python script
   return eval_py(python_str, "formatter", {}, false);
 }
 
