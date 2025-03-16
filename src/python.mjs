@@ -30,7 +30,7 @@ export function clean_globals(ctx) {
   );
 }
 
-export function eval_py(expression, ctx, vars = {}) {
+export function eval_py(expression, ctx, vars = {}, use_eval = true) {
   let ctx_name = `ctx_${ctx}`;
   if (!micropython.globals.get(ctx_name))
     micropython.runPython(`${ctx_name} = {}`);
@@ -43,7 +43,10 @@ export function eval_py(expression, ctx, vars = {}) {
 
   try {
     let expression_str = JSON.stringify(expression);
-    micropython.runPython(`print(json.dumps(eval(${expression_str}, ${ctx_name})))`);
+    if (use_eval)
+      micropython.runPython(`print(json.dumps(eval(${expression_str}, ${ctx_name})))`);
+    else
+      micropython.runPython(`exec(${expression_str}, ${ctx_name})`);
   }
   catch (py_error) {
     if (name_error_regex.test(py_error.message))

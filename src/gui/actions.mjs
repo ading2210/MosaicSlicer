@@ -8,6 +8,7 @@ import { rpc_callbacks } from "../engine/handler.mjs";
 import { sleep } from "./index.mjs";
 import { load_file, save_file } from "./file.mjs";
 import { active_containers } from "../settings/index.mjs";
+import { format_gcode } from "../settings/formatter.mjs";
 
 import { notify } from "./notifications.mjs";
 import { stl_file_name } from "./file.mjs";
@@ -55,11 +56,14 @@ slice_button.addEventListener("click", async () => {
   settings["extruder.0"]["mesh_position_x"] = models[Object.keys(models)[0]].mesh.position.x * 100;
   settings["extruder.0"]["mesh_position_y"] = models[Object.keys(models)[0]].mesh.position.y * 100;
 
+  settings["global"]["machine_start_gcode"] = format_gcode(settings["global"]["machine_start_gcode"]);
+  settings["global"]["machine_end_gcode"] = format_gcode(settings["global"]["machine_end_gcode"]);
+
   console.log("Starting slice with settings:", settings);
   let gcode_header = "";
   rpc_callbacks.gcode_header = (header) => {
     gcode_header = header;
-  }
+  };
 
   let gcode_bytes = await cura_engine.slice({
     stl: models[Object.keys(models)[0]].data, // TODO: Support multiple models
@@ -113,9 +117,9 @@ rpc_callbacks.slice_info = (info) => {
     let material_cross_section = Math.PI * Math.pow(material_diameter / 2, 2);
     let volume_cubic_cm = material_volume / 1000;
     total_length += (material_volume / material_cross_section) / 1000;
-    total_mass += (material_density * volume_cubic_cm);
+    total_mass += material_density * volume_cubic_cm;
   }
-  material_estimate.innerText = `${Math.round(total_mass)}g \u2022 ${total_length.toFixed(2)}m`
+  material_estimate.innerText = `${Math.round(total_mass)}g \u2022 ${total_length.toFixed(2)}m`;
 };
 
 // ---- File imports
