@@ -7,7 +7,7 @@
   "license": "AGPL-3.0-only",
   "scripts": {
     "build": "npx webpack",
-    "build:prod": "npx webpack --mode=production",
+    "build:prod": "npx webpack --mode=production --devtool=source-map",
     "dev": "npx webpack --watch"
   },
   "devDependencies": {

@@ -62,7 +62,6 @@ module.exports = [
       ]
     },
     mode: "development",
-    devtool: "eval-source-map",
     experiments: {
       topLevelAwait: true,
       outputModule: true

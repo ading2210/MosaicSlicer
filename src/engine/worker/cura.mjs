@@ -31,7 +31,7 @@ function slice_info_cb(info) {
   self.postMessage(["callback", "slice_info", info]);
 }
 function gcode_header_cb(gcode_b64) {
-  self.postMessage(["callback", "gcode_header", atob(gcode_b64)]);
+  self.postMessage(["callback", "gcode_header", gcode_b64]);
 }
 function engine_info_cb(engine_info) {
   self.postMessage(["callback", "engine_info", engine_info]);

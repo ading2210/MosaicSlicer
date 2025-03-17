@@ -1,6 +1,3 @@
-[submodule "CuraEngine"]
-	path = third_party/CuraEngine
-	url = https://github.com/Ultimaker/CuraEngine
 [submodule "Cura"]
 	path = third_party/Cura
 	url = https://github.com/Ultimaker/Cura
@@ -10,3 +7,6 @@
 [submodule "third_party/fdm_materials"]
 	path = third_party/fdm_materials
 	url = https://github.com/Ultimaker/fdm_materials
+[submodule "third_party/CuraEngine"]
+	path = third_party/CuraEngine
+	url = https://github.com/ading2210/CuraEngine
