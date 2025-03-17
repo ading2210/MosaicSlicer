@@ -1,4 +1,3 @@
-import "/public/index.html";
 import * as settings from "./settings/index.mjs";
 import * as engine from "./engine/index.mjs";
 import * as gui from "./gui/index.mjs";

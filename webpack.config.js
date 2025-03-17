@@ -1,6 +1,7 @@
 const path = require("path");
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = [
   {
@@ -13,7 +14,14 @@ module.exports = [
       },
       assetModuleFilename: "wasm/[name][ext]"
     },
-    plugins: [new MiniCssExtractPlugin()],
+    plugins: [
+      new MiniCssExtractPlugin(),
+      new CopyPlugin({
+        patterns: [
+          {from: "public", to: "."}
+        ]
+      })
+    ],
     resolve: {
       fallback: {
         "url": false,
@@ -27,13 +35,6 @@ module.exports = [
     },
     module: {
       rules: [
-        {
-          test: /\.html$/i,
-          loader: "file-loader",
-          options: {
-            name: "[name].[ext]"
-          }
-        },
         {
           test: /\.wasm/,
           type: "asset/resource"

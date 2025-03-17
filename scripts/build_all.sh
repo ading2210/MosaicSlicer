@@ -12,9 +12,6 @@ scripts/bundle_resources.sh
 npm i
 npm run build:prod
 
-#copy extra files
-cp public/404.html dist/404.html
-
 #get list of subdirs to index
 dist_subdirs="$(find dist -mindepth 1 -type d)"
 http_port=5002
