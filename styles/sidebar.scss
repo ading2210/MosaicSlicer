@@ -88,17 +88,18 @@ input[type="number"] {
 
     padding: 0.4rem;
 
-    cura-icon {
-      height: 1.5rem;
-      width: 1.5rem;
-    }
-
     .left {
       display: flex;
       align-items: center;
       gap: 0.5rem;
 
       font-weight: 500;
+      
+      cura-icon {
+        transition: 0.1s ease-in-out;
+        height: 1.5rem;
+        width: 1.5rem;
+      }
     }
 
     .right {
@@ -106,8 +107,11 @@ input[type="number"] {
       align-items: center;
       gap: 0.2rem;
 
-      ion-icon {
+      cura-icon {
         transition: 0.1s ease-in-out;
+        margin: 0.25rem;
+        height: 1rem;
+        width: 1rem;
       }
     }
 
@@ -129,7 +133,7 @@ input[type="number"] {
 
   .section-title-container {
     .right {
-      ion-icon {
+      cura-icon {
         transform: rotate(90deg);
       }
     }

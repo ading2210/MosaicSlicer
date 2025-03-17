@@ -2,6 +2,12 @@
 
 ## Building
 
+Make sure you have all submodules cloned:
+
+```
+$ git submodule update --init --progress
+```
+
 Compile CuraEngine:
 
 ```

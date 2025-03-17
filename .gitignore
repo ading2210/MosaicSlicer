@@ -1,5 +1,9 @@
 /.venv
 
+#i know this is bad practice, but if package-lock.json is included, some dependencies fail to install
+#https://github.com/npm/cli/issues/4828
+/package-lock.json
+
 #https://github.com/github/gitignore/blob/main/Node.gitignore
 
 # Logs

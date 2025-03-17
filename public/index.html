@@ -32,20 +32,20 @@
           <div id="file-div">
             <input type="file" id="stl-file" accept=".stl">
             <label for="stl-file" id="file-label">
-              <ion-icon name="folder-outline"></ion-icon>
+              <cura-icon icon-name="ionicons_folder_outline"></cura-icon>
             </label>
           </div>
         </div>
         <div id="controls">
           <div class="control" id="movement-button">
-            <ion-icon name="move-outline" title="Move"></ion-icon>
+            <cura-icon icon-name="ionicons_move_outline" title="Move"></cura-icon>
           </div>
           <div class="control" id="rotate-button">
-            <ion-icon name="reload-outline" title="Rotate"></ion-icon>
+            <cura-icon icon-name="ionicons_reload_outline" title="Rotate"></cura-icon>
           </div>
 
           <div class="control" id="scale-button">
-            <ion-icon name="resize-outline" title="Scale"></ion-icon>
+            <cura-icon icon-name="ionicons_resize_outline" title="Scale"></cura-icon>
           </div>
         </div>
 
@@ -98,7 +98,7 @@
                     <span slot="section-title">Quality</span>
                   </span>
                   <span class="right">
-                    <ion-icon name="chevron-down-outline" class="section-status-icon"></ion-icon>
+                    <cura-icon icon-name="ionicons_chevron_down_outline" class="section-status-icon"></cura-icon>
                   </span>
                 </span>
                 <div class="settings-group" slot="settings-group"></div>
@@ -126,7 +126,7 @@
             <span class="title-bar">
               <span class="title" slot="title">Title Here</span>
               <span class="close-icon">
-                <ion-icon name="close-outline" slot="close"></ion-icon>
+                <cura-icon name="close_outline" slot="close"></cura-icon>
               </span>
             </span>
             <span class="description" slot="description">Description Here</span>
@@ -144,8 +144,5 @@
         <div class="flex-spacer"></div>
       </div>
     </div>
-
-    <!-- todo: don't load this from a third party cdn -->
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" defer></script>
   </body>
 </html>

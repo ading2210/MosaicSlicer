@@ -23,6 +23,13 @@ import DocumentFilled from "cura_icons/default/DocumentFilled.svg";
 //icons for slice button gui
 import Clock from "cura_icons/default/Clock.svg";
 
+//general icons from ionicons
+import ionicons_folder_outline from "ionicons/dist/svg/folder-outline.svg";
+import ionicons_resize_outline from "ionicons/dist/svg/resize-outline.svg";
+import ionicons_move_outline from "ionicons/dist/svg/move-outline.svg";
+import ionicons_reload_outline from "ionicons/dist/svg/reload-outline.svg";
+import ionicons_chevron_down_outline from "ionicons/dist/svg/chevron-down-outline.svg";
+
 const icons_raw = {
   Printer,
   PrintQuality,
@@ -41,7 +48,13 @@ const icons_raw = {
   Experiment,
   DocumentFilled,
 
-  Clock
+  Clock,
+
+  ionicons_folder_outline,
+  ionicons_resize_outline,
+  ionicons_move_outline,
+  ionicons_reload_outline,
+  ionicons_chevron_down_outline
 };
 export const icons = {};
 const parser = new DOMParser();

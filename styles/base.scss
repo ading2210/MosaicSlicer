@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import "@fontsource/inter/400.css";
 
 * {
   box-sizing: border-box;
@@ -74,6 +74,7 @@ input {
 /* svg icons */
 cura-icon {
   color: white;
+  display: block;
   svg {
     height: 100%;
   }

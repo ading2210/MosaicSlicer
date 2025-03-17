@@ -12,7 +12,15 @@ module.exports = [
       library: {
         type: "module"
       },
-      assetModuleFilename: "wasm/[name][ext]"
+      assetModuleFilename: (path_data) => {
+        let file_type = path_data.filename.split(".").at(-1);
+        let file_path = "misc";
+        if (["js", "mjs", "wasm"].includes(file_type))
+          file_path = "js";
+        else if (["woff", "woff2"].includes(file_type))
+          file_path = "fonts";
+        return `${file_path}/[name].[hash][ext][query]`;
+      }
     },
     plugins: [
       new MiniCssExtractPlugin(),

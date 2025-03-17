@@ -1,0 +1,22 @@
+{
+  "name": "Web Slicer",
+  "description": "",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "permissions": ["scripting", "tabs"],
+  "background": {
+    "service_worker": "extension/background.js"
+  },
+  "action": {
+    "default_title": "Open Web Slicer"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.printables.com/*"],
+      "js": ["extension/content.js"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval';"
+  }
+}

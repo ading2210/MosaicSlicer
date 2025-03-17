@@ -122,8 +122,9 @@ body, html {
       margin: 0;
       padding: 0;
 
-      ion-icon {
-        font-size: 1.75rem;
+      cura-icon {
+        width: 1.75rem;
+        height: 1.75rem;
 
         &:hover {
           color: var(--primary);
@@ -273,7 +274,7 @@ body, html {
 
       width: 100%;
 
-      ion-icon {
+      cura-icon {
         color: var(--grey);
 
         &:hover {
