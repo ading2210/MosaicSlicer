@@ -1,5 +1,6 @@
 // Three.js setup for STL viewer and GCode viewer
 import * as THREE from "three";
+import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 export const viewport = document.getElementById("viewer");
@@ -27,6 +28,11 @@ renderer.setSize(view_width, view_height);
 
 // ---- Controls
 export const controls = new OrbitControls(camera, renderer.domElement);
+
+export const tcontrols = new TransformControls(camera, renderer.domElement);
+tcontrols.addEventListener("dragging-changed", function(event) {
+  controls.enabled = !event.value;
+});
 
 // ---- Three.js Updating and Rendering
 function resize() {
