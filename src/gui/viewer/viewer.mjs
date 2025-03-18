@@ -54,7 +54,7 @@ export function start_viewer() {
         throw new TypeError("Build plate model is of unsupported type; Valid types are '.stl' or '.3mf'");
 
       buildplate_mesh.scale.set(1, 1, 1);
-      buildplate_mesh.rotation.y = (-Math.PI * 1)
+      buildplate_mesh.rotation.y = -Math.PI * 1;
 
       renderer.scene.add(buildplate_mesh);
 
@@ -63,9 +63,8 @@ export function start_viewer() {
       const size = new THREE.Vector3();
       buildplate_mesh.geometry.boundingBox.getSize(size);
 
-      renderer.arrow_helper.position.x = size.x / 2
-      renderer.arrow_helper.position.z = -size.z / 2
-
+      renderer.arrow_helper.position.x = size.x / 2;
+      renderer.arrow_helper.position.z = -size.z / 2;
 
       const rect = new THREE.BoxGeometry(size.x, size.y * 0.5, size.z);
 

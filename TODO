@@ -5,7 +5,7 @@ UI:
   [x] Styles
   [ ] Save settings to object
 [ ] Viewer
-  [ ] Allow moving/scaling/rotating objects
+  [x] Allow moving/scaling/rotating objects
   [ ] Render printer build volume
   [ ] When importing STLs, center them
   [ ] Merge all objects into single STL for slicing
@@ -36,6 +36,6 @@ Functionality:
 [ ] Prusa Connect
 
 Web Extension:
-[ ] Manifest and Packaging
+[x] Manifest and Packaging
 [ ] Userscripts
 [ ] Page for displaying saved STLs and importing them
