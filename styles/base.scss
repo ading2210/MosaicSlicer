@@ -1,4 +1,5 @@
-@import "@fontsource/inter/400.css";
+@import "@fontsource-variable/inter/opsz.css";
+@import "@fontsource-variable/inter/opsz-italic.css";
 
 * {
   box-sizing: border-box;
@@ -21,7 +22,7 @@
   --tab-height: 2.25rem;
 
   font-size: 1rem;
-  font-family: "Inter", sans-serif;
+  font-family: "Inter Variable", sans-serif;
   color-scheme: dark;
 }
 

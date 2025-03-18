@@ -7,7 +7,7 @@
   "license": "AGPL-3.0-only",
   "scripts": {
     "build": "npx webpack",
-    "build:prod": "npx webpack --mode=production --devtool=source-map",
+    "build:prod": "npx webpack --mode=production",
     "dev": "npx webpack --watch"
   },
   "devDependencies": {
@@ -23,7 +23,7 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "@fontsource/inter": "^5.2.5",
+    "@fontsource-variable/inter": "^5.2.5",
     "@micropython/micropython-webassembly-pyscript": "^1.24.1",
     "fuse.js": "^7.1.0",
     "ini": "^5.0.0",
