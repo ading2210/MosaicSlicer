@@ -9,16 +9,24 @@ export var view_height = viewport.clientHeight;
 
 // ---- Scene
 export const scene = new THREE.Scene();
-scene.add(new THREE.AxesHelper(5)); // TODO: Use build-plate model
+
+export const arrow_helper = new THREE.AxesHelper(15);
+arrow_helper.position.y = 0.1
+arrow_helper.rotation.x = 270 * (Math.PI / 180)
+arrow_helper.rotation.z = 180 * (Math.PI / 180)
+arrow_helper.rotation.y = 0 *(Math.PI / 180)
+
+
+scene.add(arrow_helper); // TODO: Use build-plate model
 
 // ---- Camera
 export const camera = new THREE.PerspectiveCamera(
   75,
   view_width / view_height
 );
-camera.position.x = 100;
+camera.position.x = -150;
 camera.position.y = 100;
-camera.position.z = 100;
+camera.position.z = -150;
 
 // ---- Renderer
 export const renderer = new THREE.WebGLRenderer({
