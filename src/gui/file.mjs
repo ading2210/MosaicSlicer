@@ -1,7 +1,7 @@
 /**
  * File I/O
  */
-import { load_stl } from "./viewer/viewer.mjs";
+import { load_model } from "./viewer/model_viewer.mjs";
 
 export let stl_file_name = null;
 
@@ -16,7 +16,7 @@ export function load_file(file) {
   reader.onload = (e) => {
     const array_buffer = reader.result;
     stl_file_name = reader.file_name;
-    load_stl(array_buffer);
+    load_model(array_buffer, stl_file_name.endsWith(".stl") ? "stl" : "3mf");
   };
 
   reader.readAsArrayBuffer(file);

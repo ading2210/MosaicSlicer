@@ -1,6 +1,5 @@
 // Three.js setup for STL viewer and GCode viewer
 import * as THREE from "three";
-import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 export const viewport = document.getElementById("viewer");
@@ -17,22 +16,21 @@ export const camera = new THREE.PerspectiveCamera(
   75,
   view_width / view_height
 );
-camera.position.x = 1;
-camera.position.y = 1;
-camera.position.z = 1;
+camera.position.x = 100;
+camera.position.y = 100;
+camera.position.z = 100;
 
 // ---- Renderer
-const renderer = new THREE.WebGLRenderer({antialias: true, canvas: document.getElementById("stl-viewer"), alpha: true});
+export const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+  canvas: document.getElementById("stl-viewer"),
+  alpha: true
+});
 renderer.setClearColor(0xffffff, 0);
 renderer.setSize(view_width, view_height);
 
 // ---- Controls
 export const controls = new OrbitControls(camera, renderer.domElement);
-
-export const tcontrols = new TransformControls(camera, renderer.domElement);
-tcontrols.addEventListener("dragging-changed", function(event) {
-  controls.enabled = !event.value;
-});
 
 // ---- Three.js Updating and Rendering
 function resize() {

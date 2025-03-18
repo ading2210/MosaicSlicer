@@ -1,7 +1,7 @@
 /**
  * Listeners for actions (eg. slice button, file input, etc)
  */
-import { models } from "./viewer/viewer.mjs";
+import { models } from "./viewer/model_viewer.mjs";
 import { CuraEngine } from "../engine/index.mjs";
 import { rpc_callbacks } from "../engine/handler.mjs";
 
@@ -53,8 +53,8 @@ slice_button.addEventListener("click", async () => {
   settings["/tmp/input/model.stl"] = {
     extruder_nr: "0"
   };
-  settings["extruder.0"]["mesh_position_x"] = models[Object.keys(models)[0]].mesh.position.x * 100;
-  settings["extruder.0"]["mesh_position_y"] = models[Object.keys(models)[0]].mesh.position.y * 100;
+  settings["extruder.0"]["mesh_position_x"] = models[Object.keys(models)[0]].mesh.position.x;
+  settings["extruder.0"]["mesh_position_y"] = models[Object.keys(models)[0]].mesh.position.y;
 
   settings["global"]["machine_start_gcode"] = format_gcode(settings["global"]["machine_start_gcode"]);
   settings["global"]["machine_end_gcode"] = format_gcode(settings["global"]["machine_end_gcode"]);
@@ -127,7 +127,7 @@ file_input.addEventListener("change", (event) => {
   const file = event.target.files[0];
 
   if (file) {
-    if (file.name.split(".").pop() == "stl")
+    if (file.name.split(".").pop() in ["stl", "3mf"])
       load_file(file);
   }
 });
@@ -150,7 +150,7 @@ drop_zone.addEventListener("drop", (event) => {
   const file = event.dataTransfer.files[0];
 
   if (file) {
-    if (file.name.split(".").pop() == "stl")
+    if (["stl", "3mf"].includes(file.name.split(".").pop()))
       load_file(file);
   }
 });
