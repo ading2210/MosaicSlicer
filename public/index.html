@@ -12,9 +12,9 @@
   <body>
     <div id="tab-strip">
       <h1>Web Slicer</h1>
-      <a class="tab selected">Prepare</a>
-      <a class="tab">Preview</a>
-      <a class="tab">Settings</a>
+      <a id="prepare-tab-button" class="tab">Prepare</a>
+      <a id="preview-tab-button" class="tab">Preview</a>
+      <a id="settings-tab-button" class="tab">Settings</a>
       <div class="flex-spacer"></div>
       <a class="info-link" href="https://github.com/ading2210/web-slicer" target="_blank">
         About
@@ -24,7 +24,7 @@
       </a>
     </div>
 
-    <div id="main-tab">
+    <div id="main-tab" class="tab-content">
       <div id="viewer">
         <canvas id="stl-viewer"></canvas>
 
@@ -194,5 +194,7 @@
         <div class="flex-spacer"></div>
       </div>
     </div>
+
+    <div id="settings-tab" class="tab-content"></div>
   </body>
 </html>

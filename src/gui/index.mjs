@@ -22,9 +22,9 @@ export function sleep(ms) {
 }
 
 export async function start_gui() {
-  start_viewer();
   load_sidebar();
   load_options();
+  start_viewer();
 
   //hardcoded sleeps are bad practice usually,
   //but in this case there are some layout shifts with the three.js canvas that need to be hidden

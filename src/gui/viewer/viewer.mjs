@@ -34,7 +34,6 @@ const buildplate_shell_material = new THREE.MeshPhysicalMaterial({
 
 export function start_viewer() {
   renderer.animate();
-
   renderer.scene.add(spotLight);
   renderer.scene.add(ambientLight);
 
@@ -71,21 +70,23 @@ export function start_viewer() {
       renderer.scene.add(shell_mesh);
 
       // ---- Build Volume Outline
-      let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children
-
-      console.log(machine_settings.machine_width.default_value, machine_settings.machine_height.default_value, machine_settings.machine_width.default_value)
-
-      let build_volume = new THREE.BoxGeometry(machine_settings.machine_width.default_value, machine_settings.machine_height.default_value, machine_settings.machine_width.default_value)
+      let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children;
+      let build_volume = new THREE.BoxGeometry(
+        machine_settings.machine_width.default_value,
+        machine_settings.machine_height.default_value,
+        machine_settings.machine_width.default_value
+      );
       var geo = new THREE.EdgesGeometry(build_volume); // or WireframeGeometry( geometry )
-      var mat = new THREE.LineBasicMaterial({ color: 0x1a5f5a, linewidth: 0.5 });
+      var mat = new THREE.LineBasicMaterial({color: 0x1a5f5a, linewidth: 0.5});
       var build_frame = new THREE.LineSegments(geo, mat);
-      build_frame.position.y += machine_settings.machine_height.default_value / 2
-      renderer.scene.add(build_frame)
+      build_frame.position.y += machine_settings.machine_height.default_value / 2;
+      renderer.scene.add(build_frame);
 
       // TODO: doesn't work for non-square
-      const gridHelper = new THREE.GridHelper( machine_settings.machine_width.default_value, machine_settings.machine_width.default_value / 2 );
-      renderer.scene.add( gridHelper );
-      
-
+      const gridHelper = new THREE.GridHelper(
+        machine_settings.machine_width.default_value,
+        machine_settings.machine_width.default_value / 2
+      );
+      renderer.scene.add(gridHelper);
     });
 }

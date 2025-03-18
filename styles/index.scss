@@ -36,7 +36,7 @@ body, html {
     background-color: var(--background-2);
     clip-path: polygon(0.4rem 0%, calc(100% - 0.4rem) 0%, 100% 100%, 0% 100%);
   }
-  .tab.selected {
+  .tab[data-active="true"] {
     background-color: var(--grey-2);
   }
 
@@ -51,10 +51,13 @@ body, html {
   }
 }
 
-#main-tab {
+.tab-content {
   display: flex;
   width: 100%;
   flex-grow: 1;
+}
+.tab-content[data-active="false"] {
+  display: none;
 }
 
 #loading {
