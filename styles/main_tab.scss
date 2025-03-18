@@ -35,6 +35,7 @@
     border-radius: 1.5rem;
 
     transition: 0.1s;
+    cursor: pointer;
 
     &:hover {
       background-color: var(--grey-2);
@@ -58,7 +59,6 @@
     align-self: self-start;
     background-color: var(--background-2);
     border: 1px var(--grey-2) solid;
-    padding: 0.5rem;
   }
 
   button {
@@ -69,10 +69,25 @@
     display: flex;
     flex-direction: column;
 
-    & > :first-child {
-      height: 1.75rem;
+    .options-button-clickable {
+      height: 2.75rem;
       display: flex;
       align-items: center;
+      padding: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+    }
+    .options-button-clickable:hover {
+      background-color: var(--grey-2);
+    }
+
+    .options-dropdown {
+      display: flex;
+      flex-direction: column;
+      padding: 0.5rem;
+    }
+    .options-dropdown[data-hidden="true"] {
+      display: none;
     }
 
     cura-icon[icon-name="ionicons_chevron_down_outline"] {
@@ -89,14 +104,15 @@
     #file-label {
       margin: 0;
       padding: 0;
+      cursor: pointer;
 
       cura-icon {
-        width: 1.75rem;
-        height: 1.75rem;
-
-        &:hover {
-          color: var(--primary);
-        }
+        padding: 0.5rem;
+        width: 2.75rem;
+        height: 2.75rem;
+      }
+      cura-icon:hover {
+        background-color: var(--grey-2);
       }
     }
   }
@@ -106,16 +122,11 @@
       font-size: 0.9rem;
     }
 
-    #printers-dropdown {
-      display: none;
-      flex-direction: column;
-
-      #manage-printers-div {
-        display: grid;
-        width: 100%;
-        grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-        grid-gap: 0.5rem;
-      }
+    #manage-printers-div {
+      display: grid;
+      width: 100%;
+      grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+      grid-gap: 0.5rem;
     }
   }
 

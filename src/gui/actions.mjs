@@ -6,6 +6,8 @@ import { CuraEngine } from "../engine/index.mjs";
 import { rpc_callbacks } from "../engine/handler.mjs";
 
 import { sleep } from "./index.mjs";
+import { sections } from "./sidebar.mjs";
+import { update_sections, update_values } from "./settings.mjs";
 import { load_file, save_file } from "./file.mjs";
 import { active_containers } from "../settings/index.mjs";
 import { format_gcode } from "../settings/formatter.mjs";
@@ -35,6 +37,14 @@ export function set_active_state(active_div) {
   for (let div of [slice_button_div, slice_progress_div, slice_export_div])
     div.dataset.active = false;
   active_div.dataset.active = true;
+}
+
+export function update_all(extruder_stack) {
+  update_values(sections, extruder_stack);
+  update_sections(sections, extruder_stack);
+  set_active_state(slice_button_div);
+  if (cura_engine.active)
+    cura_engine.cancel();
 }
 
 // ---- Slice

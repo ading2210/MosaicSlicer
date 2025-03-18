@@ -46,15 +46,15 @@ export function filter_profiles(profiles, filters = {}) {
       filtered[profile.id] = profile;
   }
 
+  if (Object.keys(filtered).length === 0)
+    filtered = profiles;
+
   let max_priority = 0;
-  for (let profile of Object.values(profiles))
+  for (let profile of Object.values(filtered))
     max_priority = Math.max(max_priority, profile.priority);
-  for (let profile of Object.values(profiles)) {
+  for (let profile of Object.values(filtered)) {
     if (profile.priority < max_priority)
       delete filtered[profile.id];
   }
-
-  if (Object.keys(filtered).length > 0)
-    return filtered;
-  return profiles;
+  return filtered;
 }

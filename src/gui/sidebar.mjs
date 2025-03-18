@@ -1,8 +1,9 @@
 import { active_containers } from "../settings/index.mjs";
 import { create_group_element, update_sections, update_values } from "./settings.mjs";
 import { fuse } from "./search.mjs";
+import { update_all } from "./actions.mjs";
 
-const sections = document.getElementById("sections");
+export const sections = document.getElementById("sections");
 const section_template = document.getElementById("section-template");
 const profile_selector = document.getElementById("profile-selector");
 
@@ -76,6 +77,5 @@ function quality_changed(extruder_stack, quality_type) {
   let new_global_quality = global_stack.get_quality(quality_type);
   extruder_stack.active_profiles.quality = new_extruder_quality;
   global_stack.active_profiles.quality = new_global_quality;
-  update_values(sections, extruder_stack);
-  update_sections(sections, extruder_stack);
+  update_all(extruder_stack);
 }

@@ -37,12 +37,12 @@
           </div>
 
           <div id="printers-div" class="options-button">
-            <div id="printer-button">
+            <div id="printer-button" class="options-button-clickable">
               <span id="printer-name"></span>
               <div class="flex-spacer"></div>
               <cura-icon icon-name="ionicons_chevron_down_outline"></cura-icon>
             </div>
-            <div id="printers-dropdown">
+            <div id="printers-dropdown" class="options-dropdown">
               <ul id="printers-list">
                 <template id="printer-item-template"></template>
               </ul>
@@ -54,7 +54,7 @@
           </div>
 
           <div id="extruders-div" class="options-button">
-            <div id="extruders-button" class="flex-spacer">
+            <div id="extruders-button" class="options-button-clickable">
               <cura-icon icon-name="Spool"></cura-icon>
               <div>
                 <span id="filament-name"></span>
@@ -63,7 +63,26 @@
               <div class="flex-spacer"></div>
               <cura-icon icon-name="ionicons_chevron_down_outline"></cura-icon>
             </div>
-            <div id="extruders-dropdown"></div>
+            <div id="extruders-dropdown" class="setting options-dropdown">
+              <div class="setting-bar">
+                <span class="setting-name">Material Brand</span>
+                <span class="setting-value">
+                  <select id="material-brand-select"></select>
+                </span>
+              </div>
+              <div class="setting-bar">
+                <span class="setting-name">Material Type</span>
+                <span class="setting-value">
+                  <select id="material-select"></select>
+                </span>
+              </div>
+              <div class="setting-bar">
+                <span class="setting-name">Nozzle Size</span>
+                <span class="setting-value">
+                  <select id="nozzle-select"></select>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 

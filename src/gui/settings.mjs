@@ -1,6 +1,6 @@
 import { active_containers } from "../settings/index.mjs";
-import { cura_engine, set_active_state, slice_button_div } from "./actions.mjs";
-import { sleep } from "./index.mjs";
+import { cura_engine } from "./actions.mjs";
+import { update_all } from "./actions.mjs";
 
 export const setting_template = document.getElementById("setting-template");
 
@@ -72,7 +72,6 @@ function setting_changed(container_stack, sections, setting, event) {
   this.timeout = setTimeout(async () => {
     if (cura_engine.active)
       cura_engine.cancel();
-    set_active_state(slice_button_div);
 
     let target_profile = active_containers.containers.global.active_profiles.user;
     if (setting.settable_per_extruder)
@@ -88,12 +87,7 @@ function setting_changed(container_stack, sections, setting, event) {
     if (value === container_stack.resolve_setting(setting.id))
       return;
     target_profile.values[setting.id] = value;
-
-    sections.style.filter = "blur(1px)";
-    await sleep(50);
-    update_values(sections, container_stack);
-    update_sections(sections, container_stack);
-    sections.style.filter = "none";
+    update_all(container_stack);
   }, 250);
 }
 

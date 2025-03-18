@@ -14,14 +14,14 @@ export class ContainerStack {
     this.parent_meta = this.parent.definitions.printer.metadata;
     this.type = this.definition.metadata.type;
 
-    this.profile_order = ["user", "custom", "intent", "quality", "material", "nozzle"];
+    this.profile_order = ["user", "custom", "intent", "quality", "material", "variant"];
     this.active_profiles = {
       user: {values: {}},
       custom: null,
       intent: null,
       quality: null,
       material: null,
-      nozzle: null
+      variant: null
     };
     this.filters = {
       material: undefined,
@@ -220,7 +220,7 @@ export class ContainerStack {
     this.active_profiles.material = material_to_profile(material, this.parent.printer_id);
   }
   set_quality(quality_id = null) {
-    let quality = this.profiles[quality_id];
+    let quality = this.profiles.quality[quality_id];
     if (!quality_id)
       quality = this.preferred_quality();
     this.active_profiles.quality = quality;
@@ -230,7 +230,7 @@ export class ContainerStack {
       this.filters.quality_type = null;
   }
   set_variant(variant_id = null) {
-    let variant = this.profiles[variant_id];
+    let variant = this.profiles.variant[variant_id];
     if (!variant_id)
       variant = this.preferred_variant();
     this.active_profiles.variant = variant;
