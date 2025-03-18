@@ -126,9 +126,8 @@ rpc_callbacks.slice_info = (info) => {
 file_input.addEventListener("change", (event) => {
   const file = event.target.files[0];
 
-  if (file) {
+  if (file)
     load_file(file);
-  }
 });
 
 //listeners for file drop
