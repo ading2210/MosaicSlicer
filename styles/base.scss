@@ -30,6 +30,11 @@ body,
 html {
   height: 100vh;
   width: 100vw;
+
+  //work around a bug in chromium's injected stylesheet
+  //https://stackoverflow.com/questions/71480433
+  font-size: inherit;
+  font-family: inherit;
 }
 
 body {
