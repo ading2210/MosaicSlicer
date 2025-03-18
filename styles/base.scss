@@ -51,14 +51,14 @@ button {
   color: var(--text);
 
   background-color: transparent;
+  border: 2px solid var(--text);
+  padding: 0.25rem;
 
-  border: 3px solid var(--text);
-
-  padding: 0.25rem 2rem;
-}
-
-.flex-spacer {
-  flex-grow: 1;
+  &:hover {
+    border-color: var(--primary);
+    background-color: var(--primary);
+    color: var(--background);
+  }
 }
 
 /* Inputs */
@@ -84,4 +84,8 @@ cura-icon {
   svg {
     height: 100%;
   }
+}
+
+.flex-spacer {
+  flex-grow: 1;
 }

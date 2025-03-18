@@ -127,8 +127,7 @@ file_input.addEventListener("change", (event) => {
   const file = event.target.files[0];
 
   if (file) {
-    if (file.name.split(".").pop() in ["stl", "3mf"])
-      load_file(file);
+    load_file(file);
   }
 });
 

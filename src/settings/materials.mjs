@@ -167,7 +167,7 @@ export function deserialize_xml(material_xml) {
       common_setting_values[__material_settings_setting_map[key]] = setting_entry(entry);
     else if (key in __unmapped_settings) {
       if (key == "hardware compatible")
-        common_compatibility = entry.textContent in ["yes", "unknown"];
+        common_compatibility = ["yes", "unknown"].includes(entry.textContent);
     }
     else if (__keep_serialized_settings.includes(key)) {
       metadata.reserialize_settings[key] = entry.textContent;

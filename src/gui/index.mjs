@@ -1,14 +1,19 @@
 import "/styles/index.scss";
 
-export * as buttons from "./actions.mjs";
+export * as actions from "./actions.mjs";
 export * as file from "./file.mjs";
-export * as renderer from "./viewer/renderer.mjs";
-export * as siderbar from "./sidebar.mjs";
-export * as viewer from "./viewer/viewer.mjs";
 export * as icons from "./icons.mjs";
+export * as notifications from "./notifications.mjs";
+export * as options from "./options.mjs";
+export * as search from "./search.mjs";
+export * as settings from "./settings.mjs";
+export * as sidebar from "./sidebar.mjs";
+export * as tabs from "./tabs.mjs";
+export * as viewer from "./viewer/viewer.mjs";
 
 import { load_sidebar } from "./sidebar.mjs";
 import { start_viewer } from "./viewer/viewer.mjs";
+import { load_options } from "./options.mjs";
 
 export function sleep(ms) {
   return new Promise((resolve) => {
@@ -19,6 +24,7 @@ export function sleep(ms) {
 export async function start_gui() {
   start_viewer();
   load_sidebar();
+  load_options();
 
   //hardcoded sleeps are bad practice usually,
   //but in this case there are some layout shifts with the three.js canvas that need to be hidden

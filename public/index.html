@@ -35,7 +35,38 @@
               <cura-icon icon-name="ionicons_folder_outline"></cura-icon>
             </label>
           </div>
+
+          <div id="printers-div" class="options-button">
+            <div id="printer-button">
+              <span id="printer-name"></span>
+              <div class="flex-spacer"></div>
+              <cura-icon icon-name="ionicons_chevron_down_outline"></cura-icon>
+            </div>
+            <div id="printers-dropdown">
+              <ul id="printers-list">
+                <template id="printer-item-template"></template>
+              </ul>
+              <div id="manage-printers-div">
+                <button id="add-printer-button">Add Printer</button>
+                <button id="manage-printers-button">Manage Printers</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="extruders-div" class="options-button">
+            <div id="extruders-button" class="flex-spacer">
+              <cura-icon icon-name="Spool"></cura-icon>
+              <div>
+                <span id="filament-name"></span>
+                <span id="nozzle-name"></span>
+              </div>
+              <div class="flex-spacer"></div>
+              <cura-icon icon-name="ionicons_chevron_down_outline"></cura-icon>
+            </div>
+            <div id="extruders-dropdown"></div>
+          </div>
         </div>
+
         <div id="controls">
           <div class="control" id="movement-button">
             <cura-icon icon-name="ionicons_move_outline" title="Move"></cura-icon>

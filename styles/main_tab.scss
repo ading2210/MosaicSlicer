@@ -45,19 +45,43 @@
 #options-bar {
   position: absolute;
   left: 0rem;
+  right: var(--sidebar-width);
   top: var(--tab-height);
 
-  padding: 0.25rem;
+  padding: 0.5rem;
 
-  display: flex;
-  gap: 1rem;
-  align-items: center;
+  display: grid;
+  grid-template-columns: auto 1fr 1.5fr;
+  grid-gap: 0.5rem;
 
-  #file-div {
+  & > div {
+    align-self: self-start;
     background-color: var(--background-2);
     border: 1px var(--grey-2) solid;
-    padding: 0.625rem;
+    padding: 0.5rem;
+  }
 
+  button {
+    font-size: 0.8rem;
+  }
+
+  .options-button {
+    display: flex;
+    flex-direction: column;
+
+    & > :first-child {
+      height: 1.75rem;
+      display: flex;
+      align-items: center;
+    }
+
+    cura-icon[icon-name="ionicons_chevron_down_outline"] {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  #file-div {
     #stl-file {
       display: none;
     }
@@ -73,6 +97,42 @@
         &:hover {
           color: var(--primary);
         }
+      }
+    }
+  }
+
+  #printers-div {
+    #printer-button {
+      font-size: 0.9rem;
+    }
+
+    #printers-dropdown {
+      display: none;
+      flex-direction: column;
+
+      #manage-printers-div {
+        display: grid;
+        width: 100%;
+        grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+        grid-gap: 0.5rem;
+      }
+    }
+  }
+
+  #extruders-div {
+    #extruders-button {
+      gap: 0.5rem;
+
+      cura-icon[icon-name="Spool"] {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+      div {
+        display: flex;
+        flex-direction: column;
+      }
+      span {
+        font-size: 0.8rem;
       }
     }
   }
@@ -109,12 +169,6 @@
 
     button {
       font-size: 1rem;
-
-      &:hover {
-        border-color: var(--primary);
-        background-color: var(--primary);
-        color: var(--background);
-      }
     }
 
     #slice-progress-container {
