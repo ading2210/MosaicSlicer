@@ -1,5 +1,8 @@
 // Three.js setup for STL viewer and GCode viewer
 import * as THREE from "three";
+import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
+import { LineMaterial, } from "three/examples/jsm/lines/LineMaterial.js";
+import { Line2 } from "three/examples/jsm/lines/Line2.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 export const viewport = document.getElementById("viewer");
@@ -10,7 +13,44 @@ export var view_height = viewport.clientHeight;
 // ---- Scene
 export const scene = new THREE.Scene();
 
-export const arrow_helper = new THREE.AxesHelper(15);
+
+export class ThickAxesHelper extends Line2 {
+  constructor(size = 1, linewidth = 6) {
+    const vertices = [
+      0, 0, 0, size, 0, 0,
+      0, 0, 0, 0, size, 0,
+      0, 0, 0, 0, 0, size
+    ];
+
+    const colors = [
+      1, 0, 0, 1, 0, 0,
+      0, 1, 0, 0, 1, 0,
+      0, 0, 1, 0, 0, 1
+    ]
+
+    const geometry = new LineGeometry();
+    geometry.setPositions(vertices)
+    geometry.setColors(colors);
+
+    const material = new LineMaterial({
+      linewidth,
+      vertexColors: true
+    });
+    material.resolution.set(window.innerWidth, window.innerHeight); // resolution of the viewport
+    material.worldUnits = false;
+
+    super(geometry, material);
+    this.type = "ThickAxesHelper";
+    this.computeLineDistances()
+  }
+
+  dispose() {
+    this.geometry.dispose();
+    this.material.dispose();
+  }
+}
+
+export const arrow_helper = new ThickAxesHelper(15);
 arrow_helper.rotation.x = -90 * (Math.PI / 180);
 scene.add(arrow_helper);
 

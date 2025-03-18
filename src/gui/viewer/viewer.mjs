@@ -62,12 +62,30 @@ export function start_viewer() {
       const size = new THREE.Vector3();
       buildplate_mesh.geometry.boundingBox.getSize(size);
 
-      renderer.arrow_helper.position.set(-size.x / 2, 0, size.z / 2);
+      renderer.arrow_helper.position.set(-size.x / 2, 0.1, size.z / 2);
 
       const rect = new THREE.BoxGeometry(size.x, size.y * 0.5, size.z);
 
       let shell_mesh = new THREE.Mesh(rect, buildplate_shell_material);
 
       renderer.scene.add(shell_mesh);
+
+      // ---- Build Volume Outline
+      let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children
+
+      console.log(machine_settings.machine_width.default_value, machine_settings.machine_height.default_value, machine_settings.machine_width.default_value)
+
+      let build_volume = new THREE.BoxGeometry(machine_settings.machine_width.default_value, machine_settings.machine_height.default_value, machine_settings.machine_width.default_value)
+      var geo = new THREE.EdgesGeometry(build_volume); // or WireframeGeometry( geometry )
+      var mat = new THREE.LineBasicMaterial({ color: 0x1a5f5a, linewidth: 0.5 });
+      var build_frame = new THREE.LineSegments(geo, mat);
+      build_frame.position.y += machine_settings.machine_height.default_value / 2
+      renderer.scene.add(build_frame)
+
+      // TODO: doesn't work for non-square
+      const gridHelper = new THREE.GridHelper( machine_settings.machine_width.default_value, machine_settings.machine_width.default_value / 2 );
+      renderer.scene.add( gridHelper );
+      
+
     });
 }
