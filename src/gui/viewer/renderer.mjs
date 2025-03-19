@@ -1,8 +1,5 @@
 // Three.js setup for STL viewer and GCode viewer
 import * as THREE from "three";
-import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
-import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
-import { Line2 } from "three/examples/jsm/lines/Line2.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 export const viewport = document.getElementById("viewer");
@@ -13,75 +10,28 @@ export var view_height = viewport.clientHeight;
 // ---- Scene
 export const scene = new THREE.Scene();
 
-export class ThickAxesHelper extends Line2 {
-  constructor(size = 1, linewidth = 6) {
-    const vertices = [
-      0,
-      0,
-      0,
-      size,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      size,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      size
-    ];
-
-    const colors = [
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      1
-    ];
-
-    const geometry = new LineGeometry();
-    geometry.setPositions(vertices);
-    geometry.setColors(colors);
-
-    const material = new LineMaterial({
-      linewidth,
-      vertexColors: true
-    });
-    material.resolution.set(window.innerWidth, window.innerHeight); // resolution of the viewport
-    material.worldUnits = false;
-
-    super(geometry, material);
-    this.type = "ThickAxesHelper";
-    this.computeLineDistances();
+export class AxesBoxesGroup extends THREE.Group {
+  constructor(length) {
+    super();
+    this.x_box = this.create_box(length, 1, 1, 0xff0000);
+    this.x_box.position.set(length / 2, 0, 0);
+    this.y_box = this.create_box(1, length, 1, 0x00ff00);
+    this.y_box.position.set(0, 0, -length / 2);
+    this.z_box = this.create_box(1, 1, length, 0x0000ff);
+    this.z_box.position.set(0, length / 2, 0);
   }
 
-  dispose() {
-    this.geometry.dispose();
-    this.material.dispose();
+  create_box(width, height, depth, color) {
+    const geometry = new THREE.BoxGeometry(width, depth, height);
+    const material = new THREE.MeshBasicMaterial({color: color});
+    const box = new THREE.Mesh(geometry, material);
+    this.add(box);
+    return box;
   }
 }
 
-export const arrow_helper = new ThickAxesHelper(15);
-arrow_helper.rotation.x = -90 * (Math.PI / 180);
-scene.add(arrow_helper);
+export const axes_boxes = new AxesBoxesGroup(20);
+scene.add(axes_boxes);
 
 // ---- Camera
 export const camera = new THREE.PerspectiveCamera(

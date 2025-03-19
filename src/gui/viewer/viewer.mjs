@@ -32,73 +32,76 @@ const buildplate_shell_material = new THREE.MeshPhysicalMaterial({
   transparent: true
 });
 
+async function load_buildplate(model_filename) {
+  let res = await fetch("resources/meshes/" + model_filename);
+  let buildplate_mesh;
+
+  if (model_filename.endsWith(".3mf")) {
+    buildplate_mesh = new THREE.Mesh(
+      mf_loader.parse(await res.arrayBuffer()).children[0].children[0].geometry,
+      buildplate_material
+    );
+  }
+  else if (model_filename.endsWith(".stl"))
+    buildplate_mesh = new THREE.Mesh(stl_loader.parse(await res.arrayBuffer()), buildplate_material);
+  else
+    throw new TypeError("Build plate model is of unsupported type; Valid types are '.stl' or '.3mf'");
+
+  buildplate_mesh.position.set(0, 0, 0);
+  renderer.scene.add(buildplate_mesh);
+
+  // This is to replicate Cura and how it handles the hole in the model
+  buildplate_mesh.geometry.computeBoundingBox();
+  const size = new THREE.Vector3();
+  buildplate_mesh.geometry.boundingBox.getSize(size);
+  const rect = new THREE.BoxGeometry(size.x, size.y * 0.5, size.z);
+
+  let shell_mesh = new THREE.Mesh(rect, buildplate_shell_material);
+  shell_mesh.position.set(0, -size.y * 0.5, 0);
+  renderer.scene.add(shell_mesh);
+
+  renderer.axes_boxes.position.set(-size.x / 2, 0.1, size.z / 2);
+}
+
 export function start_viewer() {
   renderer.animate();
   renderer.scene.add(spotLight);
   renderer.scene.add(ambientLight);
 
-  fetch("resources/meshes/" + active_containers.definitions.printer.metadata.platform)
-    .then(async (res) => {
-      let buildplate_mesh;
+  let printer_definition = active_containers.definitions.printer;
+  load_buildplate(printer_definition.metadata.platform);
 
-      if (active_containers.definitions.printer.metadata.platform.endsWith(".3mf")) {
-        buildplate_mesh = new THREE.Mesh(
-          mf_loader.parse(await res.arrayBuffer()).children[0].children[0].geometry,
-          buildplate_material
-        );
-      }
-      else if (active_containers.definitions.printer.metadata.platform.endsWith(".stl"))
-        buildplate_mesh = new THREE.Mesh(stl_loader.parse(await res.arrayBuffer()), buildplate_material);
-      else
-        throw new TypeError("Build plate model is of unsupported type; Valid types are '.stl' or '.3mf'");
+  // ---- Build Volume Outline
+  let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children;
+  let build_volume = new THREE.BoxGeometry(
+    machine_settings.machine_width.default_value,
+    machine_settings.machine_height.default_value,
+    machine_settings.machine_width.default_value
+  );
+  var geo = new THREE.EdgesGeometry(build_volume); // or WireframeGeometry( geometry )
+  var mat = new THREE.LineBasicMaterial({color: 0x1a5f5a, linewidth: 0.5});
+  var build_frame = new THREE.LineSegments(geo, mat);
+  build_frame.position.y += machine_settings.machine_height.default_value / 2;
+  renderer.scene.add(build_frame);
 
-      buildplate_mesh.position.set(0, 0, 0);
-      renderer.scene.add(buildplate_mesh);
+  // TODO: doesn't work for non-square
+  const gridHelperSmall = new THREE.GridHelper(
+    machine_settings.machine_width.default_value,
+    machine_settings.machine_width.default_value,
+    0x737373,
+    0x737373,
+    0x737373
+  );
+  const gridHelperBig = new THREE.GridHelper(
+    machine_settings.machine_width.default_value,
+    machine_settings.machine_width.default_value / 10,
+    0x999999,
+    0x999999,
+    0x999999
+  );
 
-      // This is to replicate Cura and how it handles the hole in the model
-      buildplate_mesh.geometry.computeBoundingBox();
-      const size = new THREE.Vector3();
-      buildplate_mesh.geometry.boundingBox.getSize(size);
-      const rect = new THREE.BoxGeometry(size.x, size.y * 0.5, size.z);
+  gridHelperBig.position.y += 0.01; // Get rid of flickering
 
-      let shell_mesh = new THREE.Mesh(rect, buildplate_shell_material);
-      shell_mesh.position.set(0, -size.y * 0.5, 0);
-      renderer.scene.add(shell_mesh);
-
-      renderer.arrow_helper.position.set(-size.x / 2, 0.1, size.z / 2);
-
-      // ---- Build Volume Outline
-      let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children;
-      let build_volume = new THREE.BoxGeometry(
-        machine_settings.machine_width.default_value,
-        machine_settings.machine_height.default_value,
-        machine_settings.machine_width.default_value
-      );
-      var geo = new THREE.EdgesGeometry(build_volume); // or WireframeGeometry( geometry )
-      var mat = new THREE.LineBasicMaterial({color: 0x1a5f5a, linewidth: 0.5});
-      var build_frame = new THREE.LineSegments(geo, mat);
-      build_frame.position.y += machine_settings.machine_height.default_value / 2;
-      renderer.scene.add(build_frame);
-
-      // TODO: doesn't work for non-square
-      const gridHelperSmall = new THREE.GridHelper(
-        machine_settings.machine_width.default_value,
-        machine_settings.machine_width.default_value,
-        0x808080,
-        0x808080,
-        0x808080
-      );
-      const gridHelperBig = new THREE.GridHelper(
-        machine_settings.machine_width.default_value,
-        machine_settings.machine_width.default_value / 10,
-        0x787878,
-        0x787878,
-        0x787878
-      );
-
-      gridHelperBig.position.y += 0.01; // Get rid of flickering
-
-      renderer.scene.add(gridHelperSmall);
-      renderer.scene.add(gridHelperBig);
-    });
+  renderer.scene.add(gridHelperSmall);
+  renderer.scene.add(gridHelperBig);
 }

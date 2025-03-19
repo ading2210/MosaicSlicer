@@ -39,12 +39,16 @@ export function set_active_state(active_div) {
   active_div.dataset.active = true;
 }
 
-export function update_all(extruder_stack) {
-  update_values(sections, extruder_stack);
-  update_sections(sections, extruder_stack);
+export function clear_slice_state() {
   set_active_state(slice_button_div);
   if (cura_engine.active)
     cura_engine.cancel();
+}
+
+export function update_all(extruder_stack) {
+  update_values(sections, extruder_stack);
+  update_sections(sections, extruder_stack);
+  clear_slice_state();
 }
 
 // ---- Slice
@@ -77,7 +81,7 @@ slice_button.addEventListener("click", async () => {
 
   let stl = export_stl().buffer;
   let gcode_bytes = await cura_engine.slice({
-    stl: stl, // TODO: Support multiple models
+    stl: stl,
     settings: settings
   });
   exported_gcode = new TextDecoder().decode(gcode_bytes);
