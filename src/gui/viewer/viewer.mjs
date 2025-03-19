@@ -52,22 +52,20 @@ export function start_viewer() {
       else
         throw new TypeError("Build plate model is of unsupported type; Valid types are '.stl' or '.3mf'");
 
-      buildplate_mesh.scale.set(1, 1, 1);
-
+      buildplate_mesh.position.set(0, 0, 0);
       renderer.scene.add(buildplate_mesh);
 
       // This is to replicate Cura and how it handles the hole in the model
       buildplate_mesh.geometry.computeBoundingBox();
       const size = new THREE.Vector3();
       buildplate_mesh.geometry.boundingBox.getSize(size);
-
-      renderer.arrow_helper.position.set(-size.x / 2, 0.1, size.z / 2);
-
       const rect = new THREE.BoxGeometry(size.x, size.y * 0.5, size.z);
 
       let shell_mesh = new THREE.Mesh(rect, buildplate_shell_material);
-
+      shell_mesh.position.set(0, -size.y * 0.5, 0);
       renderer.scene.add(shell_mesh);
+
+      renderer.arrow_helper.position.set(-size.x / 2, 0.1, size.z / 2);
 
       // ---- Build Volume Outline
       let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children;
@@ -83,10 +81,24 @@ export function start_viewer() {
       renderer.scene.add(build_frame);
 
       // TODO: doesn't work for non-square
-      const gridHelper = new THREE.GridHelper(
+      const gridHelperSmall = new THREE.GridHelper(
         machine_settings.machine_width.default_value,
-        machine_settings.machine_width.default_value / 2
+        machine_settings.machine_width.default_value,
+        0x808080,
+        0x808080,
+        0x808080
       );
-      renderer.scene.add(gridHelper);
+      const gridHelperBig = new THREE.GridHelper(
+        machine_settings.machine_width.default_value,
+        machine_settings.machine_width.default_value / 10,
+        0x787878,
+        0x787878,
+        0x787878
+      );
+
+      gridHelperBig.position.y += 0.01; // Get rid of flickering
+
+      renderer.scene.add(gridHelperSmall);
+      renderer.scene.add(gridHelperBig);
     });
 }
