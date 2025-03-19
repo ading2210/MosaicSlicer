@@ -34,36 +34,8 @@ export const model_controls = new TransformControls(renderer.camera, renderer.re
 model_controls.enabled = false;
 model_controls.addEventListener("dragging-changed", (event) => {
   renderer.controls.enabled = !event.value;
+  clear_slice_state();
 });
-
-//reset the slice progress if a model is moved
-function compare_objs(list_a, list_b) {
-  const zip = (a, b) => a.map((k, i) => [k, b[i]]);
-  for (let [obj_a, obj_b] of zip(list_a, list_b)) {
-    for (let key in obj_a) {
-      if (obj_a[key] != obj_b[key])
-        return true;
-    }
-  }
-  return false;
-}
-export function poll_model_changes() {
-  for (let [uuid, model] of Object.entries(models)) {
-    let model_data = [
-      {...model.mesh.position},
-      {...model.mesh.rotation},
-      {...model.mesh.scale}
-    ];
-
-    let old_data = old_positions[uuid];
-    old_positions[uuid] = model_data;
-    if (old_data && compare_objs(model_data, old_data)) {
-      clear_slice_state();
-      return;
-    }
-  }
-}
-setInterval(poll_model_changes, 100);
 
 // ---- Model Material
 const model_material = new THREE.MeshPhysicalMaterial({
