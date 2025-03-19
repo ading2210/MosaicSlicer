@@ -1,4 +1,4 @@
-import untar from "js-untar";
+import untar from "untar-sync";
 import pako from "pako";
 import * as ini from "ini";
 
@@ -18,7 +18,7 @@ export async function download_resources() {
 
 export async function extract_tar(archive_data) {
   let decompressed = pako.inflate(archive_data);
-  let files = await untar(decompressed.buffer);
+  let files = untar(decompressed.buffer);
   let returned_files = {};
   for (let file of files) {
     if (file.type === "L") continue;
