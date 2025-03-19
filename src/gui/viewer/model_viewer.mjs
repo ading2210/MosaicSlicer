@@ -173,7 +173,7 @@ export function export_stl() {
     let model_mesh = models[model].mesh;
     let geometry = model_mesh.geometry.clone();
 
-    geometry.translate(model_mesh.position.x, model_mesh.position.z, model_mesh.position.y);
+    geometry.translate(model_mesh.position.x, -model_mesh.position.z, model_mesh.position.y);
     geometry.rotateX(model_mesh.rotation.x + (0.5 * Math.PI));
     geometry.rotateY(model_mesh.rotation.y);
     geometry.rotateZ(model_mesh.rotation.z);

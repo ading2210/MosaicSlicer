@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Slicer</title>
 
+    <style>
+      body {
+        overflow: hidden;
+      }
+    </style>
     <link rel="stylesheet" href="main.css">
     <script type="module" src="js/app.mjs" defer></script>
   </head>
@@ -195,6 +200,32 @@
       </div>
     </div>
 
-    <div id="settings-tab" class="tab-content"></div>
+    <div id="settings-tab" class="tab-content">
+      <div id="prefs-container">
+        <div id="prefs-sections-container">
+          <div id="prefs-printer-section">Printers</div>
+        </div>
+        <div id="prefs-contents-container">
+          <div id="prefs-printer">
+            <div class="prefs-title-bar">
+              <span>Printers</span>
+              <div class="flex-spacer"></div>
+              <button>Add Printer</button>
+            </div>
+            <div id="prefs-printer-contents" class="prefs-contents">
+              <div id="prefs-printers-list">
+                <div>Creality Ender 3</div>
+              </div>
+              <div id="prefs-printer-options" class="flex-spacer">
+                <template id="printer-options-template">
+                  <h2 slot="printer-name"></h2>
+                  <button slot="remove-button">Remove Printer</button>
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

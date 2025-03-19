@@ -21,6 +21,11 @@ jobs:
           bash scripts/build_all.sh
           sudo npm i -g wrangler
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: files_static
+          path: dist/
+
       - name: deploy
         uses: cloudflare/wrangler-action@v3
         with:
