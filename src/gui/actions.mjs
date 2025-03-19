@@ -64,7 +64,7 @@ slice_button.addEventListener("click", async () => {
     extruder_nr: "0"
   };
   settings["extruder.0"]["mesh_position_x"] = models[Object.keys(models)[0]].mesh.position.x;
-  settings["extruder.0"]["mesh_position_y"] = models[Object.keys(models)[0]].mesh.position.y;
+  settings["extruder.0"]["mesh_position_y"] = -models[Object.keys(models)[0]].mesh.position.z;
 
   settings["global"]["machine_start_gcode"] = format_gcode(settings["global"]["machine_start_gcode"]);
   settings["global"]["machine_end_gcode"] = format_gcode(settings["global"]["machine_end_gcode"]);
