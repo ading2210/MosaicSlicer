@@ -76,8 +76,12 @@ renderer.viewport.addEventListener("mousemove", (e) => {
 });
 renderer.viewport.addEventListener("mouseup", (e) => {
   if (currently_held) {
-    if (scene_objects[currently_held].onclick != null)
-      scene_objects[currently_held].onclick(e);
+    if (scene_objects[currently_held].onclick != null) {
+      // Check if mouse is still over model
+      let intersection = get_mouse_intersects(e.clientX, e.clientY - tab_strip.clientHeight);
+      if (intersection == currently_held)
+        scene_objects[currently_held].onclick(e);
+    }
   }
   renderer.controls.enabled = true;
 

@@ -1,5 +1,7 @@
 // Viewer interactions (eg. clicking on a model, etc.)
 import * as THREE from "three";
+import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
+import { STLExporter } from "three/addons/exporters/STLExporter.js";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
 
 import * as renderer from "./renderer.mjs";
@@ -23,7 +25,10 @@ export var models = {};
 /** @type {string} */
 var focused = null;
 
+const exporter = new STLExporter();
+
 export const model_controls = new TransformControls(renderer.camera, renderer.renderer.domElement);
+model_controls.enabled = false;
 model_controls.addEventListener("dragging-changed", function(event) {
   renderer.controls.enabled = !event.value;
 });
@@ -51,6 +56,10 @@ function focus_stl(uuid) {
 /** @param {string} uuid */
 function unfocus_stl() {
   if (focused) {
+    model_controls.detach(models[focused].mesh);
+    renderer.scene.remove(model_controls.getHelper());
+    model_controls.enabled = false;
+
     models[focused].mesh.material.color.set(0x1a5f5a);
     models[focused].mesh.material.emissive.set(0x1a5f5a);
     focused = null;
@@ -81,14 +90,22 @@ function toggle_transform(transform) {
 export function load_model(raw_data, model_type) {
   let mesh;
   if (model_type == "stl")
-    mesh = new THREE.Mesh(stl_loader.parse(raw_data), model_material);
+    mesh = new THREE.Mesh(stl_loader.parse(raw_data), model_material.clone());
   else if (model_type == "3mf")
-    mesh = new THREE.Mesh(mf_loader.parse(raw_data).children[0].children[0].geometry, model_material);
+    mesh = new THREE.Mesh(mf_loader.parse(raw_data).children[0].children[0].geometry, model_material.clone());
   else
     return;
 
+  mesh.geometry.center();
   mesh.scale.set(1, 1, 1);
   mesh.rotateX(-Math.PI / 2);
+
+  mesh.geometry.computeBoundingBox();
+  const size = new THREE.Vector3();
+  mesh.geometry.boundingBox.getSize(size);
+  mesh.position.y += size.z * 0.5;
+  // .y += size.z * 0.5; // z/y are flipped
+
   renderer.scene.add(mesh);
 
   models[mesh.uuid] = {
@@ -113,6 +130,35 @@ export function load_model(raw_data, model_type) {
   interactions.scene_objects[mesh.uuid] = sceneobj;
 
   return mesh;
+}
+
+// ---- STL Exporter
+/**
+ * Combines all models and transforms into a single binary STL
+ * @returns {ArrayBuffer}
+ */
+export function export_stl() {
+  let geometries = [];
+  for (let model in models) {
+    let model_mesh = models[model].mesh;
+    let geometry = model_mesh.geometry.clone();
+
+    geometry.translate(model_mesh.position.x, model_mesh.position.z, model_mesh.position.y);
+    geometry.rotateX(model_mesh.rotation.x + (0.5 * Math.PI));
+    geometry.rotateY(model_mesh.rotation.y);
+    geometry.rotateZ(model_mesh.rotation.z);
+    geometry.scale(...model_mesh.scale);
+
+    geometries.push(geometry);
+  }
+  let merged_models = BufferGeometryUtils.mergeGeometries(geometries);
+
+  merged_models.computeBoundingBox();
+  const size = new THREE.Vector3();
+  merged_models.boundingBox.getSize(size);
+  merged_models.translate(0, 0, size.z / 2); // y/z are switched
+
+  return exporter.parse(new THREE.Mesh(merged_models), {binary: true});
 }
 
 // ---- Event Listeners

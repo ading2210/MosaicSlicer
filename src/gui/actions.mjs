@@ -1,7 +1,7 @@
 /**
  * Listeners for actions (eg. slice button, file input, etc)
  */
-import { models } from "./viewer/model_viewer.mjs";
+import { export_stl, models } from "./viewer/model_viewer.mjs";
 import { CuraEngine } from "../engine/index.mjs";
 import { rpc_callbacks } from "../engine/handler.mjs";
 
@@ -54,6 +54,8 @@ slice_button.addEventListener("click", async () => {
     return;
   }
 
+  // we should move this to a function in a file called `slicer.mjs` or something like that
+
   exported_gcode = null;
   slice_progress_bar.style.width = "0%";
   gcode_time_estimate.innerText = "No Time Estimation";
@@ -63,8 +65,6 @@ slice_button.addEventListener("click", async () => {
   settings["/tmp/input/model.stl"] = {
     extruder_nr: "0"
   };
-  settings["extruder.0"]["mesh_position_x"] = models[Object.keys(models)[0]].mesh.position.x;
-  settings["extruder.0"]["mesh_position_y"] = -models[Object.keys(models)[0]].mesh.position.z;
 
   settings["global"]["machine_start_gcode"] = format_gcode(settings["global"]["machine_start_gcode"]);
   settings["global"]["machine_end_gcode"] = format_gcode(settings["global"]["machine_end_gcode"]);
@@ -75,8 +75,9 @@ slice_button.addEventListener("click", async () => {
     gcode_header = header;
   };
 
+  let stl = export_stl().buffer;
   let gcode_bytes = await cura_engine.slice({
-    stl: models[Object.keys(models)[0]].data, // TODO: Support multiple models
+    stl: stl, // TODO: Support multiple models
     settings: settings
   });
   exported_gcode = new TextDecoder().decode(gcode_bytes);
