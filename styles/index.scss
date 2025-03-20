@@ -56,6 +56,7 @@ body, html {
   display: flex;
   width: 100%;
   flex-grow: 1;
+  overflow: auto;
 }
 .tab-content[data-active="false"] {
   display: none;

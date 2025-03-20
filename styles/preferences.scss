@@ -9,6 +9,7 @@
   display: flex;
   padding: 0.5rem;
   gap: 1rem;
+  align-items: stretch;
 }
 
 #prefs-sections-container {
@@ -17,7 +18,7 @@
   align-items: center;
 
   div {
-    width: 6rem;
+    width: 8rem;
     background-color: var(--background-2);
     padding: 0.5rem;
     text-align: center;
@@ -36,6 +37,9 @@
     span {
       font-size: 1.2rem;
     }
+    button {
+      font-size: 0.8rem;
+    }
   }
 
   .prefs-contents {
@@ -44,17 +48,28 @@
   }
 }
 
+#prefs-printer {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  padding: 0.5rem;
+  padding-top: 0px;
+  gap: 0.5rem;
+}
+
 #prefs-printer-contents {
   font-size: 0.9rem;
+  flex-grow: 1;
 
   #prefs-printers-list {
     display: flex;
     border: 1px solid var(--grey-2);
     padding: 0.25rem;
+    height: 100%;
 
     div {
       padding: 0.25rem;
-      width: 8rem;
+      width: 12rem;
     }
   }
 }
