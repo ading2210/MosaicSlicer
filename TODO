@@ -6,15 +6,15 @@ UI:
   [ ] Save settings to object
 [ ] Viewer
   [x] Allow moving/scaling/rotating objects
-  [ ] Render printer build volume
-  [ ] When importing STLs, center them
-  [ ] Merge all objects into single STL for slicing
+  [x] Render printer build volume
+  [x] When importing STLs, center them
+  [x] Merge all objects into single STL for slicing
   [ ] Support 3mf files
   [ ] Materials
   [ ] GCode viewer
 Misc:
-  [ ] Branding
-    [ ] Make name
+  [x] Branding
+    [x] Make name
   [ ] GCode Export options (eg. name, bgcode)
     [ ] Some metadata? Do specific printers have special metadata we can add?
 

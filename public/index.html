@@ -7,9 +7,9 @@
     <link rel="icon" type="image/png" href="img/logo_128.png">
 
     <style>
-    body {
-      overflow: hidden;
-    }
+      body {
+        overflow: hidden;
+      }
     </style>
     <link rel="stylesheet" href="main.css">
     <script type="module" src="js/app.mjs" defer></script>
@@ -23,7 +23,7 @@
       <a id="preview-tab-button" class="tab">Preview</a>
       <a id="settings-tab-button" class="tab">Settings</a>
       <div class="flex-spacer"></div>
-      <a class="info-link" href="https://github.com/ading2210/web-slicer" target="_blank">
+      <a class="info-link" href="https://github.com/ading2210/MosaicSlicer" target="_blank">
         Source Code
       </a>
     </div>
@@ -47,9 +47,10 @@
               <cura-icon icon-name="ionicons_chevron_down_outline"></cura-icon>
             </div>
             <div id="printers-dropdown" class="options-dropdown">
-              <ul id="printers-list">
+              <div id="printers-list">
+                <p>This is hardcoded for now.</p>
                 <template id="printer-item-template"></template>
-              </ul>
+              </div>
               <div id="manage-printers-div">
                 <button id="add-printer-button">Add Printer</button>
                 <button id="manage-printers-button">Manage Printers</button>

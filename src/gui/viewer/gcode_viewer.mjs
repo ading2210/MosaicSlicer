@@ -4,12 +4,9 @@ import * as viewer from "./viewer.mjs";
 import * as gcode from "./gcode.mjs";
 import { active_containers } from "../../settings/index.mjs";
 
-export async function start_gcode_viewer() {
+export async function start_gcode_viewer(gcode_str) {
   viewer.start_viewer();
-  console.log("loading");
-  let res = await fetch("/boat.gcode");
-
-  let mesh = gcode.parse(await res.text());
+  let mesh = gcode.parse(gcode_str);
 
   let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children;
   mesh.position.set(

@@ -2,7 +2,23 @@
 
 MosaicSlicer is a browser-based 3D printing slicer. Everything runs completely within your web browser, and nothing is sent to any servers or cloud services. It uses [CuraEngine](https://github.com/ading2210/CuraEngine) for the slicer backend and is mostly compatible with existing [Cura](https://github.com/Ultimaker/Cura) printer profiles.
 
+![image](https://github.com/user-attachments/assets/31d7d8b6-306e-481f-9486-f7aa40606e74)
+
 Note: MosaicSlicer is alpha quality software and probably has behavior that is slightly different from Cura. Please double check the generated G-code files in another G-code viewer before printing anything.
+
+## Features
+- All print settings from Cura are available
+- Compatible with most existing Cura printer and material profiles
+- Can slice multiple parts at once
+- 3d viewer with build plate
+- Works on Chromium and Firefox
+- A browser extension can be installed for offline usage
+
+### Notable Missing Features:
+- Support for multiple extruders
+- Editing printer machine settings
+- Saving modified settings
+- G-code preview
 
 ## Building
 
