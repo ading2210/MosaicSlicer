@@ -1,5 +1,5 @@
 {
-  "name": "mosaicslicer",
+  "name": "MosaicSlicer",
   "description": "",
   "version": "0.0.1",
   "manifest_version": 3,
@@ -18,5 +18,12 @@
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval';"
-  }
+  },
+  "icons": {
+    "128": "img/logo_128.png"
+  },
+  "web_accessible_resources": [{
+    "resources": ["img/*"],
+    "matches": ["https://*.printables.com/*"]
+  }]
 }
