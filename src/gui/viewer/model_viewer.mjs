@@ -7,7 +7,7 @@ import { TransformControls } from "three/examples/jsm/controls/TransformControls
 import * as renderer from "./renderer.mjs";
 import * as interactions from "./interactions.mjs";
 
-import { mf_loader, stl_loader } from "./viewer.mjs";
+import * as viewer from "./viewer.mjs";
 import { clear_slice_state } from "../actions.mjs";
 
 const controls_bar = document.getElementById("controls");
@@ -23,7 +23,6 @@ const scale_button = document.getElementById("scale-button");
 
 /** @type {Record<string, Model} */
 export var models = {};
-var old_positions = {};
 
 /** @type {string} */
 var focused = null;
@@ -92,9 +91,9 @@ function toggle_transform(transform) {
 export function load_model(raw_data, model_type) {
   let mesh;
   if (model_type == "stl")
-    mesh = new THREE.Mesh(stl_loader.parse(raw_data), model_material.clone());
+    mesh = new THREE.Mesh(viewer.stl_loader.parse(raw_data), model_material.clone());
   else if (model_type == "3mf")
-    mesh = new THREE.Mesh(mf_loader.parse(raw_data).children[0].children[0].geometry, model_material.clone());
+    mesh = new THREE.Mesh(viewer.mf_loader.parse(raw_data).children[0].children[0].geometry, model_material.clone());
   else
     return;
 
@@ -163,13 +162,20 @@ export function export_stl() {
   return exporter.parse(new THREE.Mesh(merged_models), {binary: true});
 }
 
-// ---- Event Listeners
-movement_button.addEventListener("click", () => {
-  toggle_transform("translate");
-});
-rotate_button.addEventListener("click", () => {
-  toggle_transform("rotate");
-});
-scale_button.addEventListener("click", () => {
-  toggle_transform("scale");
-});
+/**
+ * Clear scene and start model viewer. This function will also be called by the tab switcher
+ */
+export function start_model_viewer() {
+  viewer.start_viewer();
+
+  // ---- Event Listeners
+  movement_button.addEventListener("click", () => {
+    toggle_transform("translate");
+  });
+  rotate_button.addEventListener("click", () => {
+    toggle_transform("rotate");
+  });
+  scale_button.addEventListener("click", () => {
+    toggle_transform("scale");
+  });
+}

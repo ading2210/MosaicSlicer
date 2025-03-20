@@ -4,7 +4,6 @@ import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 import { ThreeMFLoader } from "three/examples/jsm/loaders/3MFLoader.js";
 
 import * as renderer from "./renderer.mjs";
-import "./model_viewer.mjs";
 
 import { active_containers } from "../../settings/index.mjs";
 
@@ -64,6 +63,8 @@ async function load_buildplate(model_filename) {
 }
 
 export function start_viewer() {
+  renderer.scene.clear();
+
   renderer.animate();
   renderer.scene.add(spotLight);
   renderer.scene.add(ambientLight);
