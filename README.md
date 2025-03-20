@@ -40,8 +40,8 @@ $ npm run build:prod
 
 The final output will be in `dist/`
 
-
 ## License
+
 This program was written by [ading2210](https://github.com/ading2210) and [simplyrohan](https://github.com/simplyrohan). It is licensed under the [GNU APL v3](https://www.gnu.org/licenses/agpl-3.0.en.html).
 
 ```

@@ -11,6 +11,7 @@ export * as sidebar from "./sidebar.mjs";
 export * as tabs from "./tabs.mjs";
 export * as viewer from "./viewer/viewer.mjs";
 
+import { check_for_stl } from "./file.mjs";
 import { load_sidebar } from "./sidebar.mjs";
 import { start_model_viewer } from "./viewer/model_viewer.mjs";
 import { start_gcode_viewer } from "./viewer/gcode_viewer.mjs";
@@ -35,6 +36,8 @@ export async function start_gui() {
   document.getElementById("loading").style.animation = "blur-out 0.25s";
   await sleep(250);
   document.getElementById("loading").style.display = "none";
+
+  check_for_stl();
 }
 
 DocumentFragment.prototype.get_slot = function(slot_name) {

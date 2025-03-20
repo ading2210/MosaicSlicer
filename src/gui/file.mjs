@@ -5,6 +5,12 @@ import { load_model } from "./viewer/model_viewer.mjs";
 
 export let stl_file_name = null;
 
+async function b64_decode(b64) {
+  var data_url = "data:application/octet-binary;base64," + b64;
+  let r = await fetch(data_url);
+  return await r.arrayBuffer();
+}
+
 /**
  * Handle file imports (only STLs for now)
  * @param {File} file File object to import
@@ -38,4 +44,18 @@ export function save_file(data, filename, type) {
   document.body.append(a);
   a.click();
   a.remove();
+}
+
+export function check_for_stl() {
+  if (!window.chrome || !window.chrome.runtime)
+    return;
+  chrome.runtime.sendMessage({cmd: "get_model"}, async (response) => {
+    if (!response)
+      return;
+    let [file_name, stl_b64] = response;
+    let stl_data = await b64_decode(stl_b64);
+    console.log(stl_data, stl_data);
+    let file_type = file_name.split(".").at(-1).toLowerCase();
+    load_model(stl_data, file_type);
+  });
 }
