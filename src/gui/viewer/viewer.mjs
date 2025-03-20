@@ -6,7 +6,6 @@ import { ThreeMFLoader } from "three/examples/jsm/loaders/3MFLoader.js";
 import * as renderer from "./renderer.mjs";
 
 import { active_containers } from "../../settings/index.mjs";
-
 export const stl_loader = new STLLoader();
 export const mf_loader = new ThreeMFLoader();
 

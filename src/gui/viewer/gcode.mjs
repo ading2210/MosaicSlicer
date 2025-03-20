@@ -1,3 +1,6 @@
+import * as THREE from "three";
+import { LineTubeGeometry } from "./LineTube.mjs";
+
 export function parse(data) {
   let state = {x: 0, y: 0, z: 0, e: 0, f: 0, extruding: false, relative: false};
   const layers = [];
@@ -15,12 +18,12 @@ export function parse(data) {
       newLayer(p1);
 
     if (state.extruding) {
-      currentLayer.vertex.push(p1.x, p1.y, p1.z);
-      currentLayer.vertex.push(p2.x, p2.y, p2.z);
+      currentLayer.vertex.push(new THREE.Vector3(p1.x, p1.y, p1.z));
+      currentLayer.vertex.push(new THREE.Vector3(p2.x, p2.y, p2.z));
     }
     else {
-      currentLayer.pathVertex.push(p1.x, p1.y, p1.z);
-      currentLayer.pathVertex.push(p2.x, p2.y, p2.z);
+      currentLayer.pathVertex.push(new THREE.Vector3(p1.x, p1.y, p1.z));
+      currentLayer.pathVertex.push(new THREE.Vector3(p2.x, p2.y, p2.z));
     }
   }
 
@@ -95,23 +98,37 @@ export function parse(data) {
     }
   }
 
-  const vertex = [];
-  const pathVertex = [];
+  function addObject(vertex, extruding, i) {
+    if (extruding) {
+      const tube = new LineTubeGeometry();
+      for (let v of vertex)
+        tube.add({point: v, color: new THREE.Color(0xff0000), radius: 0.1});
+      tube.finish();
+
+      // const path = new THREE.CatmullRomCurve3(vertex)
+      const mesh = new THREE.Mesh(
+        tube,
+        new THREE.MeshPhysicalMaterial({
+          color: 0x1a5f5a,
+          // A bit of constant light to dampen the shadows
+          emissive: 0x1a5f5a,
+          emissiveIntensity: 0.3
+        })
+      );
+      object.add(mesh);
+    }
+  }
+
+  const object = new THREE.Group();
+  object.name = "gcode";
 
   for (let i = 0; i < layers.length; i++) {
     const layer = layers[i];
-    const layerVertex = layer.vertex;
-    const layerPathVertex = layer.pathVertex;
-
-    for (let j = 0; j < layerVertex.length; j++)
-      vertex.push(layerVertex[j]);
-
-    for (let j = 0; j < layerPathVertex.length; j++)
-      pathVertex.push(layerPathVertex[j]);
+    addObject(layer.vertex, true, i);
+    addObject(layer.pathVertex, false, i);
   }
 
-  return {
-    vertex: vertex,
-    travel: pathVertex
-  };
+  object.rotation.set(-Math.PI / 2, 0, 0);
+
+  return object;
 }
