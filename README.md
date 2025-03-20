@@ -7,6 +7,7 @@ MosaicSlicer is a browser-based 3D printing slicer. Everything runs completely w
 Note: MosaicSlicer is alpha quality software and probably has behavior that is slightly different from Cura. Please double check the generated G-code files in another G-code viewer before printing anything.
 
 ## Features
+
 - All print settings from Cura are available
 - Compatible with most existing Cura printer and material profiles
 - Can slice multiple parts at once
@@ -15,6 +16,7 @@ Note: MosaicSlicer is alpha quality software and probably has behavior that is s
 - A browser extension can be installed for offline usage
 
 ### Notable Missing Features:
+
 - Support for multiple extruders
 - Editing printer machine settings
 - Saving modified settings

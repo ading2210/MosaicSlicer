@@ -31,7 +31,7 @@ const gcode_time_estimate = document.getElementById("gcode-time-estimate");
 const material_estimate = document.getElementById("material-estimate");
 
 export const cura_engine = new CuraEngine();
-let exported_gcode = null;
+export let exported_gcode = null;
 
 export function set_active_state(active_div) {
   for (let div of [slice_button_div, slice_progress_div, slice_export_div])
@@ -41,6 +41,7 @@ export function set_active_state(active_div) {
 
 export function clear_slice_state() {
   set_active_state(slice_button_div);
+  exported_gcode = null;
   if (cura_engine.active)
     cura_engine.cancel();
 }

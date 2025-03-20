@@ -9,13 +9,26 @@ import { active_containers } from "../../settings/index.mjs";
 export const stl_loader = new STLLoader();
 export const mf_loader = new ThreeMFLoader();
 
-// ---- Lighting
-const spotLight = new THREE.DirectionalLight(0xffffff, 1.25);
-spotLight.position.set(100, 100, 100);
+// ---- Arrows
+export class AxesBoxesGroup extends THREE.Group {
+  constructor(length) {
+    super();
+    this.x_box = this.create_box(length, 1, 1, 0xff0000);
+    this.x_box.position.set(length / 2, 0, 0);
+    this.y_box = this.create_box(1, length, 1, 0x00ff00);
+    this.y_box.position.set(0, 0, -length / 2);
+    this.z_box = this.create_box(1, 1, length, 0x0000ff);
+    this.z_box.position.set(0, length / 2, 0);
+  }
 
-const ambientLight = new THREE.AmbientLight(0xffffff);
-ambientLight.position.set(0, 0, 0);
-ambientLight.intensity = 1;
+  create_box(width, height, depth, color) {
+    const geometry = new THREE.BoxGeometry(width, depth, height);
+    const material = new THREE.MeshBasicMaterial({color: color});
+    const box = new THREE.Mesh(geometry, material);
+    this.add(box);
+    return box;
+  }
+}
 
 // ---- Build Plate Materials
 const buildplate_material = new THREE.MeshPhysicalMaterial({
@@ -30,7 +43,7 @@ const buildplate_shell_material = new THREE.MeshPhysicalMaterial({
   transparent: true
 });
 
-async function load_buildplate(model_filename) {
+async function load_buildplate(model_filename, scene) {
   let res = await fetch("resources/meshes/" + model_filename);
   let buildplate_mesh;
 
@@ -46,7 +59,7 @@ async function load_buildplate(model_filename) {
     throw new TypeError("Build plate model is of unsupported type; Valid types are '.stl' or '.3mf'");
 
   buildplate_mesh.position.set(0, 0, 0);
-  renderer.scene.add(buildplate_mesh);
+  scene.add(buildplate_mesh);
 
   // This is to replicate Cura and how it handles the hole in the model
   buildplate_mesh.geometry.computeBoundingBox();
@@ -56,20 +69,31 @@ async function load_buildplate(model_filename) {
 
   let shell_mesh = new THREE.Mesh(rect, buildplate_shell_material);
   shell_mesh.position.set(0, -size.y * 0.5, 0);
-  renderer.scene.add(shell_mesh);
+  scene.add(shell_mesh);
 
-  renderer.axes_boxes.position.set(-size.x / 2, 0.1, size.z / 2);
+  const axes_boxes = new AxesBoxesGroup(20);
+  axes_boxes.position.set(-size.x / 2, 0.1, size.z / 2);
+  scene.add(axes_boxes);
 }
 
 export function start_viewer() {
-  renderer.scene.clear();
-
   renderer.animate();
-  renderer.scene.add(spotLight);
-  renderer.scene.add(ambientLight);
+}
+
+export function setup_scene(scene) {
+  // ---- Lighting
+  const spotLight = new THREE.DirectionalLight(0xffffff, 1.25);
+  spotLight.position.set(100, 100, 100);
+
+  const ambientLight = new THREE.AmbientLight(0xffffff);
+  ambientLight.position.set(0, 0, 0);
+  ambientLight.intensity = 1;
+
+  scene.add(spotLight);
+  scene.add(ambientLight);
 
   let printer_definition = active_containers.definitions.printer;
-  load_buildplate(printer_definition.metadata.platform);
+  load_buildplate(printer_definition.metadata.platform, scene);
 
   // ---- Build Volume Outline
   let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children;
@@ -82,7 +106,7 @@ export function start_viewer() {
   var mat = new THREE.LineBasicMaterial({color: 0x1a5f5a, linewidth: 0.5});
   var build_frame = new THREE.LineSegments(geo, mat);
   build_frame.position.y += machine_settings.machine_height.default_value / 2;
-  renderer.scene.add(build_frame);
+  scene.add(build_frame);
 
   // TODO: doesn't work for non-square
   const gridHelperSmall = new THREE.GridHelper(
@@ -102,6 +126,6 @@ export function start_viewer() {
 
   gridHelperBig.position.y += 0.01; // Get rid of flickering
 
-  renderer.scene.add(gridHelperSmall);
-  renderer.scene.add(gridHelperBig);
+  scene.add(gridHelperSmall);
+  scene.add(gridHelperBig);
 }

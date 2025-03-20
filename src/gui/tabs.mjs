@@ -8,9 +8,9 @@ export const settings_tab_button = document.getElementById("settings-tab-button"
 
 const tab_contents = [main_tab, main_tab, settings_tab];
 const tab_buttons = [prepare_tab_button, preview_tab_button, settings_tab_button];
-const tab_change_listeners = [];
+export const tab_change_listeners = [];
 
-function switch_tab(tab_index) {
+export function switch_tab(tab_index) {
   for (let tab of tab_contents)
     tab.dataset.active = false;
   for (let tab_button of tab_buttons)
@@ -30,5 +30,3 @@ preview_tab_button.onclick = () => {
 settings_tab_button.onclick = () => {
   switch_tab(2);
 };
-
-switch_tab(0);

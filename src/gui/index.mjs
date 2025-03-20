@@ -11,9 +11,13 @@ export * as sidebar from "./sidebar.mjs";
 export * as tabs from "./tabs.mjs";
 export * as viewer from "./viewer/viewer.mjs";
 
+import { start_viewer } from "./viewer/viewer.mjs";
 import { check_for_stl } from "./file.mjs";
 import { load_sidebar } from "./sidebar.mjs";
 import { start_model_viewer } from "./viewer/model_viewer.mjs";
+import { start_gcode_viewer } from "./viewer/gcode_viewer.mjs";
+
+import { switch_tab } from "./tabs.mjs";
 
 import { load_options } from "./options.mjs";
 
@@ -26,7 +30,9 @@ export function sleep(ms) {
 export async function start_gui() {
   load_sidebar();
   load_options();
+  start_viewer();
   start_model_viewer();
+  start_gcode_viewer();
 
   //hardcoded sleeps are bad practice usually,
   //but in this case there are some layout shifts with the three.js canvas that need to be hidden
@@ -34,6 +40,8 @@ export async function start_gui() {
   document.getElementById("loading").style.animation = "blur-out 0.25s";
   await sleep(250);
   document.getElementById("loading").style.display = "none";
+
+  switch_tab(0);
 
   check_for_stl();
 }

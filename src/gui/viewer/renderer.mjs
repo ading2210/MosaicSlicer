@@ -7,31 +7,7 @@ export const viewport = document.getElementById("viewer");
 export var view_width = viewport.clientWidth;
 export var view_height = viewport.clientHeight;
 
-// ---- Scene
-export const scene = new THREE.Scene();
-
-export class AxesBoxesGroup extends THREE.Group {
-  constructor(length) {
-    super();
-    this.x_box = this.create_box(length, 1, 1, 0xff0000);
-    this.x_box.position.set(length / 2, 0, 0);
-    this.y_box = this.create_box(1, length, 1, 0x00ff00);
-    this.y_box.position.set(0, 0, -length / 2);
-    this.z_box = this.create_box(1, 1, length, 0x0000ff);
-    this.z_box.position.set(0, length / 2, 0);
-  }
-
-  create_box(width, height, depth, color) {
-    const geometry = new THREE.BoxGeometry(width, depth, height);
-    const material = new THREE.MeshBasicMaterial({color: color});
-    const box = new THREE.Mesh(geometry, material);
-    this.add(box);
-    return box;
-  }
-}
-
-export const axes_boxes = new AxesBoxesGroup(20);
-scene.add(axes_boxes);
+var current_scene;
 
 // ---- Camera
 export const camera = new THREE.PerspectiveCamera(
@@ -50,6 +26,10 @@ export const renderer = new THREE.WebGLRenderer({
 });
 renderer.setClearColor(0xffffff, 0);
 renderer.setSize(view_width, view_height);
+
+export function set_scene(scene) {
+  current_scene = scene;
+}
 
 // ---- Controls
 export const controls = new OrbitControls(camera, renderer.domElement);
@@ -74,7 +54,8 @@ function resize() {
 }
 
 function render() {
-  renderer.render(scene, camera);
+  if (current_scene)
+    renderer.render(current_scene, camera);
 }
 
 export function animate() {

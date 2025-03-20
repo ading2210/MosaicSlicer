@@ -9,11 +9,14 @@ import * as interactions from "./interactions.mjs";
 
 import * as viewer from "./viewer.mjs";
 import { clear_slice_state } from "../actions.mjs";
+import { tab_change_listeners } from "../tabs.mjs";
 
 const controls_bar = document.getElementById("controls");
 const movement_button = document.getElementById("movement-button");
 const rotate_button = document.getElementById("rotate-button");
 const scale_button = document.getElementById("scale-button");
+
+const scene = new THREE.Scene();
 
 /**
  * @typedef {Object} Model
@@ -58,7 +61,7 @@ function focus_stl(uuid) {
 function unfocus_stl() {
   if (focused) {
     model_controls.detach(models[focused].mesh);
-    renderer.scene.remove(model_controls.getHelper());
+    scene.remove(model_controls.getHelper());
     model_controls.enabled = false;
 
     models[focused].mesh.material.color.set(0x1a5f5a);
@@ -71,7 +74,7 @@ function unfocus_stl() {
 function toggle_transform(transform) {
   if (model_controls.enabled && model_controls.mode == transform) {
     model_controls.detach(models[focused].mesh);
-    renderer.scene.remove(model_controls.getHelper());
+    scene.remove(model_controls.getHelper());
     model_controls.enabled = false;
   }
   else {
@@ -79,7 +82,7 @@ function toggle_transform(transform) {
 
     model_controls.attach(models[focused].mesh);
     model_controls.setMode(transform);
-    renderer.scene.add(model_controls.getHelper());
+    scene.add(model_controls.getHelper());
   }
 }
 
@@ -107,7 +110,7 @@ export function load_model(raw_data, model_type) {
   mesh.position.y += size.z * 0.5;
   // .y += size.z * 0.5; // z/y are flipped
 
-  renderer.scene.add(mesh);
+  scene.add(mesh);
 
   models[mesh.uuid] = {
     mesh: mesh,
@@ -162,20 +165,35 @@ export function export_stl() {
   return exporter.parse(new THREE.Mesh(merged_models), {binary: true});
 }
 
-/**
- * Clear scene and start model viewer. This function will also be called by the tab switcher
- */
-export function start_model_viewer() {
-  viewer.start_viewer();
-
-  // ---- Event Listeners
-  movement_button.addEventListener("click", () => {
+const button_listeners = [
+  () => {
     toggle_transform("translate");
-  });
-  rotate_button.addEventListener("click", () => {
+  },
+  () => {
     toggle_transform("rotate");
-  });
-  scale_button.addEventListener("click", () => {
+  },
+  () => {
     toggle_transform("scale");
-  });
+  }
+];
+
+export function start_model_viewer() {
+  viewer.setup_scene(scene);
 }
+
+tab_change_listeners.push((i) => {
+  console.log(i);
+  if (i == 0) {
+    renderer.set_scene(scene);
+
+    // ---- Event Listeners
+    movement_button.addEventListener("click", button_listeners[0]);
+    rotate_button.addEventListener("click", button_listeners[1]);
+    scale_button.addEventListener("click", button_listeners[2]);
+  }
+  else {
+    movement_button.removeEventListener("click", button_listeners[0]);
+    rotate_button.removeEventListener("click", button_listeners[1]);
+    scale_button.removeEventListener("click", button_listeners[2]);
+  }
+});

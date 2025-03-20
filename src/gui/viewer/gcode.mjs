@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { LineTubeGeometry } from "./LineTube.mjs";
 
+// We need to make this run asyncronously or something, it's quite slow
 export function parse(data) {
   let state = {x: 0, y: 0, z: 0, e: 0, f: 0, extruding: false, relative: false};
   const layers = [];
