@@ -1,5 +1,5 @@
 {
-  "name": "Web Slicer",
+  "name": "mosaicslicer",
   "description": "",
   "version": "0.0.1",
   "manifest_version": 3,
@@ -8,7 +8,7 @@
     "service_worker": "extension/background.js"
   },
   "action": {
-    "default_title": "Open Web Slicer"
+    "default_title": "Open MosaicSlicer"
   },
   "content_scripts": [
     {

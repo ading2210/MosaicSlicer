@@ -1,4 +1,4 @@
-# Web Slicer
+# MosaicSlicer
 
 ## Building
 
@@ -14,7 +14,7 @@ Compile CuraEngine:
 $ scripts/build_cura.sh
 ```
 
-Bundle Resourdces:
+Bundle Resources:
 
 ```
 $ scripts/bundle_resources.sh
