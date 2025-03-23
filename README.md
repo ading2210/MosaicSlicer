@@ -32,12 +32,6 @@ Make sure you have all submodules cloned:
 $ git submodule update --init --progress
 ```
 
-Compile CuraEngine:
-
-```
-$ scripts/build_cura.sh
-```
-
 Bundle Resources:
 
 ```
