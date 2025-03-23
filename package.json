@@ -25,6 +25,7 @@
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.5",
     "@micropython/micropython-webassembly-pyscript": "^1.24.1",
+    "@mosaicslicer/curaengine": "^0.0.3",
     "fuse.js": "^7.1.0",
     "ini": "^5.0.0",
     "ionicons": "^7.4.0",

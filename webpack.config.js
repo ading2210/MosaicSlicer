@@ -58,6 +58,10 @@ module.exports = [
             "css-loader",
             "sass-loader"
           ]
+        },
+        {
+          test: /^worker\//,
+          type: "asset/resource"
         }
       ]
     },
@@ -67,5 +71,14 @@ module.exports = [
       topLevelAwait: true,
       outputModule: true
     }
+  },
+  {
+    name: "curaengine_worker",
+    entry: "./src/engine/worker/index.mjs",
+    output: {
+      filename: "js/worker.js"
+    },
+    mode: "development",
+    devtool: "source-map"
   }
 ];

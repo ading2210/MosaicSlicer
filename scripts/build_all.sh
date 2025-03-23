@@ -7,7 +7,6 @@ set -x
 rm -rf dist
 
 #run other build scripts
-scripts/build_cura.sh
 scripts/bundle_resources.sh
 npm i
 npm run build:prod

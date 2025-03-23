@@ -17,7 +17,7 @@ function wait_for_worker(worker) {
 
 async function create_worker() {
   if (!cura_worker) {
-    cura_worker = new Worker(new URL("./worker/index.mjs", import.meta.url), {type: "module"});
+    cura_worker = new Worker("js/worker.js");
     await wait_for_worker(cura_worker);
     cura_worker.addEventListener("message", handle_msg);
   }
