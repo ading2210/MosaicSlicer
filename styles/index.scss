@@ -1,8 +1,8 @@
-@use "./base.scss";
-@use "./main_tab.scss";
-@use "./settings.scss";
-@use "./sidebar.scss";
-@use "./preferences.scss";
+@use "base";
+@use "main_tab";
+@use "settings";
+@use "sidebar";
+@use "preferences";
 
 body, html {
   display: flex;

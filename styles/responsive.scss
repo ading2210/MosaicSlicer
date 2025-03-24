@@ -1,0 +1,11 @@
+@mixin mobile($device: mobile) {
+  @if $device == mobile {
+    @media (max-aspect-ratio: 1/1) {
+      @content;
+    }
+  } @else if $device == desktop {
+    @media (min-aspect-ratio: 1/1) {
+      @content;
+    }
+  }
+}

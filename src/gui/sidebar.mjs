@@ -3,9 +3,15 @@ import { create_group_element, update_sections, update_values } from "./settings
 import { fuse } from "./search.mjs";
 import { update_all } from "./actions.mjs";
 
+const sidebar = document.getElementById("sidebar");
+const expand_bar = document.getElementById("expand-bar");
 export const sections = document.getElementById("sections");
 const section_template = document.getElementById("section-template");
 const profile_selector = document.getElementById("profile-selector");
+
+expand_bar.addEventListener("click", () => {
+  sidebar.classList.toggle("expanded");
+});
 
 export function load_sidebar() {
   let definition = active_containers.definitions;

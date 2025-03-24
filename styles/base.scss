@@ -1,3 +1,4 @@
+@use "responsive";
 @import "@fontsource-variable/inter/opsz.css";
 @import "@fontsource-variable/inter/opsz-italic.css";
 
@@ -19,11 +20,17 @@
   --accent: #37d2d7;
 
   --sidebar-width: max(30vw, 25rem);
+  --sidebar-height: 0rem;
   --tab-height: 2.25rem;
 
   font-size: 1rem;
   font-family: "Inter Variable", sans-serif;
   color-scheme: dark;
+
+  @include responsive.mobile() {
+    --sidebar-width: 0;
+    --sidebar-height: 2rem;
+  }
 }
 
 body,
@@ -82,6 +89,7 @@ input {
 cura-icon {
   color: white;
   display: block;
+
   svg {
     height: 100%;
   }
