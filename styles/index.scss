@@ -21,6 +21,14 @@ body, html {
   border-bottom: 1px solid var(--grey-2);
   user-select: none;
 
+  overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   #logo_svg {
     height: 2.5rem;
   }

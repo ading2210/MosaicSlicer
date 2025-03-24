@@ -51,7 +51,7 @@ input[type="number"] {
     transition: bottom 0.2s ease-out;
 
     &.expanded {
-      bottom: -0.5rem;
+      bottom: calc(-1  * var(--tab-height));
     }
   }
 
