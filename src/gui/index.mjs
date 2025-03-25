@@ -28,6 +28,8 @@ export function sleep(ms) {
 }
 
 export async function start_gui() {
+  switch_tab(0);
+
   load_sidebar();
   load_options();
   start_viewer();
@@ -40,8 +42,6 @@ export async function start_gui() {
   document.getElementById("loading").style.animation = "blur-out 0.25s";
   await sleep(250);
   document.getElementById("loading").style.display = "none";
-
-  switch_tab(0);
 
   check_for_stl();
 }
