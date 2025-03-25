@@ -51,7 +51,7 @@ input[type="number"] {
     transition: bottom 0.2s ease-out;
 
     &.expanded {
-      bottom: calc(-1  * var(--tab-height));
+      bottom: 0;
     }
   }
 
@@ -73,7 +73,7 @@ input[type="number"] {
       display: none;
     }
 
-    * {
+    cura-icon {
       width: 1.5rem;
       height: 1.5rem;
       color: var(--grey);
