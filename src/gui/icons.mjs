@@ -62,14 +62,10 @@ export const icons = {};
 const parser = new DOMParser();
 
 class CuraIconElement extends HTMLElement {
+  static observedAttributes = ["icon-name"];
+
   constructor() {
     super();
-  }
-
-  connectedCallback() {
-    let icon_name = this.getAttribute("icon-name");
-    if (icon_name)
-      this.attributeChangedCallback("icon-name", null, icon_name);
   }
 
   attributeChangedCallback(name, old_value, new_value) {

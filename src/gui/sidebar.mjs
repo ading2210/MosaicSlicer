@@ -11,9 +11,11 @@ const profile_selector = document.getElementById("profile-selector");
 
 expand_bar.addEventListener("click", () => {
   sidebar.classList.toggle("expanded");
-  
-  // This doesn't update the icon for some reason...
-  expand_bar.querySelector("cura-icon").setAttribute("icon-name", "ionicons_chevron_" + (sidebar.classList.contains("expanded") ? "down" : "up" ) + "_outline")
+
+  expand_bar.querySelector("cura-icon").setAttribute(
+    "icon-name",
+    "ionicons_chevron_" + (sidebar.classList.contains("expanded") ? "down" : "up") + "_outline"
+  );
 });
 
 export function load_sidebar() {
