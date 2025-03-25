@@ -5,7 +5,8 @@
   "manifest_version": 3,
   "permissions": ["scripting", "tabs"],
   "background": {
-    "service_worker": "extension/background.js"
+    "service_worker": "extension/background.js",
+    "scripts": ["extension/background.js"]
   },
   "action": {
     "default_title": "Open MosaicSlicer"

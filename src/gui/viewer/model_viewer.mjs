@@ -182,7 +182,6 @@ export function start_model_viewer() {
 }
 
 tab_change_listeners.push((i) => {
-  console.log(i);
   if (i == 0) {
     renderer.set_scene(scene);
 

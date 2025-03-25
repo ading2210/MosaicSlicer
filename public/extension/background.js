@@ -5,7 +5,7 @@ let runtime_callbacks = {
 let stl_file = null;
 
 chrome.action.onClicked.addListener(function(tab) {
-  chrome.tabs.create({url: chrome.runtime.getURL("index.html"), selected: true});
+  chrome.tabs.create({url: chrome.runtime.getURL("index.html"), active: true});
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -17,7 +17,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 function load_model(file_name, stl_data) {
   stl_file = [file_name, stl_data];
-  chrome.tabs.create({url: chrome.runtime.getURL("index.html"), selected: true});
+  chrome.tabs.create({url: chrome.runtime.getURL("index.html"), active: true});
 }
 
 function get_model() {

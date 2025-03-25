@@ -1,5 +1,3 @@
-import { temp } from "three/tsl";
-
 const notifications_container = document.getElementById("notifications");
 const notification_template = document.getElementById("notification-template");
 
