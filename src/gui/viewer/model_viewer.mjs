@@ -151,7 +151,7 @@ export function export_stl() {
     meshes.attach(mesh);
   }
 
-  return exporter.parse(meshes, {binary: true});
+  return exporter.parse(meshes, {binary: true}).buffer;
 }
 
 const button_listeners = [

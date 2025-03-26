@@ -1,5 +1,5 @@
 import { active_containers } from "../settings/index.mjs";
-import { cura_engine } from "./actions.mjs";
+import { cura_engine } from "./slicer.mjs";
 import { update_all } from "./actions.mjs";
 
 export const setting_template = document.getElementById("setting-template");

@@ -5,7 +5,7 @@ import * as viewer from "./viewer.mjs";
 import * as gcode from "./gcode/parser.mjs";
 import { active_containers } from "../../settings/index.mjs";
 import { tab_change_listeners } from "../tabs.mjs";
-import { exported_gcode } from "../actions.mjs";
+import { exported_gcode } from "../slicer.mjs";
 import { notify } from "../notifications.mjs";
 
 const scene = new THREE.Scene();
