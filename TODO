@@ -9,9 +9,12 @@ UI:
   [x] Render printer build volume
   [x] When importing STLs, center them
   [x] Merge all objects into single STL for slicing
-  [ ] Support 3mf files
+  [x] Support 3mf files
   [ ] Materials
-  [ ] GCode viewer
+  [x] GCode viewer
+    [ ] Layer scanner
+    [ ] Color code features
+    
 Misc:
   [x] Branding
     [x] Make name

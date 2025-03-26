@@ -14,13 +14,13 @@ Note: MosaicSlicer is alpha quality software and probably has behavior that is s
 - 3d viewer with build plate
 - Works on Chromium and Firefox
 - A browser extension can be installed for offline usage
+- G-code preview
 
 ### Notable Missing Features:
 
 - Support for multiple extruders
 - Editing printer machine settings
 - Saving modified settings
-- G-code preview
 
 ## Building
 
