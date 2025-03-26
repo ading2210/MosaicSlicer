@@ -30,6 +30,7 @@ import ionicons_move_outline from "ionicons/dist/svg/move-outline.svg";
 import ionicons_reload_outline from "ionicons/dist/svg/reload-outline.svg";
 import ionicons_chevron_down_outline from "ionicons/dist/svg/chevron-down-outline.svg";
 import ionicons_chevron_up_outline from "ionicons/dist/svg/chevron-up-outline.svg";
+import ionicons_close_outline from "ionicons/dist/svg/close-outline.svg";
 
 const icons_raw = {
   Printer,
@@ -56,7 +57,8 @@ const icons_raw = {
   ionicons_move_outline,
   ionicons_reload_outline,
   ionicons_chevron_down_outline,
-  ionicons_chevron_up_outline
+  ionicons_chevron_up_outline,
+  ionicons_close_outline
 };
 export const icons = {};
 const parser = new DOMParser();

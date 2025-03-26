@@ -142,27 +142,17 @@ export function load_model(raw_data, model_type) {
  * @returns {ArrayBuffer}
  */
 export function export_stl() {
-  let geometries = [];
+  let meshes = new THREE.Group();
   for (let model in models) {
-    let model_mesh = models[model].mesh;
-    let geometry = model_mesh.geometry.clone();
+    let mesh = models[model].mesh.clone();
+    mesh.rotation.x = 0;
+    mesh.position.y = models[model].mesh.position.z;
+    mesh.position.z = models[model].mesh.position.y;
 
-    geometry.translate(model_mesh.position.x, -model_mesh.position.z, model_mesh.position.y);
-    geometry.rotateX(model_mesh.rotation.x + (0.5 * Math.PI));
-    geometry.rotateY(model_mesh.rotation.y);
-    geometry.rotateZ(model_mesh.rotation.z);
-    geometry.scale(...model_mesh.scale);
-
-    geometries.push(geometry);
+    meshes.attach(mesh);
   }
-  let merged_models = BufferGeometryUtils.mergeGeometries(geometries);
 
-  merged_models.computeBoundingBox();
-  const size = new THREE.Vector3();
-  merged_models.boundingBox.getSize(size);
-  merged_models.translate(0, 0, size.z / 2); // y/z are switched
-
-  return exporter.parse(new THREE.Mesh(merged_models), {binary: true});
+  return exporter.parse(meshes, {binary: true});
 }
 
 const button_listeners = [

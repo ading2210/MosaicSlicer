@@ -10,39 +10,52 @@ import { notify } from "../notifications.mjs";
 
 const scene = new THREE.Scene();
 
+let gcode_mesh;
+
 export function start_gcode_viewer() {
   viewer.setup_scene(scene);
 }
 
+export function clear_gcode() {
+  if (gcode_mesh) {
+    scene.remove(gcode_mesh);
+    gcode_mesh = null;
+  }
+}
+
 async function show_gcode_viewer() {
   if (exported_gcode) {
-    let parser = new gcode.GCodeParser(exported_gcode);
-    await parser.parse();
+    if (!gcode_mesh) {
+      console.log("parsing");
+      let parser = new gcode.GCodeParser(exported_gcode);
+      await parser.parse();
 
-    let mesh = new THREE.Group();
-    for (let geometry of parser.getGeometries()) {
-      mesh.add(
-        new THREE.Mesh(
-          geometry,
-          new THREE.MeshPhysicalMaterial({
-            color: 0x1a5f5a,
-            // A bit of constant light to dampen the shadows
-            emissive: 0x1a5f5a,
-            emissiveIntensity: 0.3
-          })
-        )
+      let mesh = new THREE.Group();
+      for (let geometry of parser.getGeometries()) {
+        mesh.add(
+          new THREE.Mesh(
+            geometry,
+            new THREE.MeshPhysicalMaterial({
+              color: 0x1a5f5a,
+              // A bit of constant light to dampen the shadows
+              emissive: 0x1a5f5a,
+              emissiveIntensity: 0.3
+            })
+          )
+        );
+      }
+
+      let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children;
+      mesh.position.set(
+        -machine_settings.machine_width.default_value / 2,
+        0,
+        machine_settings.machine_width.default_value / 2
       );
+      mesh.rotation.set(-Math.PI / 2, 0, 0);
+
+      scene.add(mesh);
+      gcode_mesh = mesh;
     }
-
-    let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children;
-    mesh.position.set(
-      -machine_settings.machine_width.default_value / 2,
-      0,
-      machine_settings.machine_width.default_value / 2
-    );
-    mesh.rotation.set(-Math.PI / 2, 0, 0);
-
-    scene.add(mesh);
   }
   else {
     notify("No G-Code to show", "Slice a model to generate G-Code");

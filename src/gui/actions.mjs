@@ -2,6 +2,8 @@
  * Listeners for actions (eg. slice button, file input, etc)
  */
 import { export_stl, models } from "./viewer/model_viewer.mjs";
+import { clear_gcode } from "./viewer/gcode_viewer.mjs";
+
 import { CuraEngine } from "../engine/index.mjs";
 import { rpc_callbacks } from "../engine/handler.mjs";
 
@@ -44,6 +46,7 @@ export function clear_slice_state() {
   exported_gcode = null;
   if (cura_engine.active)
     cura_engine.cancel();
+  clear_gcode();
 }
 
 export function update_all(extruder_stack) {
