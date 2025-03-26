@@ -108,7 +108,7 @@ export class GCodeParser {
    * @default 8
    * @type number
    */
-  radialSegments = 8;
+  radialSegments = 3;
 
   /**
    * The layer type to determine how the layer change is detected.

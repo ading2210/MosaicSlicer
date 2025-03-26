@@ -1,6 +1,5 @@
 // Viewer interactions (eg. clicking on a model, etc.)
 import * as THREE from "three";
-import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 import { STLExporter } from "three/addons/exporters/STLExporter.js";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
 
