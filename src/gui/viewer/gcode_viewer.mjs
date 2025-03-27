@@ -24,8 +24,8 @@ export function clear_gcode() {
 }
 
 async function show_gcode_viewer() {
-  if (exported_gcode) {
-    if (!gcode_mesh) {
+  if (!gcode_mesh) {
+    if (exported_gcode) {
       console.log("parsing");
       let parser = new gcode.GCodeParser(exported_gcode);
       await parser.parse();
@@ -56,9 +56,9 @@ async function show_gcode_viewer() {
       scene.add(mesh);
       gcode_mesh = mesh;
     }
-  }
-  else {
-    notify("No G-Code to show", "Slice a model to generate G-Code");
+    else {
+      notify("No G-Code to show", "Slice a model to generate G-Code");
+    }
   }
 }
 

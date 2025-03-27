@@ -38,8 +38,6 @@ export function slice(stl, on_progress) {
       gcode_header = header;
     };
     rpc_callbacks.slice_info = (info) => {
-      console.log("RAH");
-
       let slice_info = {};
 
       //time estimate
@@ -78,7 +76,6 @@ export function slice(stl, on_progress) {
     rpc_callbacks.progress = on_progress;
 
     // let stl = export_stl().buffer;
-    console.log("getting stuff");
     let gcode_bytes = await cura_engine.slice({
       stl: stl,
       settings: settings

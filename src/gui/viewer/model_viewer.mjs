@@ -145,8 +145,14 @@ export function export_stl() {
   for (let model in models) {
     let mesh = models[model].mesh.clone();
     mesh.rotation.x = 0;
-    mesh.position.y = models[model].mesh.position.z;
+
+    mesh.position.x = models[model].mesh.position.x;
+    mesh.position.y = -models[model].mesh.position.z;
     mesh.position.z = models[model].mesh.position.y;
+
+    mesh.rotation.x = models[model].mesh.rotation.x + (Math.PI / 2); // Swap y/z
+    mesh.rotation.y = models[model].mesh.rotation.y;
+    mesh.rotation.z = models[model].mesh.rotation.z;
 
     meshes.attach(mesh);
   }
