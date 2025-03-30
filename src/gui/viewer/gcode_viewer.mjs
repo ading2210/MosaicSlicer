@@ -13,6 +13,22 @@ const scene = new THREE.Scene();
 
 let gcode_mesh;
 
+// ---- Color Settings
+const TRAVEL_COLOR = 0x00ffff;
+const INFILL_COLOR = 0xffa500;
+const SKIRT_COLOR = 0x00ffff;
+const SHELL_COLOR = 0xff0000;
+const INNER_COLOR = 0x00ff00;
+const TOP_BOTTOM_COLOR = 0xffff00;
+
+const color_map = {
+  "FILL": INFILL_COLOR,
+  "SKIRT": SKIRT_COLOR,
+  "WALL-OUTER": SHELL_COLOR,
+  "WALL-INNER": INNER_COLOR,
+  "SKIN": TOP_BOTTOM_COLOR
+};
+
 export function start_gcode_viewer() {
   viewer.setup_scene(scene);
 }
@@ -35,29 +51,56 @@ async function show_gcode_viewer() {
       for (let layer of parsed_data) {
         let layer_lines = new THREE.Group();
         let current_line = new LineTubeGeometry(3);
-        for (let point of layer) {
-          if (point.type == "travel") {
-            if (current_line.pointsLength > 0) {
-              current_line.finish();
+        let current_line_type;
+        let current_line_subtype;
+        let last_point;
 
-              layer_lines.add(
-                new THREE.Mesh(
-                  current_line,
-                  new THREE.MeshPhysicalMaterial({
-                    color: 0x1a5f5a,
-                    // A bit of constant light to dampen the shadows
-                    emissive: 0x1a5f5a,
-                    emissiveIntensity: 0.3
-                  })
-                )
-              );
-              current_line = new LineTubeGeometry(3);
-            }
-          }
-          else {
-            current_line.add({point: point.vector, color: new THREE.Color(0xff0f00), radius: 0.1});
+        function finish_line() {
+          if (current_line.pointsLength > 0) {
+            current_line.finish();
+            layer_lines.add(
+              new THREE.Mesh(
+                current_line,
+                new THREE.MeshPhysicalMaterial({
+                  color: current_line_type == "print" ? color_map[current_line_subtype] : TRAVEL_COLOR,
+                  emissive: color_map[current_line_subtype],
+                  emissiveIntensity: 0.1
+                })
+              )
+            );
+            current_line = new LineTubeGeometry(3);
           }
         }
+
+        for (let point of layer) {
+          if (point.type == "travel") {
+            if (current_line_type == "print")
+              finish_line();
+
+            if (current_line.pointsBuffer.length == 0) {
+              if (last_point)
+                current_line.add({point: last_point, color: new THREE.Color(0xff0f00), radius: 0.01});
+            }
+            current_line_type = "travel";
+            current_line_subtype = point.subtype;
+            current_line.add({point: point.vector, color: new THREE.Color(0xff0f00), radius: 0.01});
+            last_point = point.vector;
+          }
+          else {
+            if (current_line_type == "travel")
+              finish_line();
+
+            if (current_line.pointsBuffer.length == 0) {
+              if (last_point)
+                current_line.add({point: last_point, color: new THREE.Color(0xff0f00), radius: 0.1});
+            }
+            current_line_type = "print";
+            current_line_subtype = point.subtype;
+            current_line.add({point: point.vector, color: new THREE.Color(0xff0f00), radius: 0.1});
+            last_point = point.vector;
+          }
+        }
+        finish_line();
         mesh.add(layer_lines);
       }
 
