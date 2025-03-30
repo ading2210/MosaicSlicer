@@ -44,6 +44,15 @@ async function show_gcode_viewer() {
   if (!gcode_mesh) {
     if (exported_gcode) {
       console.log("parsing");
+      let start = performance.now();
+
+      function get_width(filament_diameter, nozzle_diameter, layer_height, extruded, distance) {
+        const rate = filament_diameter / nozzle_diameter;
+        const e_per_mm = (extruded / distance) * rate;
+        const volume_extruded = extruded * e_per_mm * Math.PI * (nozzle_diameter / 2) ** 2;
+
+        return (volume_extruded / (distance * layer_height)) + layer_height - (Math.PI * layer_height / 4);
+      }
 
       let mesh = new THREE.Group();
       let parsed_data = await gcode.parse(exported_gcode);
@@ -79,12 +88,12 @@ async function show_gcode_viewer() {
 
             if (current_line.pointsBuffer.length == 0) {
               if (last_point)
-                current_line.add({point: last_point, color: new THREE.Color(0xff0f00), radius: 0.01});
+                current_line.add({point: last_point.vector, color: new THREE.Color(0xff0f00), radius: 0.05});
             }
             current_line_type = "travel";
             current_line_subtype = point.subtype;
-            current_line.add({point: point.vector, color: new THREE.Color(0xff0f00), radius: 0.01});
-            last_point = point.vector;
+            current_line.add({point: point.vector, color: new THREE.Color(0xff0f00), radius: 0.05});
+            last_point = point;
           }
           else {
             if (current_line_type == "travel")
@@ -92,12 +101,24 @@ async function show_gcode_viewer() {
 
             if (current_line.pointsBuffer.length == 0) {
               if (last_point)
-                current_line.add({point: last_point, color: new THREE.Color(0xff0f00), radius: 0.1});
+                current_line.add({point: last_point.vector, color: new THREE.Color(0xff0f00), radius: 0.2});
             }
             current_line_type = "print";
             current_line_subtype = point.subtype;
-            current_line.add({point: point.vector, color: new THREE.Color(0xff0f00), radius: 0.1});
-            last_point = point.vector;
+
+            // let dist;
+            // let extruded;
+            // if (!last_point) {
+            //   dist = new THREE.Vector3(point.vector.x, point.vector.y, point.vector.z).length()
+            //   extruded = point.vector.w
+            // }
+            // else {
+            //   dist = new THREE.Vector3(last_point.vector.x, last_point.vector.y, last_point.vector.z).distanceTo(new THREE.Vector3(point.vector.x, point.vector.y, point.vector.z));
+            //   extruded = point.vector.w - last_point.vector.w
+            // }
+
+            current_line.add({point: point.vector, color: new THREE.Color(0xff0f00), radius: 0.2}); // get_width(1.75, 0.4, 0.2, extruded, dist) / 2
+            last_point = point;
           }
         }
         finish_line();
@@ -114,6 +135,8 @@ async function show_gcode_viewer() {
 
       scene.add(mesh);
       gcode_mesh = mesh;
+
+      console.log("parsed in " + (performance.now() - start) + " ms");
     }
     else {
       notify("No G-Code to show", "Slice a model to generate G-Code");

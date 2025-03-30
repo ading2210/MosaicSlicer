@@ -8,14 +8,14 @@ export async function parse(gcode) {
    * @typedef {Object} Segment
    * @property {'travel' | 'print'} type
    * @property {'SKIRT' | 'WALL-OUTER' | 'SKIN' | 'WALL-INNER' | 'FILL'} subtype
-   * @property {THREE.Vector3} vector
+   * @property {THREE.Vector4} vector
    */
 
   /** @type {Segment[][]} */
   let layers = [];
   /** @type {Segment[]} */
   let layer = [];
-  let last_vector = new THREE.Vector3(0, 0, 0);
+  let last_vector = new THREE.Vector4(0, 0, 0, 0);
   let relative = false;
   let type;
   let layer_num = 0;
@@ -39,6 +39,8 @@ export async function parse(gcode) {
             last_vector.y += params.Y;
           if (params.hasOwnProperty("Z"))
             last_vector.z += params.Z;
+          if (params.hasOwnProperty("E"))
+            last_vector.w += params.E;
         }
         else {
           if (params.hasOwnProperty("X"))
@@ -47,6 +49,8 @@ export async function parse(gcode) {
             last_vector.y = params.Y;
           if (params.hasOwnProperty("Z"))
             last_vector.z = params.Z;
+          if (params.hasOwnProperty("E"))
+            last_vector.w = params.E;
         }
 
         layer.push({
@@ -68,6 +72,8 @@ export async function parse(gcode) {
           last_vector.y = params.Y;
         if (params.hasOwnProperty("Z"))
           last_vector.z = params.Z;
+        if (params.hasOwnProperty("E"))
+          last_vector.w = params.E;
       }
       else {
         console.log("Unsupported Command: " + command_args[0]);
