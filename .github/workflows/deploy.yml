@@ -21,7 +21,8 @@ jobs:
           bash scripts/build_all.sh
           sudo npm i -g wrangler
 
-      - uses: actions/upload-artifact@v4
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
         with:
           name: files_static
           path: dist/

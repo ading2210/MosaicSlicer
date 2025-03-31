@@ -18,7 +18,9 @@ async function main() {
 
   resources.load_all_ini();
   settings.materials.load_all_materials();
-  settings.load_container("creality_ender3");
+  
+  let printer = settings.load_container("creality_ender3");
+  settings.set_active_printer(printer);
   console.log("Loaded configurations");
 
   await gui.start_gui();

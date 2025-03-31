@@ -65,7 +65,7 @@
     display: flex;
     border: 1px solid var(--grey-2);
     padding: 0.25rem;
-    height: 100%;
+    height: min(32rem, 100%);
 
     div {
       padding: 0.25rem;

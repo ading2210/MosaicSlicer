@@ -7,9 +7,9 @@ import { filter_profiles, resolve_profiles } from "./profiles.mjs";
 //https://github.com/Ultimaker/Cura/wiki/Container-Stacks
 
 export class ContainerStack {
-  constructor(name, defintion, parent) {
+  constructor(name, definition, parent) {
     this.name = name;
-    this.definition = defintion;
+    this.definition = definition;
     this.parent = parent;
     this.parent_meta = this.parent.definitions.printer.metadata;
     this.type = this.definition.metadata.type;
@@ -23,6 +23,7 @@ export class ContainerStack {
       material: null,
       variant: null
     };
+    this.custom_profiles = {};
     this.filters = {
       material: undefined,
       variant: undefined,
@@ -353,6 +354,21 @@ export class ContainerStack {
     }
     return null;
   }
+
+  export_prefs() {
+    let exported_profiles = {};
+    for (let [profile_type, profile] of Object.entries(this.active_profiles)) {
+      if (profile && profile.id)
+        exported_profiles[profile_type] = profile.id;
+      else
+        exported_profiles[profile_type] = profile;
+    }
+    return {
+      name: this.name,
+      custom_profiles: this.custom_profiles,
+      profiles: exported_profiles
+    };
+  }
 }
 
 export class ContainerStackGroup {
@@ -466,6 +482,18 @@ export class ContainerStackGroup {
     if (all_qualities.length === 1)
       return Array.from(all_qualities[0]);
     return set_intersect(...all_qualities);
+  }
+
+  export_prefs() {
+    let exported_containers = {
+      global: this.containers.global.export_prefs()
+    };
+    for (let [extruder_id, extruder_stack] of Object.entries(this.containers.extruders))
+      exported_containers[extruder_id] = extruder_stack.export_prefs();
+    return {
+      printer_id: this.printer_id,
+      containers: exported_containers
+    };
   }
 }
 
