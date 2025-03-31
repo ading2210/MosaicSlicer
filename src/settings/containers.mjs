@@ -1,3 +1,4 @@
+import { prefs, save_prefs } from "../prefs.mjs";
 import { clean_globals, eval_py, PythonNameError, setup_ctx } from "../python.mjs";
 import { merge_deep, resolve_definitions, resolve_settings } from "./definitions.mjs";
 import { get_material_type, material_to_profile, parsed_materials } from "./materials.mjs";
@@ -369,11 +370,57 @@ export class ContainerStack {
       profiles: exported_profiles
     };
   }
+
+  import_prefs(container_prefs) {
+    this.custom_profiles = container_prefs.custom_profiles;
+    for (let [profile_type, profile] of Object.entries(container_prefs.profiles)) {
+      if (!profile)
+        continue;
+      if (typeof profile === "string")
+        this["set_" + profile_type](profile);
+      else
+        this.active_profiles[profile_type] = profile;
+    }
+  }
 }
 
 export class ContainerStackGroup {
-  constructor(printer_id) {
+  constructor(printer_id, printer_prefs) {
     this.set_printer(printer_id);
+    this.uuid = uuid_v4();
+    if (printer_prefs)
+      this.import_prefs(printer_prefs);
+  }
+
+  import_prefs(printer_prefs) {
+    this.uuid = printer_prefs.uuid;
+    for (let [container_name, container_prefs] of Object.entries(printer_prefs.containers)) {
+      if (container_name === "global")
+        this.containers.global.import_prefs(container_prefs);
+      else
+        this.containers.extruders[container_name].import_prefs(container_prefs);
+    }
+  }
+  
+  export_prefs() {
+    let exported_containers = {
+      global: this.containers.global.export_prefs()
+    };
+    for (let [extruder_id, extruder_stack] of Object.entries(this.containers.extruders))
+      exported_containers[extruder_id] = extruder_stack.export_prefs();
+    return {
+      printer_id: this.printer_id,
+      uuid: this.uuid,
+      containers: exported_containers
+    };
+  }
+
+  save_prefs() {
+    let printer_prefs = this.export_prefs();
+    if (!prefs.printers)
+      prefs.printers = {};
+    prefs.printers[this.uuid] = printer_prefs;
+    save_prefs();
   }
 
   set_printer(printer_id) {
@@ -394,10 +441,10 @@ export class ContainerStackGroup {
       extruders: {}
     };
 
-    for (let [extuder_id, extruder] of Object.entries(this.definitions.extruders)) {
-      let extruder_stack = new ContainerStack(extuder_id, extruder, this);
+    for (let [extruder_id, extruder] of Object.entries(this.definitions.extruders)) {
+      let extruder_stack = new ContainerStack(extruder_id, extruder, this);
       extruder_stack.set_preferred_profiles();
-      this.containers.extruders[extuder_id] = extruder_stack;
+      this.containers.extruders[extruder_id] = extruder_stack;
     }
   }
 
@@ -461,6 +508,7 @@ export class ContainerStackGroup {
         extruder_stack.resolve_setting(setting_id);
       }
     }
+    this.save_prefs();
 
     let end = performance.now();
     console.log("updated settings in", Math.round((end - start) * 100) / 100, "ms");
@@ -483,18 +531,6 @@ export class ContainerStackGroup {
       return Array.from(all_qualities[0]);
     return set_intersect(...all_qualities);
   }
-
-  export_prefs() {
-    let exported_containers = {
-      global: this.containers.global.export_prefs()
-    };
-    for (let [extruder_id, extruder_stack] of Object.entries(this.containers.extruders))
-      exported_containers[extruder_id] = extruder_stack.export_prefs();
-    return {
-      printer_id: this.printer_id,
-      containers: exported_containers
-    };
-  }
 }
 
 function is_int(str) {
@@ -513,4 +549,11 @@ function set_intersect(set_a, set_b, ...args) {
   if (args.length === 0)
     return result;
   return set_intersect(result, args.shift(), ...args);
+}
+
+function uuid_v4() {
+  return "10000000-1000-4000-8000-100000000000".replace(
+    /[018]/g,
+    c => (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+  );
 }

@@ -1,5 +1,6 @@
 export const default_prefs = {
-  printers: {}
+  printers: {},
+  active_printer: null
 };
 export let prefs = {};
 
