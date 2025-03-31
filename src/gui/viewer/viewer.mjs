@@ -9,6 +9,8 @@ import { active_containers } from "../../settings/index.mjs";
 export const stl_loader = new STLLoader();
 export const mf_loader = new ThreeMFLoader();
 
+let buildplate_mesh;
+
 // ---- Arrows
 export class AxesBoxesGroup extends THREE.Group {
   constructor(length) {
@@ -44,23 +46,25 @@ const buildplate_shell_material = new THREE.MeshPhysicalMaterial({
 });
 
 async function load_buildplate(model_filename, scene) {
-  let res = await fetch("resources/meshes/" + model_filename);
-  let buildplate_mesh;
+  if (buildplate_mesh)
+    scene.add(buildplate_mesh);
+  else {
+    let res = await fetch("resources/meshes/" + model_filename);
 
-  if (model_filename.endsWith(".3mf")) {
-    buildplate_mesh = new THREE.Mesh(
-      mf_loader.parse(await res.arrayBuffer()).children[0].children[0].geometry,
-      buildplate_material
-    );
+    if (model_filename.endsWith(".3mf")) {
+      buildplate_mesh = new THREE.Mesh(
+        mf_loader.parse(await res.arrayBuffer()).children[0].children[0].geometry,
+        buildplate_material
+      );
+    }
+    else if (model_filename.endsWith(".stl"))
+      buildplate_mesh = new THREE.Mesh(stl_loader.parse(await res.arrayBuffer()), buildplate_material);
+    else
+      throw new TypeError("Build plate model is of unsupported type; Valid types are '.stl' or '.3mf'");
+
+    buildplate_mesh.position.set(0, 0, 0);
+    scene.add(buildplate_mesh);
   }
-  else if (model_filename.endsWith(".stl"))
-    buildplate_mesh = new THREE.Mesh(stl_loader.parse(await res.arrayBuffer()), buildplate_material);
-  else
-    throw new TypeError("Build plate model is of unsupported type; Valid types are '.stl' or '.3mf'");
-
-  buildplate_mesh.position.set(0, 0, 0);
-  scene.add(buildplate_mesh);
-
   // This is to replicate Cura and how it handles the hole in the model
   buildplate_mesh.geometry.computeBoundingBox();
   const size = new THREE.Vector3();
@@ -70,7 +74,6 @@ async function load_buildplate(model_filename, scene) {
   let shell_mesh = new THREE.Mesh(rect, buildplate_shell_material);
   shell_mesh.position.set(0, -size.y * 0.5, 0);
   scene.add(shell_mesh);
-
   const axes_boxes = new AxesBoxesGroup(20);
   axes_boxes.position.set(-size.x / 2, 0.1, size.z / 2);
   scene.add(axes_boxes);
