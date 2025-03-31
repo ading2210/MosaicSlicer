@@ -2,8 +2,8 @@
 import * as THREE from "three";
 import * as renderer from "./renderer.mjs";
 import * as viewer from "./viewer.mjs";
-import * as gcode from "./gcode/parser.mjs";
-import { LineTubeGeometry } from "./gcode/LineTubeGeometry.mjs";
+import * as gcode from "./parser.mjs";
+import { LayerLineGeometry } from "./LayerLineGeometry.mjs";
 import { active_containers } from "../../settings/index.mjs";
 import { tab_change_listeners } from "../tabs.mjs";
 import { exported_gcode } from "../slicer.mjs";
@@ -65,7 +65,7 @@ async function show_gcode_viewer() {
       let parsed_data = await gcode.parse(exported_gcode);
 
       for (let layer of parsed_data) {
-        let current_line = new LineTubeGeometry(4);
+        let current_line = new LayerLineGeometry(4);
         let current_line_type;
         let current_line_subtype;
         let last_point;
@@ -112,7 +112,7 @@ async function show_gcode_viewer() {
         );
         mesh.add(layer_mesh);
         layers.push(layer_mesh);
-        current_line = new LineTubeGeometry(4);
+        current_line = new LayerLineGeometry(4);
       }
 
       let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children;

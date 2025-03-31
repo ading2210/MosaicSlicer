@@ -9,7 +9,7 @@ import { BufferGeometry, Float32BufferAttribute, MathUtils, Matrix4, Vector3 } f
  * TODO: As I searched for something like this quite some time without success, this
  * would be a good part to extract into another lib...
  */
-export class LineTubeGeometry extends BufferGeometry {
+export class LayerLineGeometry extends BufferGeometry {
   /**
    * Saves up to 4 linePoints to generate the model.
    * The oldest one get's dropped after generating as it's not needed anymore.
