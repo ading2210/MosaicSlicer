@@ -103,11 +103,8 @@ drop_zone.addEventListener("drop", (event) => {
   drop_zone.style.display = "none";
 
   const file = event.dataTransfer.files[0];
-
-  if (file) {
-    if (["stl", "3mf"].includes(file.name.split(".").pop()))
-      load_file(file);
-  }
+  if (file && ["stl", "3mf"].includes(file.name.split(".").pop()))
+    load_file(file);
 });
 
 set_active_state(slice_button_div);

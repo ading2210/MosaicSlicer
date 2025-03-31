@@ -27,6 +27,7 @@ Functionality:
 [ ] Configs
   [x] Load .ini files
   [x] Load material files
+  [x] Saving settings to local storage
   [ ] Importable files
   [ ] Importable machine definitions
   [x] Pass loaded configs into slicer

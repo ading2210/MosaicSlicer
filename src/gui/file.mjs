@@ -47,6 +47,7 @@ export function save_file(data, filename, type) {
 }
 
 export function check_for_stl() {
+  //only run this inside the web extension
   if (!window.chrome || !window.chrome.runtime)
     return;
   chrome.runtime.sendMessage({cmd: "get_model"}, async (response) => {

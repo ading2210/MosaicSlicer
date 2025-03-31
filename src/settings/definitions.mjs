@@ -52,10 +52,10 @@ export function resolve_definitions(printer_id) {
 
   let extruder_data = printer.metadata.machine_extruder_trains;
   let extruders = {};
-  for (let [extuder_num, extruder_id] of Object.entries(extruder_data)) {
+  for (let [extruder_num, extruder_id] of Object.entries(extruder_data)) {
     let extruder_inheritance = [];
-    extruders[extuder_num] = resolve_extruder(extruder_id, extruder_inheritance);
-    extruders[extuder_num].inheritance_chain = extruder_inheritance;
+    extruders[extruder_num] = resolve_extruder(extruder_id, extruder_inheritance);
+    extruders[extruder_num].inheritance_chain = extruder_inheritance;
   }
 
   return {
@@ -83,12 +83,12 @@ export function resolve_settings(overrides, settings, resolved = {}) {
 export function resolve_machine_settings(printer_id) {
   let {printer, extruders} = resolve_definitions(printer_id);
   let printer_settings = resolve_settings(printer.overrides, printer.settings);
-  let extuder_settings = {};
-  for (let [id, extuder] of Object.entries(extruders))
-    extuder_settings[id] = resolve_settings(extuder.overrides, extuder.settings);
+  let extruder_settings = {};
+  for (let [id, extruder] of Object.entries(extruders))
+    extruder_settings[id] = resolve_settings(extruder.overrides, extruder.settings);
 
   return {
     printer: printer_settings,
-    extruders: extuder_settings
+    extruders: extruder_settings
   };
 }

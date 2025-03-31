@@ -40,102 +40,102 @@ export function start_gcode_viewer() {
 }
 
 export function clear_gcode() {
-  if (gcode_mesh) {
-    scene.remove(gcode_mesh);
-    gcode_mesh = null;
-    layers = [];
-  }
+  if (!gcode_mesh)
+    return;
+  scene.remove(gcode_mesh);
+  gcode_mesh = null;
+  layers = [];
 }
 
 async function show_gcode_viewer() {
-  if (!gcode_mesh) {
-    if (exported_gcode) {
-      console.log("parsing");
-      let start = performance.now();
-
-      function get_width(filament_diameter, nozzle_diameter, layer_height, extruded, distance) {
-        const rate = filament_diameter / nozzle_diameter;
-        const e_per_mm = (extruded / distance) * rate;
-        const volume_extruded = extruded * e_per_mm * Math.PI * (nozzle_diameter / 2) ** 2;
-
-        return (volume_extruded / (distance * layer_height)) + layer_height - (Math.PI * layer_height / 4);
-      }
-
-      let mesh = new THREE.Group();
-      let parsed_data = await gcode.parse(exported_gcode);
-
-      for (let layer of parsed_data) {
-        let current_line = new LayerLineGeometry(4);
-        let current_line_type;
-        let current_line_subtype;
-        let last_point;
-
-        for (let point of layer) {
-          if (point.type == "travel") {
-            if (current_line_type == "print")
-              current_line.add({point: last_point.vector, color: new THREE.Color(TRAVEL_COLOR), radius: 0.025});
-
-            current_line_type = "travel";
-            current_line_subtype = point.subtype;
-
-            current_line.add({point: point.vector, color: new THREE.Color(TRAVEL_COLOR), radius: 0.025});
-            last_point = point;
-          }
-          else {
-            current_line_subtype = point.subtype;
-
-            if (current_line_type == "travel") {
-              current_line.add({
-                point: last_point.vector,
-                color: new THREE.Color(color_map[current_line_subtype]),
-                radius: 0.2
-              });
-            }
-
-            current_line_type = "print";
-
-            current_line.add({
-              point: point.vector,
-              color: new THREE.Color(color_map[current_line_subtype]),
-              radius: 0.2
-            }); // get_width(1.75, 0.4, 0.2, extruded, dist) / 2
-            last_point = point;
-          }
-        }
-        // finish_line();
-        current_line.finish();
-        let layer_mesh = new THREE.Mesh(
-          current_line,
-          new THREE.MeshPhysicalMaterial({
-            vertexColors: true
-          })
-        );
-        mesh.add(layer_mesh);
-        layers.push(layer_mesh);
-        current_line = new LayerLineGeometry(4);
-      }
-
-      let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children;
-      mesh.position.set(
-        -machine_settings.machine_width.default_value / 2,
-        0,
-        machine_settings.machine_width.default_value / 2
-      );
-      mesh.rotation.set(-Math.PI / 2, 0, 0);
-
-      scene.add(mesh);
-      gcode_mesh = mesh;
-
-      console.log("parsed in " + (performance.now() - start) + " ms");
-
-      layer_slider_container.style.display = "block";
-      layer_slider.max = parsed_data.length;
-      layer_slider.value = parsed_data.length;
-    }
-    else {
-      notify("No G-Code to show", "Slice a model to generate G-Code");
-    }
+  if (gcode_mesh)
+    return;
+  if (!exported_gcode) {
+    notify("No G-Code to show", "Slice a model to generate G-Code");
+    return;
   }
+
+  console.log("parsing");
+  let start = performance.now();
+
+  function get_width(filament_diameter, nozzle_diameter, layer_height, extruded, distance) {
+    const rate = filament_diameter / nozzle_diameter;
+    const e_per_mm = (extruded / distance) * rate;
+    const volume_extruded = extruded * e_per_mm * Math.PI * (nozzle_diameter / 2) ** 2;
+
+    return (volume_extruded / (distance * layer_height)) + layer_height - (Math.PI * layer_height / 4);
+  }
+
+  let mesh = new THREE.Group();
+  let parsed_data = await gcode.parse(exported_gcode);
+
+  for (let layer of parsed_data) {
+    let current_line = new LayerLineGeometry(4);
+    let current_line_type;
+    let current_line_subtype;
+    let last_point;
+
+    for (let point of layer) {
+      if (point.type == "travel") {
+        if (current_line_type == "print")
+          current_line.add({point: last_point.vector, color: new THREE.Color(TRAVEL_COLOR), radius: 0.025});
+
+        current_line_type = "travel";
+        current_line_subtype = point.subtype;
+
+        current_line.add({point: point.vector, color: new THREE.Color(TRAVEL_COLOR), radius: 0.025});
+        last_point = point;
+      }
+      else {
+        current_line_subtype = point.subtype;
+
+        if (current_line_type == "travel") {
+          current_line.add({
+            point: last_point.vector,
+            color: new THREE.Color(color_map[current_line_subtype]),
+            radius: 0.2
+          });
+        }
+
+        current_line_type = "print";
+
+        current_line.add({
+          point: point.vector,
+          color: new THREE.Color(color_map[current_line_subtype]),
+          radius: 0.2
+        }); // get_width(1.75, 0.4, 0.2, extruded, dist) / 2
+        last_point = point;
+      }
+    }
+    // finish_line();
+    current_line.finish();
+    let layer_mesh = new THREE.Mesh(
+      current_line,
+      new THREE.MeshPhysicalMaterial({
+        vertexColors: true
+      })
+    );
+    mesh.add(layer_mesh);
+    layers.push(layer_mesh);
+    current_line = new LayerLineGeometry(4);
+  }
+
+  let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children;
+  mesh.position.set(
+    -machine_settings.machine_width.default_value / 2,
+    0,
+    machine_settings.machine_width.default_value / 2
+  );
+  mesh.rotation.set(-Math.PI / 2, 0, 0);
+
+  scene.add(mesh);
+  gcode_mesh = mesh;
+
+  console.log("parsed in " + Math.round(performance.now() - start) + " ms");
+
+  layer_slider_container.style.display = "block";
+  layer_slider.max = parsed_data.length;
+  layer_slider.value = parsed_data.length;
 }
 
 tab_change_listeners.push((i) => {
@@ -149,12 +149,12 @@ tab_change_listeners.push((i) => {
 });
 
 layer_slider.addEventListener("input", () => {
-  if (layers) {
-    for (let i in layers) {
-      if (i <= parseInt(layer_slider.value))
-        layers[i].visible = true;
-      else
-        layers[i].visible = false;
-    }
+  if (!layers)
+    return;
+  for (let i in layers) {
+    if (i <= parseInt(layer_slider.value))
+      layers[i].visible = true;
+    else
+      layers[i].visible = false;
   }
 });

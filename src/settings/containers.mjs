@@ -1,3 +1,4 @@
+import * as utils from "../utils.mjs";
 import { prefs, save_prefs } from "../prefs.mjs";
 import { clean_globals, eval_py, PythonNameError, setup_ctx } from "../python.mjs";
 import { merge_deep, resolve_definitions, resolve_settings } from "./definitions.mjs";
@@ -103,7 +104,7 @@ export class ContainerStack {
     throw TypeError(`setting ${setting_id} not found`);
   }
   resolve_extruder_num(extruder, call_resolve, ctx) {
-    while (!is_int(extruder))
+    while (!utils.is_int(extruder))
       extruder = this.resolve_py_expression(extruder, call_resolve, ctx);
     if (extruder == "-1")
       extruder = this.py_defaultExtruderPosition();
@@ -121,7 +122,7 @@ export class ContainerStack {
       if (["float", "int", "bool"].includes(setting.type))
         return this.resolve_py_expression(value, call_resolve, ctx);
       //unresolved extruder number expression
-      if (["extruder", "optional_extruder"].includes(setting.type) && !is_int(value))
+      if (["extruder", "optional_extruder"].includes(setting.type) && !utils.is_int(value))
         return this.resolve_extruder_num(value, call_resolve, ctx);
       //unexpected enum value
       if (setting.type === "enum" && !Object.keys(setting.options).includes(value))
@@ -131,7 +132,7 @@ export class ContainerStack {
   }
   resolve_py_expression(expression, call_resolve, ctx) {
     //check if the expression is a constant
-    if (is_num(expression))
+    if (utils.is_num(expression))
       return parseFloat(expression);
     if (expression === "True")
       return true;
@@ -139,7 +140,7 @@ export class ContainerStack {
       return false;
     //check if the expression is just a single variable
     let selected_stack = this.parent.containers[ctx] || this.parent.containers.extruders[ctx];
-    if (is_var(expression))
+    if (utils.is_var(expression))
       return selected_stack.resolve_setting(expression, call_resolve);
 
     let vars = {};
@@ -387,7 +388,7 @@ export class ContainerStack {
 export class ContainerStackGroup {
   constructor(printer_id, printer_prefs) {
     this.set_printer(printer_id);
-    this.uuid = uuid_v4();
+    this.uuid = utils.uuid_v4();
     if (printer_prefs)
       this.import_prefs(printer_prefs);
   }
@@ -401,7 +402,7 @@ export class ContainerStackGroup {
         this.containers.extruders[container_name].import_prefs(container_prefs);
     }
   }
-  
+
   export_prefs() {
     let exported_containers = {
       global: this.containers.global.export_prefs()
@@ -529,31 +530,6 @@ export class ContainerStackGroup {
       return [];
     if (all_qualities.length === 1)
       return Array.from(all_qualities[0]);
-    return set_intersect(...all_qualities);
+    return utils.set_intersect(...all_qualities);
   }
-}
-
-function is_int(str) {
-  return /^[-\d]*$/.test(str);
-}
-function is_num(str) {
-  return /^-?\d+(\.\d+)?$/.test(str);
-}
-function is_var(str) {
-  return /^[a-zA-Z_][a-zA-Z_\d]*$/.test(str);
-}
-
-//https://stackoverflow.com/a/70291510
-function set_intersect(set_a, set_b, ...args) {
-  const result = new Set([...set_a].filter((i) => set_b.has(i)));
-  if (args.length === 0)
-    return result;
-  return set_intersect(result, args.shift(), ...args);
-}
-
-function uuid_v4() {
-  return "10000000-1000-4000-8000-100000000000".replace(
-    /[018]/g,
-    c => (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
-  );
 }
