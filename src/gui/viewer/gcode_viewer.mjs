@@ -65,44 +65,54 @@ async function show_gcode_viewer() {
       let parsed_data = await gcode.parse(exported_gcode);
 
       for (let layer of parsed_data) {
-        let current_line = new LineTubeGeometry(3);
+        let current_line = new LineTubeGeometry(4);
         let current_line_type;
         let current_line_subtype;
         let last_point;
 
         for (let point of layer) {
           if (point.type == "travel") {
-            if (current_line_type == "print") {
-              current_line.add({ point: last_point.vector, color: new THREE.Color(TRAVEL_COLOR), radius: 0.025 });
-            }
+            if (current_line_type == "print")
+              current_line.add({point: last_point.vector, color: new THREE.Color(TRAVEL_COLOR), radius: 0.025});
 
             current_line_type = "travel";
             current_line_subtype = point.subtype;
 
-            current_line.add({ point: point.vector, color: new THREE.Color(TRAVEL_COLOR), radius: 0.025 });
+            current_line.add({point: point.vector, color: new THREE.Color(TRAVEL_COLOR), radius: 0.025});
             last_point = point;
           }
           else {
             current_line_subtype = point.subtype;
 
             if (current_line_type == "travel") {
-              current_line.add({ point: last_point.vector, color: new THREE.Color(color_map[current_line_subtype]), radius: 0.2 });
+              current_line.add({
+                point: last_point.vector,
+                color: new THREE.Color(color_map[current_line_subtype]),
+                radius: 0.2
+              });
             }
 
             current_line_type = "print";
 
-            current_line.add({ point: point.vector, color: new THREE.Color(color_map[current_line_subtype]), radius: 0.2 }); // get_width(1.75, 0.4, 0.2, extruded, dist) / 2
+            current_line.add({
+              point: point.vector,
+              color: new THREE.Color(color_map[current_line_subtype]),
+              radius: 0.2
+            }); // get_width(1.75, 0.4, 0.2, extruded, dist) / 2
             last_point = point;
           }
         }
         // finish_line();
         current_line.finish();
-        let layer_mesh = new THREE.Mesh(current_line, new THREE.MeshPhysicalMaterial({
-          vertexColors: true
-        }))
+        let layer_mesh = new THREE.Mesh(
+          current_line,
+          new THREE.MeshPhysicalMaterial({
+            vertexColors: true
+          })
+        );
         mesh.add(layer_mesh);
         layers.push(layer_mesh);
-        current_line = new LineTubeGeometry(3);
+        current_line = new LineTubeGeometry(4);
       }
 
       let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children;

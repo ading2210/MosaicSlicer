@@ -168,10 +168,29 @@ export class LineTubeGeometry extends BufferGeometry {
 
     // generate normals and vertices for the current segment
     for (let j = 0; j <= this.radialSegments; j++) {
-      const v = (j / this.radialSegments) * Math.PI * 2;
+      // const v = (j / this.radialSegments) * Math.PI * 2;
 
-      const sin = Math.sin(v);
-      const cos = -Math.cos(v);
+      // const sin = Math.sin(v);
+      // const cos = -Math.cos(v);
+      let sin;
+      let cos;
+
+      if (j == 0 || j == 4) {
+        sin = -1;
+        cos = 0;
+      }
+      else if (j == 1) {
+        sin = 0;
+        cos = -0.5;
+      }
+      else if (j == 2) {
+        sin = 1;
+        cos = 0;
+      }
+      else if (j == 3) {
+        sin = 0;
+        cos = -0.5;
+      }
 
       // vertex
 
