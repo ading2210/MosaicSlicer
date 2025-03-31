@@ -12,8 +12,8 @@ UI:
   [x] Support 3mf files
   [ ] Materials
   [x] GCode viewer
-    [ ] Layer scanner
-    [ ] Color code features
+    [x] Layer scanner
+    [x] Color code features
     
 Misc:
   [x] Branding
