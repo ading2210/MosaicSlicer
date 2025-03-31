@@ -228,6 +228,42 @@
   }
 }
 
+#layer-slider {
+  position: absolute;
+  right: var(--sidebar-width);
+  top: 50%;
+  bottom: 50%;
+  transform: translateY(-50%);
+
+  height: 50vh;
+  background-color: var(--background-2);
+  border: 1px var(--grey-2) solid;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 0.5rem;
+
+  #layer-number {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    appearance: slider-vertical;
+    vertical-align: bottom;
+
+    height: 100%;
+    width: 100%;
+
+    padding: 0;
+
+    accent-color: var(--accent);
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
 #notifications {
   position: absolute;
   bottom: 0.5rem;

@@ -11,7 +11,13 @@ import { notify } from "../notifications.mjs";
 
 const scene = new THREE.Scene();
 
+/** @type {THREE.Group} */
 let gcode_mesh;
+/** @type {THREE.Group[]} */
+let layers = [];
+
+const layer_slider_container = document.getElementById("layer-slider");
+const layer_slider = document.getElementById("layer-number");
 
 // ---- Color Settings
 const TRAVEL_COLOR = 0x00ffff;
@@ -37,6 +43,7 @@ export function clear_gcode() {
   if (gcode_mesh) {
     scene.remove(gcode_mesh);
     gcode_mesh = null;
+    layers = [];
   }
 }
 
@@ -123,6 +130,7 @@ async function show_gcode_viewer() {
         }
         finish_line();
         mesh.add(layer_lines);
+        layers.push(layer_lines);
       }
 
       let machine_settings = active_containers.containers.global.definition.settings.machine_settings.children;
@@ -137,6 +145,10 @@ async function show_gcode_viewer() {
       gcode_mesh = mesh;
 
       console.log("parsed in " + (performance.now() - start) + " ms");
+
+      layer_slider_container.style.display = "block";
+      layer_slider.max = parsed_data.length;
+      layer_slider.value = parsed_data.length;
     }
     else {
       notify("No G-Code to show", "Slice a model to generate G-Code");
@@ -148,5 +160,19 @@ tab_change_listeners.push((i) => {
   if (i == 1) {
     renderer.set_scene(scene);
     show_gcode_viewer();
+  }
+  else {
+    layer_slider_container.style.display = "none";
+  }
+});
+
+layer_slider.addEventListener("input", () => {
+  if (layers) {
+    for (let i in layers) {
+      if (i <= parseInt(layer_slider.value))
+        layers[i].visible = true;
+      else
+        layers[i].visible = false;
+    }
   }
 });
