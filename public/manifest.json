@@ -14,7 +14,11 @@
   "content_scripts": [
     {
       "matches": ["https://*.printables.com/*"],
-      "js": ["extension/content.js"]
+      "js": ["extension/printables.js"]
+    },
+    {
+      "matches": ["https://*.thingiverse.com/*"],
+      "js": ["extension/thingiverse.js"]
     }
   ],
   "content_security_policy": {
@@ -25,6 +29,6 @@
   },
   "web_accessible_resources": [{
     "resources": ["img/*"],
-    "matches": ["https://*.printables.com/*"]
+    "matches": ["https://*.printables.com/*", "https://*.thingiverse.com/*"]
   }]
 }
