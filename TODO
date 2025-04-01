@@ -1,37 +1,27 @@
-We should remove this once we have a decently working app
-UI:
 [ ] Sidebar
-  [x] Populate values
-  [x] Styles
   [ ] Save settings to object
-[ ] Viewer
-  [x] Allow moving/scaling/rotating objects
-  [x] Render printer build volume
-  [x] When importing STLs, center them
-  [x] Merge all objects into single STL for slicing
-  [x] Support 3mf files
-  [ ] Materials
-  [x] GCode viewer
-    [x] Layer scanner
-    [x] Color code features
-    
-Misc:
-  [x] Branding
-    [x] Make name
-  [ ] GCode Export options (eg. name, bgcode)
-    [ ] Some metadata? Do specific printers have special metadata we can add?
 
-Functionality:
-[x] Slicer
-  [x] Fix slicer to work (not sure what tasks are here you can just add here)
-[ ] Configs
-  [x] Load .ini files
-  [x] Load material files
-  [x] Saving settings to local storage
-  [ ] Importable files
-  [ ] Importable machine definitions
-  [x] Pass loaded configs into slicer
-  [x] Apply settings to slicer
+[ ] Viewer
+  [ ] Automatically enter transform mode on model drag
+  [ ] Removable models
+  [ ] Remove interactions on G-Code viewer
+  [ ] Scale layer width with nozzle
+  [ ] Input menu for transforms
+    [ ] Toggle snap rotation/positioning
+    [ ] Reset value(s)
+  [ ] Smart Tools
+    [ ] Snap models to base
+    [ ] Snap face against buildplate
+    [ ] Auto-arrange
+    
+[ ] Settings
+  [ ] Save profiles and other configs to file
+  [ ] Load configs from file
+  [ ] Printer Selection
+    [ ] Menu for selecting printer definition
+    [ ] Edit custom printer definition
+      [ ] Populate values
+      [ ] Save edits to new definition
 
 3rd Party Integration
 [ ] Octoprint
@@ -40,6 +30,5 @@ Functionality:
 [ ] Prusa Connect
 
 Web Extension:
-[x] Manifest and Packaging
 [ ] Userscripts
 [ ] Page for displaying saved STLs and importing them
