@@ -1,0 +1,15 @@
+{
+  "name": "MosaicSlicer",
+  "start_url": "https://app.mosaicslicer.com/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "img/logo_128.png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "img/logo_512.png",
+      "sizes": "512x512"
+    }
+  ]
+}
