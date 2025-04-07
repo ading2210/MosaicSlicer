@@ -36,6 +36,7 @@ model_controls.enabled = false;
 model_controls.addEventListener("dragging-changed", (event) => {
   renderer.controls.enabled = !event.value;
   clear_slice_state();
+  drop_model();
 });
 
 // ---- Model Material
@@ -67,6 +68,17 @@ function unfocus_stl() {
     models[focused].mesh.material.emissive.set(0x1a5f5a);
     focused = null;
   }
+}
+
+// ---- Smart Tools
+function drop_model() {
+  let mesh = models[focused].mesh;
+
+  const box = new THREE.Box3().setFromObject(mesh, true);
+  let size = new THREE.Vector3();
+  box.getSize(size)
+
+  mesh.position.y = size.y / 2
 }
 
 // ---- Transforms
@@ -157,7 +169,7 @@ export function export_stl() {
     meshes.attach(mesh);
   }
 
-  return exporter.parse(meshes, {binary: true}).buffer;
+  return exporter.parse(meshes, { binary: true }).buffer;
 }
 
 const button_listeners = [
