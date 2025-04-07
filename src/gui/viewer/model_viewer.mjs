@@ -76,9 +76,9 @@ function drop_model() {
 
   const box = new THREE.Box3().setFromObject(mesh, true);
   let size = new THREE.Vector3();
-  box.getSize(size)
+  box.getSize(size);
 
-  mesh.position.y = size.y / 2
+  mesh.position.y = size.y / 2;
 }
 
 // ---- Transforms
@@ -169,7 +169,7 @@ export function export_stl() {
     meshes.attach(mesh);
   }
 
-  return exporter.parse(meshes, { binary: true }).buffer;
+  return exporter.parse(meshes, {binary: true}).buffer;
 }
 
 const button_listeners = [
@@ -190,7 +190,7 @@ export function start_model_viewer() {
 
 tab_change_listeners.push((i) => {
   if (i == 0) {
-    renderer.set_scene(scene);
+    renderer.set_scene(scene, "model");
 
     // ---- Event Listeners
     movement_button.addEventListener("click", button_listeners[0]);

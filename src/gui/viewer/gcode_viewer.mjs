@@ -140,7 +140,8 @@ async function show_gcode_viewer() {
 
 tab_change_listeners.push((i) => {
   if (i == 1) {
-    renderer.set_scene(scene);
+    renderer.set_scene(scene, "gcode");
+
     show_gcode_viewer();
   }
   else {

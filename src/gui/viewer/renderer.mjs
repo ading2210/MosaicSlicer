@@ -8,6 +8,7 @@ export var view_width = viewport.clientWidth;
 export var view_height = viewport.clientHeight;
 
 var current_scene;
+export var scene_name = "model";
 
 // ---- Camera
 export const camera = new THREE.PerspectiveCamera(
@@ -27,8 +28,9 @@ export const renderer = new THREE.WebGLRenderer({
 renderer.setClearColor(0xffffff, 0);
 renderer.setSize(view_width, view_height);
 
-export function set_scene(scene) {
+export function set_scene(scene, name) {
   current_scene = scene;
+  scene_name = name;
 }
 
 // ---- Controls

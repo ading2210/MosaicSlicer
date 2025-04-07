@@ -4,13 +4,13 @@
 [ ] Viewer
   [ ] Automatically enter transform mode on model drag
   [ ] Removable models
-  [ ] Remove interactions on G-Code viewer
+  [x] Remove interactions on G-Code viewer
   [ ] Scale layer width with nozzle
   [ ] Input menu for transforms
     [ ] Toggle snap rotation/positioning
     [ ] Reset value(s)
   [ ] Smart Tools
-    [ ] Snap models to base
+    [x] Snap models to base
     [ ] Snap face against buildplate
     [ ] Auto-arrange
     

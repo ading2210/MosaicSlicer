@@ -54,36 +54,42 @@ function get_mouse_intersects(mouse_x, mouse_y) {
 var currently_held = null;
 var last_held = null;
 renderer.viewport.addEventListener("mousedown", (e) => {
-  let intersection = get_mouse_intersects(e.clientX, e.clientY - tab_strip.clientHeight);
-  if (intersection) {
-    if (last_held && last_held != currently_held) {
-      if (scene_objects[last_held].onclickout)
-        scene_objects[last_held].onclickout();
+  if (renderer.scene_name == "model") {
+    let intersection = get_mouse_intersects(e.clientX, e.clientY - tab_strip.clientHeight);
+    if (intersection) {
+      if (last_held && last_held != currently_held) {
+        if (scene_objects[last_held].onclickout)
+          scene_objects[last_held].onclickout();
+      }
+      last_held = currently_held;
+      currently_held = intersection;
+      renderer.controls.enabled = false;
     }
-    last_held = currently_held;
-    currently_held = intersection;
-    renderer.controls.enabled = false;
-  }
-  else {
-    // currently_held = null;
+    else {
+      // currently_held = null;
+    }
   }
 });
 renderer.viewport.addEventListener("mousemove", (e) => {
-  if (currently_held) {
-    if (scene_objects[currently_held].ondrag != null)
-      scene_objects[currently_held].ondrag(e);
+  if (renderer.scene_name == "model") {
+    if (currently_held) {
+      if (scene_objects[currently_held].ondrag != null)
+        scene_objects[currently_held].ondrag(e);
+    }
   }
 });
 renderer.viewport.addEventListener("mouseup", (e) => {
-  if (currently_held) {
-    if (scene_objects[currently_held].onclick != null) {
-      // Check if mouse is still over model
-      let intersection = get_mouse_intersects(e.clientX, e.clientY - tab_strip.clientHeight);
-      if (intersection == currently_held)
-        scene_objects[currently_held].onclick(e);
+  if (renderer.scene_name == "model") {
+    if (currently_held) {
+      if (scene_objects[currently_held].onclick != null) {
+        // Check if mouse is still over model
+        let intersection = get_mouse_intersects(e.clientX, e.clientY - tab_strip.clientHeight);
+        if (intersection == currently_held)
+          scene_objects[currently_held].onclick(e);
+      }
     }
-  }
-  renderer.controls.enabled = true;
+    renderer.controls.enabled = true;
 
-  currently_held = null;
+    currently_held = null;
+  }
 });
