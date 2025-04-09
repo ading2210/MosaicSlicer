@@ -29,7 +29,7 @@ This build process has been tested to work on Linux and MacOS.
 Make sure you have all submodules cloned:
 
 ```
-$ git submodule update --init --progress
+$ git submodule update --init --progress --remote
 ```
 
 Bundle Resources:

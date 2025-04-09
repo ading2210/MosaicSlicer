@@ -1,4 +1,5 @@
-import EmscriptenRuntime from "@mosaicslicer/curaengine";
+// import EmscriptenRuntime from "@mosaicslicer/curaengine";
+import EmscriptenRuntime from "../../../dist/compiled/CuraEngine.js";
 
 export const runtime = await EmscriptenRuntime();
 
