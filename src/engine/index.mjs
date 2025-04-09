@@ -20,7 +20,8 @@ export class CuraEngine {
       "-r",
       "/tmp/input/settings.json", //settings json path
       "-o",
-      "/tmp/out.gcode" //output gcode path
+      "/tmp/out.gcode", //output gcode path
+      "-m8"
     ];
 
     let settings_data = new TextEncoder().encode(JSON.stringify(settings));

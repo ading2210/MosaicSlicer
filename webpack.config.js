@@ -73,6 +73,7 @@ module.exports = [
     }
   },
   {
+    target: "webworker",
     name: "curaengine_worker",
     entry: "./src/engine/worker/index.mjs",
     output: {

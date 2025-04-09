@@ -1,0 +1,3 @@
+/*
+  Access-Control-Allow-Origin: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
