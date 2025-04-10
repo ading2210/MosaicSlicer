@@ -13,7 +13,6 @@ var raycaster = new THREE.Raycaster();
  * @typedef {Object} SceneObject
  * @property {THREE.Mesh} mesh
  * @property {() => {}} onclick
- * @property {() => {}} onclickout When another object is clicked after this one
  * @property {(event: Event) => void} ondrag
  */
 
@@ -23,7 +22,6 @@ var raycaster = new THREE.Raycaster();
 export const SceneObject = {
   mesh: null,
   onclick: null,
-  onclickout: null,
   ondrag: null
 };
 
@@ -57,10 +55,6 @@ renderer.viewport.addEventListener("mousedown", (e) => {
   if (renderer.scene_name == "model") {
     let intersection = get_mouse_intersects(e.clientX, e.clientY - tab_strip.clientHeight);
     if (intersection) {
-      if (last_held && last_held != currently_held) {
-        if (scene_objects[last_held].onclickout)
-          scene_objects[last_held].onclickout();
-      }
       last_held = currently_held;
       currently_held = intersection;
       renderer.controls.enabled = false;

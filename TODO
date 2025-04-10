@@ -2,8 +2,8 @@
   [ ] Save settings to object
 
 [ ] Viewer
-  [ ] Automatically enter transform mode on model drag
-  [ ] Removable models
+  [x] Automatically enter transform mode on model drag
+  [x] Removable models
   [x] Remove interactions on G-Code viewer
   [ ] Scale layer width with nozzle
   [ ] Input menu for transforms

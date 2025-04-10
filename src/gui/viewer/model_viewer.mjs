@@ -133,14 +133,14 @@ export function load_model(raw_data, model_type) {
   sceneobj.mesh = mesh;
   sceneobj.onclick = () => {
     console.log("clicked model");
-    unfocus_stl(mesh.uuid);
-    focus_stl(mesh.uuid);
+    if (focused != mesh.uuid)
+      focus_stl(mesh.uuid);
   };
-  sceneobj.onclickout = () => {
-    console.log("unclicked model");
 
-    unfocus_stl(mesh.uuid);
-  };
+  sceneobj.ondrag = () => {
+    if (!model_controls.enabled)
+      toggle_transform(model_controls.mode)
+  }
 
   interactions.scene_objects[mesh.uuid] = sceneobj;
 
