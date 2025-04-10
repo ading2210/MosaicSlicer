@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 export const viewport = document.getElementById("viewer");
+export const canvas = document.getElementById("stl-viewer");
 
 export var view_width = viewport.clientWidth;
 export var view_height = viewport.clientHeight;
@@ -22,7 +23,7 @@ camera.position.z = 150;
 // ---- Renderer
 export const renderer = new THREE.WebGLRenderer({
   antialias: true,
-  canvas: document.getElementById("stl-viewer"),
+  canvas: canvas,
   alpha: true
 });
 renderer.setClearColor(0xffffff, 0);
@@ -34,7 +35,7 @@ export function set_scene(scene, name) {
 }
 
 // ---- Controls
-export const controls = new OrbitControls(camera, renderer.domElement);
+export const controls = new OrbitControls(camera, canvas);
 
 // ---- Three.js Updating and Rendering
 function resize() {

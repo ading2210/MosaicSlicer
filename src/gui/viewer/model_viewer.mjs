@@ -181,6 +181,15 @@ const button_listeners = [
   },
   () => {
     toggle_transform("scale");
+  },
+  (e) => {
+    if (document.activeElement == document.body && e.key == "Backspace") { // three.js OrbitControls prevent me from adding the eventlistener to the canvas element
+      if (focused) {
+        scene.remove(models[focused].mesh);
+        delete interactions.scene_objects[focused];
+        focused = null;
+      }
+    }
   }
 ];
 
@@ -196,10 +205,14 @@ tab_change_listeners.push((i) => {
     movement_button.addEventListener("click", button_listeners[0]);
     rotate_button.addEventListener("click", button_listeners[1]);
     scale_button.addEventListener("click", button_listeners[2]);
+
+    window.addEventListener("keydown", button_listeners[3]);
   }
   else {
     movement_button.removeEventListener("click", button_listeners[0]);
     rotate_button.removeEventListener("click", button_listeners[1]);
     scale_button.removeEventListener("click", button_listeners[2]);
+
+    window.removeEventListener("keydown", button_listeners[3]);
   }
 });
