@@ -139,8 +139,8 @@ export function load_model(raw_data, model_type) {
 
   sceneobj.ondrag = () => {
     if (!model_controls.enabled)
-      toggle_transform(model_controls.mode)
-  }
+      toggle_transform(model_controls.mode);
+  };
 
   interactions.scene_objects[mesh.uuid] = sceneobj;
 
