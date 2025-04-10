@@ -48,8 +48,10 @@ export function clear_gcode() {
 }
 
 async function show_gcode_viewer() {
-  if (gcode_mesh)
+  if (gcode_mesh) {
+    layer_slider_container.style.display = "block";
     return;
+  }
   if (!exported_gcode) {
     notify("No G-Code to show", "Slice a model to generate G-Code");
     return;
@@ -78,12 +80,12 @@ async function show_gcode_viewer() {
     for (let point of layer) {
       if (point.type == "travel") {
         if (current_line_type == "print")
-          current_line.add({point: last_point.vector, color: new THREE.Color(TRAVEL_COLOR), radius: 0.025});
+          current_line.add({ point: last_point.vector, color: new THREE.Color(TRAVEL_COLOR), radius: 0.025 });
 
         current_line_type = "travel";
         current_line_subtype = point.subtype;
 
-        current_line.add({point: point.vector, color: new THREE.Color(TRAVEL_COLOR), radius: 0.025});
+        current_line.add({ point: point.vector, color: new THREE.Color(TRAVEL_COLOR), radius: 0.025 });
         last_point = point;
       }
       else {
