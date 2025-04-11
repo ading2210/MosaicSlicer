@@ -1,0 +1,159 @@
+
+#options-bar {
+    position: absolute;
+    left: 0rem;
+    right: var(--sidebar-width);
+    top: var(--tab-height);
+  
+    padding: 0.5rem;
+  
+    display: grid;
+    grid-template-columns: auto 1fr 1.5fr;
+    grid-gap: 0.5rem;
+  
+    & > div {
+      align-self: self-start;
+      background-color: var(--background-2);
+      border: 1px var(--grey-2) solid;
+    }
+  
+    button {
+      font-size: 0.8rem;
+    }
+  
+    .options-button {
+      display: flex;
+      flex-direction: column;
+  
+      .options-button-clickable {
+        height: 2.75rem;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        cursor: pointer;
+        user-select: none;
+      }
+  
+      .options-button-clickable:hover {
+        background-color: var(--grey-2);
+      }
+  
+      .options-dropdown {
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem;
+      }
+  
+      .options-dropdown[data-hidden="true"] {
+        display: none;
+      }
+  
+      cura-icon[icon-name="ionicons_chevron_down_outline"] {
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+  
+    #file-div {
+      #stl-file {
+        display: none;
+      }
+  
+      #file-label {
+        margin: 0;
+        padding: 0;
+        cursor: pointer;
+  
+        cura-icon {
+          padding: 0.5rem;
+          width: 2.75rem;
+          height: 2.75rem;
+        }
+  
+        cura-icon:hover {
+          background-color: var(--grey-2);
+        }
+      }
+    }
+  
+    #printers-div {
+      #printer-button {
+        font-size: 0.9rem;
+      }
+  
+      #manage-printers-div {
+        display: grid;
+        width: 100%;
+        grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+        grid-gap: 0.5rem;
+      }
+    }
+  
+    #extruders-div {
+      #extruders-button {
+        gap: 0.5rem;
+  
+        cura-icon[icon-name="Spool"] {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+  
+        div {
+          display: flex;
+          flex-direction: column;
+        }
+  
+        span {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+  
+  #controls {
+  position: absolute;
+  left: 0rem;
+  bottom: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+
+  border: 1px var(--grey-2) solid;
+
+  padding: 0.25rem;
+
+  height: 12rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--background-2);
+
+  .control {
+    height: 3rem;
+    width: 3rem;
+    padding: 0.625rem;
+    font-size: 1.75rem;
+
+    border-radius: 1.5rem;
+
+    transition: 0.1s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--grey-2);
+    }
+  }
+}
+
+#drop-zone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  display: none;
+
+  background-color: rgba(0, 0, 0, 0.5);
+}

@@ -1,6 +1,8 @@
 @use "base";
 @use "responsive";
-@use "main_tab";
+@use "viewer_tab";
+@use "gcode_viewer";
+@use "model_viewer";
 @use "settings";
 @use "sidebar";
 @use "preferences";
