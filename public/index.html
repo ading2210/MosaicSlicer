@@ -29,7 +29,7 @@
       </a>
     </div>
 
-    <div id="main-tab" class="tab-content">
+    <div id="viewer-tab" class="tab-content">
       <div id="viewer">
         <canvas id="stl-viewer"></canvas>
 
@@ -183,29 +183,8 @@
         </div>
       </div>
 
-      <div id="notifications">
-        <template id="notification-template">
-          <div class="notification" slot="notification">
-            <span class="title-bar">
-              <span class="title" slot="title">Title Here</span>
-              <span class="close-icon">
-                <cura-icon icon-name="ionicons_close_outline" slot="close"></cura-icon>
-              </span>
-            </span>
-            <span class="description" slot="description">Description Here</span>
-          </div>
-        </template>
-      </div>
-
       <div class="fullscreen" id="drop-zone">
         <h1>Drop STL Here</h1>
-      </div>
-
-      <div class="fullscreen" id="loading">
-        <div class="flex-spacer"></div>
-        <h1><img src="img/logo.svg">MosaicSlicer</h1>
-        <p>Loading...</p>
-        <div class="flex-spacer"></div>
       </div>
     </div>
 
@@ -235,6 +214,27 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div id="notifications">
+      <template id="notification-template">
+        <div class="notification" slot="notification">
+          <span class="title-bar">
+            <span class="title" slot="title">Title Here</span>
+            <span class="close-icon">
+              <cura-icon icon-name="ionicons_close_outline" slot="close"></cura-icon>
+            </span>
+          </span>
+          <span class="description" slot="description">Description Here</span>
+        </div>
+      </template>
+    </div>
+
+    <div class="fullscreen" id="loading">
+      <div class="flex-spacer"></div>
+      <h1><img src="img/logo.svg">MosaicSlicer</h1>
+      <p>Loading...</p>
+      <div class="flex-spacer"></div>
     </div>
   </body>
 </html>

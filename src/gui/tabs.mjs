@@ -1,5 +1,5 @@
 export const tab_strip = document.getElementById("tab-strip");
-export const main_tab = document.getElementById("main-tab");
+export const main_tab = document.getElementById("viewer-tab");
 export const settings_tab = document.getElementById("settings-tab");
 
 export const prepare_tab_button = document.getElementById("prepare-tab-button");
