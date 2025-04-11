@@ -227,17 +227,63 @@ tab_change_listeners.push((i) => {
     renderer.set_scene(scene, "model");
 
     // ---- Event Listeners
-    movement_button.addEventListener("click", button_listeners[0]);
-    rotate_button.addEventListener("click", button_listeners[1]);
-    scale_button.addEventListener("click", button_listeners[2]);
+    movement_button.firstElementChild.addEventListener("click", button_listeners[0]);
+    rotate_button.firstElementChild.addEventListener("click", button_listeners[1]);
+    scale_button.firstElementChild.addEventListener("click", button_listeners[2]);
 
     window.addEventListener("keydown", button_listeners[3]);
   }
   else {
-    movement_button.removeEventListener("click", button_listeners[0]);
-    rotate_button.removeEventListener("click", button_listeners[1]);
-    scale_button.removeEventListener("click", button_listeners[2]);
+    movement_button.firstElementChild.removeEventListener("click", button_listeners[0]);
+    rotate_button.firstElementChild.removeEventListener("click", button_listeners[1]);
+    scale_button.firstElementChild.removeEventListener("click", button_listeners[2]);
 
     window.removeEventListener("keydown", button_listeners[3]);
   }
+});
+
+const movement_x_value = document.getElementById("movement-x-value");
+const movement_y_value = document.getElementById("movement-y-value");
+const movement_z_value = document.getElementById("movement-z-value");
+
+const rotation_x_value = document.getElementById("rotation-x-value");
+const rotation_y_value = document.getElementById("rotation-y-value");
+const rotation_z_value = document.getElementById("rotation-z-value");
+
+const scale_x_value = document.getElementById("scale-x-value");
+const scale_y_value = document.getElementById("scale-y-value");
+const scale_z_value = document.getElementById("scale-z-value");
+
+movement_x_value.addEventListener("input", () => {
+  models[focused].mesh.position.x = movement_x_value.value;
+});
+movement_y_value.addEventListener("input", () => {
+  models[focused].mesh.position.z = movement_y_value.value;
+});
+movement_z_value.addEventListener("input", () => {
+  models[focused].mesh.position.y = movement_z_value.value;
+});
+movement_z_value.addEventListener("change", () => {
+  models[focused].mesh.position.y = movement_z_value.value;
+  drop_model();
+});
+
+rotation_x_value.addEventListener("input", () => {
+  models[focused].mesh.rotation.x = rotation_x_value.value;
+});
+rotation_y_value.addEventListener("input", () => {
+  models[focused].mesh.rotation.y = rotation_y_value.value;
+});
+rotation_z_value.addEventListener("input", () => {
+  models[focused].mesh.rotation.z = rotation_z_value.value;
+});
+
+scale_x_value.addEventListener("input", () => {
+  models[focused].mesh.scale.x = scale_x_value.value / 100;
+});
+scale_y_value.addEventListener("input", () => {
+  models[focused].mesh.scale.y = scale_y_value.value / 100;
+});
+scale_z_value.addEventListener("input", () => {
+  models[focused].mesh.scale.z = scale_z_value.value / 100;
 });
