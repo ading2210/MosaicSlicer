@@ -13,8 +13,9 @@ Note: MosaicSlicer is alpha quality software and probably has behavior that is s
 - Can slice multiple parts at once
 - 3d viewer with build plate
 - Works on Chromium and Firefox
-- A browser extension can be installed for offline usage
+- A browser extension or PWA can be installed for offline usage
 - G-code preview
+- Mobile friendly design
 
 ### Notable Missing Features:
 
