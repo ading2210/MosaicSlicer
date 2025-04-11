@@ -15,6 +15,10 @@ const movement_button = document.getElementById("movement-button");
 const rotate_button = document.getElementById("rotate-button");
 const scale_button = document.getElementById("scale-button");
 
+const movement_overlay = movement_button.getElementsByClassName("controls-popup")[0];
+const rotate_overlay = rotate_button.getElementsByClassName("controls-popup")[0];
+const scale_overlay = scale_button.getElementsByClassName("controls-popup")[0];
+
 const scene = new THREE.Scene();
 
 /**
@@ -87,13 +91,34 @@ function toggle_transform(transform) {
     model_controls.detach(models[focused].mesh);
     scene.remove(model_controls.getHelper());
     model_controls.enabled = false;
+
+    if (transform == "translate")
+      movement_overlay.style.display = "none";
+    else if (transform == "rotate")
+      rotate_overlay.style.display = "none";
+    else if (transform == "scale")
+      scale_overlay.style.display = "none";
   }
   else {
+    if (model_controls.mode == "translate")
+      movement_overlay.style.display = "none";
+    else if (model_controls.mode == "rotate")
+      rotate_overlay.style.display = "none";
+    else if (model_controls.mode == "scale")
+      scale_overlay.style.display = "none";
+
     model_controls.enabled = true;
 
     model_controls.attach(models[focused].mesh);
     model_controls.setMode(transform);
     scene.add(model_controls.getHelper());
+
+    if (transform == "translate")
+      movement_overlay.style.display = "block";
+    else if (transform == "rotate")
+      rotate_overlay.style.display = "block";
+    else if (transform == "scale")
+      scale_overlay.style.display = "block";
   }
 }
 

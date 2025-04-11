@@ -1,116 +1,115 @@
-
 #options-bar {
-    position: absolute;
-    left: 0rem;
-    right: var(--sidebar-width);
-    top: var(--tab-height);
-  
-    padding: 0.5rem;
-  
-    display: grid;
-    grid-template-columns: auto 1fr 1.5fr;
-    grid-gap: 0.5rem;
-  
-    & > div {
-      align-self: self-start;
-      background-color: var(--background-2);
-      border: 1px var(--grey-2) solid;
+  position: absolute;
+  left: 0rem;
+  right: var(--sidebar-width);
+  top: var(--tab-height);
+
+  padding: 0.5rem;
+
+  display: grid;
+  grid-template-columns: auto 1fr 1.5fr;
+  grid-gap: 0.5rem;
+
+  & > div {
+    align-self: self-start;
+    background-color: var(--background-2);
+    border: 1px var(--grey-2) solid;
+  }
+
+  button {
+    font-size: 0.8rem;
+  }
+
+  .options-button {
+    display: flex;
+    flex-direction: column;
+
+    .options-button-clickable {
+      height: 2.75rem;
+      display: flex;
+      align-items: center;
+      padding: 0.5rem;
+      cursor: pointer;
+      user-select: none;
     }
-  
-    button {
-      font-size: 0.8rem;
+
+    .options-button-clickable:hover {
+      background-color: var(--grey-2);
     }
-  
-    .options-button {
+
+    .options-dropdown {
       display: flex;
       flex-direction: column;
-  
-      .options-button-clickable {
+      padding: 0.5rem;
+    }
+
+    .options-dropdown[data-hidden="true"] {
+      display: none;
+    }
+
+    cura-icon[icon-name="ionicons_chevron_down_outline"] {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  #file-div {
+    #stl-file {
+      display: none;
+    }
+
+    #file-label {
+      margin: 0;
+      padding: 0;
+      cursor: pointer;
+
+      cura-icon {
+        padding: 0.5rem;
+        width: 2.75rem;
         height: 2.75rem;
-        display: flex;
-        align-items: center;
-        padding: 0.5rem;
-        cursor: pointer;
-        user-select: none;
       }
-  
-      .options-button-clickable:hover {
+
+      cura-icon:hover {
         background-color: var(--grey-2);
-      }
-  
-      .options-dropdown {
-        display: flex;
-        flex-direction: column;
-        padding: 0.5rem;
-      }
-  
-      .options-dropdown[data-hidden="true"] {
-        display: none;
-      }
-  
-      cura-icon[icon-name="ionicons_chevron_down_outline"] {
-        width: 1rem;
-        height: 1rem;
-      }
-    }
-  
-    #file-div {
-      #stl-file {
-        display: none;
-      }
-  
-      #file-label {
-        margin: 0;
-        padding: 0;
-        cursor: pointer;
-  
-        cura-icon {
-          padding: 0.5rem;
-          width: 2.75rem;
-          height: 2.75rem;
-        }
-  
-        cura-icon:hover {
-          background-color: var(--grey-2);
-        }
-      }
-    }
-  
-    #printers-div {
-      #printer-button {
-        font-size: 0.9rem;
-      }
-  
-      #manage-printers-div {
-        display: grid;
-        width: 100%;
-        grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-        grid-gap: 0.5rem;
-      }
-    }
-  
-    #extruders-div {
-      #extruders-button {
-        gap: 0.5rem;
-  
-        cura-icon[icon-name="Spool"] {
-          width: 1.5rem;
-          height: 1.5rem;
-        }
-  
-        div {
-          display: flex;
-          flex-direction: column;
-        }
-  
-        span {
-          font-size: 0.8rem;
-        }
       }
     }
   }
-  
-  #controls {
+
+  #printers-div {
+    #printer-button {
+      font-size: 0.9rem;
+    }
+
+    #manage-printers-div {
+      display: grid;
+      width: 100%;
+      grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+      grid-gap: 0.5rem;
+    }
+  }
+
+  #extruders-div {
+    #extruders-button {
+      gap: 0.5rem;
+
+      cura-icon[icon-name="Spool"] {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+      }
+
+      span {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+#controls {
   position: absolute;
   left: 0rem;
   bottom: 50%;
@@ -144,6 +143,73 @@
 
     &:hover {
       background-color: var(--grey-2);
+    }
+
+    .controls-popup {
+      position: fixed;
+      left: 3.75rem; // 3rem and 0.25x2 padding + 0.25 distance
+
+      background-color: var(--background-2);
+      border: 1px var(--grey-2) solid;
+
+      font-size: 1rem;
+      padding: 0.5rem;
+
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      cursor: default;
+
+      display: none;
+
+      transform: translateY(-75%);
+
+      .axis {
+        position: static;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        gap: 0.5rem;
+
+        font-size: 0.8rem;
+
+        .axis-label {
+          // The font here looks a little strange to me... especially compared to Cura
+          font-weight: 500;
+
+          &.x {
+            color: rgb(255, 20, 20);
+          }
+
+          &.y {
+            color: rgb(20, 255, 20);
+          }
+
+          &.z {
+            color: rgb(20, 150, 255);
+          }
+        }
+
+        .axis-value {
+          background-color: var(--grey-2);
+          border-bottom: 1px solid var(--grey);
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+
+          input {
+            background-color: transparent;
+            border-bottom: none;
+            outline-width: 0px;
+          }
+
+          .unit {
+            color: var(--grey);
+          }
+        }
+      }
     }
   }
 }
