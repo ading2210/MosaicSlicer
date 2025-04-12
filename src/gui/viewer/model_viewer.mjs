@@ -10,14 +10,30 @@ import * as viewer from "./viewer.mjs";
 import { clear_slice_state } from "../actions.mjs";
 import { tab_change_listeners } from "../tabs.mjs";
 
+const DEGREES_TO_RADIANS = Math.PI / 180;
+const RADIANS_TO_DEGREES = 180 / Math.PI;
+
 const controls_bar = document.getElementById("controls");
 const movement_button = document.getElementById("movement-button");
 const rotate_button = document.getElementById("rotate-button");
 const scale_button = document.getElementById("scale-button");
 
+// --- Overlay
 const movement_overlay = movement_button.getElementsByClassName("controls-popup")[0];
 const rotate_overlay = rotate_button.getElementsByClassName("controls-popup")[0];
 const scale_overlay = scale_button.getElementsByClassName("controls-popup")[0];
+
+const movement_x_value = document.getElementById("movement-x-value");
+const movement_y_value = document.getElementById("movement-y-value");
+const movement_z_value = document.getElementById("movement-z-value");
+
+const rotation_x_value = document.getElementById("rotation-x-value");
+const rotation_y_value = document.getElementById("rotation-y-value");
+const rotation_z_value = document.getElementById("rotation-z-value");
+
+const scale_x_value = document.getElementById("scale-x-value");
+const scale_y_value = document.getElementById("scale-y-value");
+const scale_z_value = document.getElementById("scale-z-value");
 
 const scene = new THREE.Scene();
 
@@ -43,6 +59,10 @@ model_controls.addEventListener("dragging-changed", (event) => {
   drop_model();
 });
 
+model_controls.addEventListener("change", () => {
+  update_overlays();
+});
+
 // ---- Model Material
 const model_material = new THREE.MeshPhysicalMaterial({
   color: 0x1a5f5a,
@@ -50,6 +70,36 @@ const model_material = new THREE.MeshPhysicalMaterial({
   emissive: 0x1a5f5a,
   emissiveIntensity: 0.3
 });
+
+// UI Updates
+function update_overlays() {
+  if (focused) {
+    movement_y_value.value = models[focused].mesh.position.z;
+    movement_x_value.value = models[focused].mesh.position.x;
+    movement_z_value.value = models[focused].mesh.position.y;
+
+    rotation_x_value.value = models[focused].mesh.rotation.x * RADIANS_TO_DEGREES;
+    rotation_y_value.value = models[focused].mesh.rotation.y * RADIANS_TO_DEGREES;
+    rotation_z_value.value = models[focused].mesh.rotation.z * RADIANS_TO_DEGREES;
+
+    scale_x_value.value = models[focused].mesh.scale.x * 100;
+    scale_y_value.value = models[focused].mesh.scale.y * 100;
+    scale_z_value.value = models[focused].mesh.scale.z * 100;
+  }
+  else {
+    movement_y_value.value = null;
+    movement_x_value.value = null;
+    movement_z_value.value = null;
+
+    rotation_x_value.value = null;
+    rotation_y_value.value = null;
+    rotation_z_value.value = null;
+
+    scale_x_value.value = null;
+    scale_y_value.value = null;
+    scale_z_value.value = null;
+  }
+}
 
 // ---- Model Focusing
 /** @param {string} uuid */
@@ -59,6 +109,8 @@ function focus_stl(uuid) {
   console.log(models);
   models[uuid].mesh.material.color.set(0x37d79c);
   models[uuid].mesh.material.emissive.set(0x37d79c);
+
+  update_overlays();
 }
 
 /** @param {string} uuid */
@@ -72,6 +124,8 @@ function unfocus_stl() {
     models[focused].mesh.material.emissive.set(0x1a5f5a);
     focused = null;
   }
+
+  update_overlays();
 }
 
 // ---- Smart Tools
@@ -242,18 +296,7 @@ tab_change_listeners.push((i) => {
   }
 });
 
-const movement_x_value = document.getElementById("movement-x-value");
-const movement_y_value = document.getElementById("movement-y-value");
-const movement_z_value = document.getElementById("movement-z-value");
-
-const rotation_x_value = document.getElementById("rotation-x-value");
-const rotation_y_value = document.getElementById("rotation-y-value");
-const rotation_z_value = document.getElementById("rotation-z-value");
-
-const scale_x_value = document.getElementById("scale-x-value");
-const scale_y_value = document.getElementById("scale-y-value");
-const scale_z_value = document.getElementById("scale-z-value");
-
+// --- Overlay
 movement_x_value.addEventListener("input", () => {
   models[focused].mesh.position.x = movement_x_value.value;
 });
@@ -269,13 +312,13 @@ movement_z_value.addEventListener("change", () => {
 });
 
 rotation_x_value.addEventListener("input", () => {
-  models[focused].mesh.rotation.x = rotation_x_value.value;
+  models[focused].mesh.rotation.x = rotation_x_value.value * DEGREES_TO_RADIANS;
 });
 rotation_y_value.addEventListener("input", () => {
-  models[focused].mesh.rotation.y = rotation_y_value.value;
+  models[focused].mesh.rotation.y = rotation_y_value.value * DEGREES_TO_RADIANS;
 });
 rotation_z_value.addEventListener("input", () => {
-  models[focused].mesh.rotation.z = rotation_z_value.value;
+  models[focused].mesh.rotation.z = rotation_z_value.value * DEGREES_TO_RADIANS;
 });
 
 scale_x_value.addEventListener("input", () => {
