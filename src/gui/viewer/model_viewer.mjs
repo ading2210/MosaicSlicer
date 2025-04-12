@@ -35,6 +35,18 @@ const scale_x_value = document.getElementById("scale-x-value");
 const scale_y_value = document.getElementById("scale-y-value");
 const scale_z_value = document.getElementById("scale-z-value");
 
+const overlay_values = [
+  movement_x_value,
+  movement_y_value,
+  movement_z_value,
+  rotation_x_value,
+  rotation_y_value,
+  rotation_z_value,
+  scale_x_value,
+  scale_y_value,
+  scale_z_value
+];
+
 const scene = new THREE.Scene();
 
 /**
@@ -57,10 +69,7 @@ model_controls.addEventListener("dragging-changed", (event) => {
   renderer.controls.enabled = !event.value;
   clear_slice_state();
   drop_model();
-});
-
-model_controls.addEventListener("change", () => {
-  update_overlays();
+  update_overlays(); // If I put this in event "change" so that it updates as you move, the whole thing becomes very laggy
 });
 
 // ---- Model Material
@@ -71,14 +80,27 @@ const model_material = new THREE.MeshPhysicalMaterial({
   emissiveIntensity: 0.3
 });
 
-// UI Updates
+// --- Utils
+/**
+ * Compute half of the height of a mesh
+ * @param {THREE.Mesh} mesh
+ * @returns {number}
+ */
+function get_half_height(mesh) {
+  mesh.geometry.computeBoundingBox();
+  const size = new THREE.Vector3();
+  mesh.geometry.boundingBox.getSize(size);
+  return size.z / 2;
+}
+
+// ---- UI Updates
 function update_overlays() {
   if (focused) {
-    movement_y_value.value = models[focused].mesh.position.z;
     movement_x_value.value = models[focused].mesh.position.x;
-    movement_z_value.value = models[focused].mesh.position.y;
+    movement_y_value.value = models[focused].mesh.position.z;
+    movement_z_value.value = models[focused].mesh.position.y - get_half_height(models[focused].mesh);
 
-    rotation_x_value.value = models[focused].mesh.rotation.x * RADIANS_TO_DEGREES;
+    rotation_x_value.value = Math.round((models[focused].mesh.rotation.x * RADIANS_TO_DEGREES + 90) * 100) / 100;
     rotation_y_value.value = models[focused].mesh.rotation.y * RADIANS_TO_DEGREES;
     rotation_z_value.value = models[focused].mesh.rotation.z * RADIANS_TO_DEGREES;
 
@@ -194,10 +216,7 @@ export function load_model(raw_data, model_type) {
   mesh.scale.set(1, 1, 1);
   mesh.rotateX(-Math.PI / 2);
 
-  mesh.geometry.computeBoundingBox();
-  const size = new THREE.Vector3();
-  mesh.geometry.boundingBox.getSize(size);
-  mesh.position.y += size.z * 0.5;
+  mesh.position.y += get_half_height(mesh);
   // .y += size.z * 0.5; // z/y are flipped
 
   scene.add(mesh);
@@ -304,15 +323,17 @@ movement_y_value.addEventListener("input", () => {
   models[focused].mesh.position.z = movement_y_value.value;
 });
 movement_z_value.addEventListener("input", () => {
-  models[focused].mesh.position.y = movement_z_value.value;
+  console.log(get_half_height(models[focused].mesh) + parseInt(movement_z_value.value.to));
+  models[focused].mesh.position.y = get_half_height(models[focused].mesh) + parseInt(movement_z_value.value);
 });
 movement_z_value.addEventListener("change", () => {
-  models[focused].mesh.position.y = movement_z_value.value;
+  models[focused].mesh.position.y = movement_z_value.value + get_half_height(models[focused].mesh);
   drop_model();
+  movement_z_value.value = models[focused].mesh.position.y - get_half_height(models[focused].mesh);
 });
 
 rotation_x_value.addEventListener("input", () => {
-  models[focused].mesh.rotation.x = rotation_x_value.value * DEGREES_TO_RADIANS;
+  models[focused].mesh.rotation.x = (rotation_x_value.value - 90) * DEGREES_TO_RADIANS;
 });
 rotation_y_value.addEventListener("input", () => {
   models[focused].mesh.rotation.y = rotation_y_value.value * DEGREES_TO_RADIANS;
@@ -330,3 +351,10 @@ scale_y_value.addEventListener("input", () => {
 scale_z_value.addEventListener("input", () => {
   models[focused].mesh.scale.z = scale_z_value.value / 100;
 });
+
+for (let val of overlay_values) {
+  val.addEventListener("change", () => {
+    if (!val.value)
+      val.value = 0;
+  });
+}
