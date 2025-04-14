@@ -7,3 +7,6 @@
 [submodule "third_party/fdm_materials"]
 	path = third_party/fdm_materials
 	url = https://github.com/Ultimaker/fdm_materials
+[submodule "third_party/CuraEngine"]
+	path = third_party/CuraEngine
+	url = https://github.com/MosaicSlicer/CuraEngine
