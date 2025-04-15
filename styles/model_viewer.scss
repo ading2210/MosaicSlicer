@@ -80,11 +80,39 @@
       font-size: 0.9rem;
     }
 
+    #printers-dropdown {
+      padding: 0px;
+    }
+
     #manage-printers-div {
       display: grid;
       width: 100%;
       grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
       grid-gap: 0.5rem;
+      padding: 0.5rem;
+    }
+
+    #printers-list {
+      padding-top: 0.5rem;
+      user-select: none;
+      
+      div {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+      }
+      div:hover {
+        background-color: var(--grey-2);
+      }
+      p {
+        margin: 0px;
+        font-size: 0.9rem;
+      }
+      cura-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
     }
   }
 

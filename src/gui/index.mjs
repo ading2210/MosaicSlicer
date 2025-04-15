@@ -9,6 +9,7 @@ export * as search from "./search.mjs";
 export * as settings from "./settings.mjs";
 export * as sidebar from "./sidebar.mjs";
 export * as tabs from "./tabs.mjs";
+export * as printers from "./printers.mjs";
 export * as viewer from "./viewer/viewer.mjs";
 
 import * as utils from "../utils.mjs";
@@ -21,12 +22,18 @@ import { start_gcode_viewer } from "./viewer/gcode_viewer.mjs";
 
 import { switch_tab } from "./tabs.mjs";
 import { load_options } from "./options.mjs";
+import { populate_printers } from "./printers.mjs";
+
+export function update_gui() {
+  load_sidebar();
+  load_options();
+}
 
 export async function start_gui() {
   switch_tab(0);
+  populate_printers();
 
-  load_sidebar();
-  load_options();
+  update_gui();
   start_viewer();
   start_model_viewer();
   start_gcode_viewer();

@@ -25,6 +25,7 @@ export function load_sidebar() {
   let global_stack = active_containers.containers.global;
 
   // Populate sidebar sections
+  sections.replaceChildren();
   for (let category_id in settings) {
     let category = settings[category_id];
     let template = section_template.content.cloneNode(true);
@@ -72,6 +73,7 @@ export function load_sidebar() {
   }
 
   option_elements = option_elements.sort((a, b) => b[0] - a[0]);
+  profile_selector.replaceChildren();
   for (let [weight, option] of option_elements)
     profile_selector.append(option);
 

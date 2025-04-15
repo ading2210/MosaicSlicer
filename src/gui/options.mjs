@@ -8,8 +8,6 @@ import { update_all } from "./actions.mjs";
 const printer_button = document.getElementById("printer-button");
 const printer_name = document.getElementById("printer-name");
 const printers_dropdown = document.getElementById("printers-dropdown");
-const printers_list = document.getElementById("printers-list");
-const printer_item_template = document.getElementById("printer-item-template");
 
 const extruders_button = document.getElementById("extruders-button");
 const filament_name = document.getElementById("filament-name");
@@ -92,6 +90,11 @@ export function load_options() {
   //hide dropdowns
   printers_dropdown.dataset.hidden = true;
   extruders_dropdown.dataset.hidden = true;
+
+  //remove element children
+  material_brand_select.replaceChildren();
+  material_select.replaceChildren();
+  nozzle_select.replaceChildren();
 
   update_options_text();
   populate_material_dropdowns();

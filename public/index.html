@@ -49,8 +49,12 @@
             </div>
             <div id="printers-dropdown" class="options-dropdown">
               <div id="printers-list">
-                <p>This is hardcoded for now.</p>
-                <template id="printer-item-template"></template>
+                <template id="printer-item-template">
+                  <div slot="printer-button">
+                    <cura-icon icon-name="Printer"></cura-icon>
+                    <p slot="printer-name"></p>
+                  </div>
+                </template>
               </div>
               <div id="manage-printers-div">
                 <button id="add-printer-button">Add Printer</button>
