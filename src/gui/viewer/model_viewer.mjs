@@ -47,6 +47,10 @@ const overlay_values = [
   scale_z_value
 ];
 
+// Context menu items
+const delete_model_context = document.getElementById("context-delete");
+const duplicate_model_context = document.getElementById("context-duplicate");
+
 const scene = new THREE.Scene();
 
 /**
@@ -198,6 +202,15 @@ function toggle_transform(transform) {
   }
 }
 
+// Delete models
+function delete_model() {
+  if (focused) {
+    scene.remove(models[focused].mesh);
+    delete interactions.scene_objects[focused];
+    focused = null;
+  }
+}
+
 /**
  * Load STL or 3MF into viewer as a model
  * @param {ArrayBuffer | string} raw_data
@@ -281,13 +294,8 @@ const button_listeners = [
     toggle_transform("scale");
   },
   (e) => {
-    if (document.activeElement == document.body && e.key == "Backspace") { // three.js OrbitControls prevent me from adding the eventlistener to the canvas element
-      if (focused) {
-        scene.remove(models[focused].mesh);
-        delete interactions.scene_objects[focused];
-        focused = null;
-      }
-    }
+    if (document.activeElement == document.body && e.key == "Backspace") // three.js OrbitControls prevent me from adding the eventlistener to the canvas element
+      delete_model();
   }
 ];
 
@@ -308,7 +316,7 @@ tab_change_listeners.push((i) => {
   }
   else {
     movement_button.firstElementChild.removeEventListener("click", button_listeners[0]);
-    rotate_button.firstElementChild.removeEventListener("click", button_listeners[1]);
+    rotate_button.firsdtElementChild.removeEventListener("click", button_listeners[1]);
     scale_button.firstElementChild.removeEventListener("click", button_listeners[2]);
 
     window.removeEventListener("keydown", button_listeners[3]);
@@ -358,3 +366,5 @@ for (let val of overlay_values) {
       val.value = 0;
   });
 }
+
+delete_model_context.addEventListener("click", delete_model);

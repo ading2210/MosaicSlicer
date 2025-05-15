@@ -84,15 +84,14 @@ renderer.viewport.addEventListener("mouseup", (e) => {
   }
 });
 
-
 // context menu
-const contextmenu = document.getElementById("contextmenu")
+const contextmenu = document.getElementById("contextmenu");
 renderer.viewport.addEventListener("contextmenu", (e) => {
   contextmenu.style.display = "flex";
-  contextmenu.style.left = e.clientX + "px"
-  contextmenu.style.top = e.clientY + "px"
-})
+  contextmenu.style.left = e.clientX + "px";
+  contextmenu.style.top = e.clientY + "px";
+});
 
 renderer.viewport.addEventListener("click", (e) => {
   contextmenu.style.display = "none";
-})
+});

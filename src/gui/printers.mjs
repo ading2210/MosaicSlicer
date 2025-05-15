@@ -15,9 +15,9 @@ export function populate_printers() {
     let printer_template = printer_item_template.content.cloneNode(true);
     printer_template.get_slot("printer-name").innerText = printer_name;
     printer_template.get_slot("printer-button").onclick = () => {
-      set_active_printer(printer)
+      set_active_printer(printer);
       update_gui();
-    }
+    };
     printers_list.append(printer_template);
   }
 }

@@ -24,13 +24,13 @@
     background-color: var(--background-2);
     border: 1px var(--grey-2) solid;
 
-    &>div {
+    & > div {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
     }
 
-    &>div[data-active="false"] {
+    & > div[data-active="false"] {
       display: none;
     }
 
