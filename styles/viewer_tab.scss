@@ -24,13 +24,13 @@
     background-color: var(--background-2);
     border: 1px var(--grey-2) solid;
 
-    & > div {
+    &>div {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
     }
 
-    & > div[data-active="false"] {
+    &>div[data-active="false"] {
       display: none;
     }
 
@@ -76,5 +76,36 @@
         font-size: 0.9rem;
       }
     }
+  }
+}
+
+#contextmenu {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 15rem;
+  padding: 0.5rem;
+
+  display: none; // flex
+  flex-direction: column;
+  gap: 0.25rem;
+
+  background-color: var(--background-2);
+  border: 1px var(--grey-2) solid;
+
+  .context-item {
+    padding: 0.1rem;
+    cursor: pointer;
+    &:hover {
+      background-color: var(--grey-2);
+    }
+  }
+
+  hr {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-color: var(--grey-2);
   }
 }

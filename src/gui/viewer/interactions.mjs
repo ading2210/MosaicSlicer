@@ -16,18 +16,14 @@ var raycaster = new THREE.Raycaster();
  * @property {(event: Event) => void} ondrag
  */
 
-/**
- * @type {SceneObject}
- */
+/** @type {SceneObject} */
 export const SceneObject = {
   mesh: null,
   onclick: null,
   ondrag: null
 };
 
-/**
- * @type {Record<string, SceneObject>}
- */
+/** @type {Record<string, SceneObject>} */
 export var scene_objects = {};
 
 /**
@@ -87,3 +83,16 @@ renderer.viewport.addEventListener("mouseup", (e) => {
     currently_held = null;
   }
 });
+
+
+// context menu
+const contextmenu = document.getElementById("contextmenu")
+renderer.viewport.addEventListener("contextmenu", (e) => {
+  contextmenu.style.display = "flex";
+  contextmenu.style.left = e.clientX + "px"
+  contextmenu.style.top = e.clientY + "px"
+})
+
+renderer.viewport.addEventListener("click", (e) => {
+  contextmenu.style.display = "none";
+})
