@@ -316,7 +316,7 @@ tab_change_listeners.push((i) => {
   }
   else {
     movement_button.firstElementChild.removeEventListener("click", button_listeners[0]);
-    rotate_button.firsdtElementChild.removeEventListener("click", button_listeners[1]);
+    rotate_button.firstElementChild.removeEventListener("click", button_listeners[1]);
     scale_button.firstElementChild.removeEventListener("click", button_listeners[2]);
 
     window.removeEventListener("keydown", button_listeners[3]);
