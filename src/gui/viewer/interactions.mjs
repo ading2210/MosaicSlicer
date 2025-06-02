@@ -26,6 +26,9 @@ export const SceneObject = {
 /** @type {Record<string, SceneObject>} */
 export var scene_objects = {};
 
+// context menu
+const contextmenu = document.getElementById("contextmenu");
+
 /**
  * Check if mouse is colliding with any `SceneObject` in the viewer
  * @param {number} mouse_x
@@ -34,22 +37,28 @@ export var scene_objects = {};
  */
 function get_mouse_intersects(mouse_x, mouse_y) {
   var mouse = new THREE.Vector2(
-    mouse_x / renderer.view_width * 2 - 1,
-    -(mouse_y / renderer.view_height * 2 - 1)
+    (mouse_x / renderer.view_width) * 2 - 1,
+    -((mouse_y / renderer.view_height) * 2 - 1)
   );
   raycaster.setFromCamera(mouse, renderer.camera);
 
-  let intersects = raycaster.intersectObjects(Array.from(Object.values(scene_objects), (model) => model.mesh), true);
-  if (intersects.length > 0)
-    return intersects[0].object.uuid;
+  let intersects = raycaster.intersectObjects(
+    Array.from(Object.values(scene_objects), (model) => model.mesh),
+    true
+  );
+  if (intersects.length > 0) return intersects[0].object.uuid;
   return null;
 }
 
 var currently_held = null;
 var last_held = null;
+let dragged = false;
 renderer.viewport.addEventListener("mousedown", (e) => {
   if (renderer.scene_name == "model") {
-    let intersection = get_mouse_intersects(e.clientX, e.clientY - tab_strip.clientHeight);
+    let intersection = get_mouse_intersects(
+      e.clientX,
+      e.clientY - tab_strip.clientHeight
+    );
     if (intersection) {
       last_held = currently_held;
       currently_held = intersection;
@@ -61,6 +70,9 @@ renderer.viewport.addEventListener("mousedown", (e) => {
   }
 });
 renderer.viewport.addEventListener("mousemove", (e) => {
+  if (e.movementX < 8 || e.movementY < 8)
+    return
+  dragged = true;
   if (renderer.scene_name == "model") {
     if (currently_held) {
       if (scene_objects[currently_held].ondrag != null)
@@ -73,23 +85,35 @@ renderer.viewport.addEventListener("mouseup", (e) => {
     if (currently_held) {
       if (scene_objects[currently_held].onclick != null) {
         // Check if mouse is still over model
-        let intersection = get_mouse_intersects(e.clientX, e.clientY - tab_strip.clientHeight);
+        let intersection = get_mouse_intersects(
+          e.clientX,
+          e.clientY - tab_strip.clientHeight
+        );
         if (intersection == currently_held)
           scene_objects[currently_held].onclick(e);
+      }
+    }
+    else {
+      if (!dragged) {
+        if (e.button == 2) {
+          contextmenu.style.display = "flex";
+          contextmenu.style.left = e.clientX + "px";
+          contextmenu.style.top = e.clientY + "px";
+        }
       }
     }
     renderer.controls.enabled = true;
 
     currently_held = null;
   }
+  dragged = false;
 });
 
-// context menu
-const contextmenu = document.getElementById("contextmenu");
 renderer.viewport.addEventListener("contextmenu", (e) => {
-  contextmenu.style.display = "flex";
-  contextmenu.style.left = e.clientX + "px";
-  contextmenu.style.top = e.clientY + "px";
+  e.preventDefault()
+//   contextmenu.style.display = "flex";
+//   contextmenu.style.left = e.clientX + "px";
+//   contextmenu.style.top = e.clientY + "px";
 });
 
 renderer.viewport.addEventListener("click", (e) => {
