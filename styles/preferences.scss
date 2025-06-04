@@ -73,3 +73,106 @@
     }
   }
 }
+
+#add-printer-dialog:modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.5rem;
+  border: none;
+
+  background-color: var(--background-2);
+  border: 1px var(--grey-2) solid;
+
+  min-width: 50vw;
+
+  .add-printer-title-bar {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    .title {
+      font-size: 1.75rem;
+      font-weight: 500;
+
+      text-decoration: underline;
+      text-decoration-color: var(--primary);
+    }
+
+    .close {
+      text-align: left;
+      cursor: pointer;
+
+      cura-icon {
+        height: 2rem;
+      }
+    }
+  }
+
+  #add-printer-options {
+    display: flex;
+    flex-direction: column;
+
+    min-height: 50vh;
+    max-height: 80vh;
+
+    width: 100%;
+
+    border: 1px var(--grey-2) solid;
+
+    overflow-y: scroll;
+
+    .manufacturer-option {
+      display: flex;
+      flex-direction: column;
+      font-size: 1.25rem;
+      padding: 0.5rem;
+
+      border-bottom: 1px var(--grey-2) solid;
+
+      span {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        cura-icon {
+          transition: 0.1s;
+          transform: rotate(90deg);
+          height: 1.25rem;
+          width: 1.25rem;
+        }
+      }
+
+      .printer-options {
+        display: none;
+        flex-direction: column;
+
+        font-size: 1rem;
+
+        .printer-option {
+          padding-left: 1rem;
+        }
+      }
+
+      &.opened {
+        .printer-options {
+          display: flex;
+        }
+        cura-icon {
+          transform: rotate(0deg);
+        }
+      }
+    }
+  }
+}
+
+#add-printer-dialog::backdrop {
+  backdrop-filter: blur(0.2rem);
+}

@@ -71,7 +71,7 @@ renderer.viewport.addEventListener("mousedown", (e) => {
 });
 renderer.viewport.addEventListener("mousemove", (e) => {
   if (e.movementX < 8 || e.movementY < 8)
-    return
+    return;
   dragged = true;
   if (renderer.scene_name == "model") {
     if (currently_held) {
@@ -110,10 +110,10 @@ renderer.viewport.addEventListener("mouseup", (e) => {
 });
 
 renderer.viewport.addEventListener("contextmenu", (e) => {
-  e.preventDefault()
-//   contextmenu.style.display = "flex";
-//   contextmenu.style.left = e.clientX + "px";
-//   contextmenu.style.top = e.clientY + "px";
+  e.preventDefault();
+  //   contextmenu.style.display = "flex";
+  //   contextmenu.style.left = e.clientX + "px";
+  //   contextmenu.style.top = e.clientY + "px";
 });
 
 renderer.viewport.addEventListener("click", (e) => {

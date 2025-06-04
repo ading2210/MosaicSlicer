@@ -25,7 +25,7 @@ export function merge_deep(target, ...sources) {
   return merge_deep(target, ...sources);
 }
 
-function resolve_printer(printer_id, inheritance = []) {
+export function resolve_printer(printer_id, inheritance = []) {
   let printer = get_json(`definitions/${printer_id}.def.json`);
   inheritance.push(printer_id);
   if (printer.inherits)

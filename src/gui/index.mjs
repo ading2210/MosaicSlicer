@@ -11,6 +11,8 @@ export * as sidebar from "./sidebar.mjs";
 export * as tabs from "./tabs.mjs";
 export * as printers from "./printers.mjs";
 export * as viewer from "./viewer/viewer.mjs";
+export * as transform_menu from "./viewer/transform_menu.mjs";
+export * as settings_tab from "./settings/index.mjs";
 
 import * as utils from "../utils.mjs";
 
@@ -19,7 +21,6 @@ import { check_for_stl } from "./file.mjs";
 import { load_sidebar } from "./sidebar.mjs";
 import { start_model_viewer } from "./viewer/model_viewer.mjs";
 import { start_gcode_viewer } from "./viewer/gcode_viewer.mjs";
-import "./viewer/transform_menu.mjs";
 
 import { switch_tab } from "./tabs.mjs";
 import { load_options } from "./options.mjs";

@@ -57,7 +57,7 @@
                 </template>
               </div>
               <div id="manage-printers-div">
-                <button id="add-printer-button">Add Printer</button>
+                <button class="add-printer-button">Add Printer</button>
                 <button id="manage-printers-button">Manage Printers</button>
               </div>
             </div>
@@ -274,7 +274,7 @@
             <div class="prefs-title-bar">
               <span>Printers</span>
               <div class="flex-spacer"></div>
-              <button>Add Printer</button>
+              <button class="add-printer-button">Add Printer</button>
             </div>
             <div id="prefs-printer-contents" class="prefs-contents">
               <div id="prefs-printers-list">
@@ -291,6 +291,17 @@
         </div>
       </div>
     </div>
+
+    <dialog id="add-printer-dialog">
+      <span class="add-printer-title-bar">
+        <span class="close flex-spacer"><cura-icon
+            icon-name="ionicons_close_outline"
+            id="close-add-printer-dialog"></cura-icon></span>
+        <span class="flex-spacer title">Add New Printer</span>
+        <span class="flex-spacer"></span>
+      </span>
+      <div id="add-printer-options"></div>
+    </dialog>
 
     <div id="notifications">
       <template id="notification-template">
