@@ -143,6 +143,8 @@
         align-items: center;
 
         cura-icon {
+          cursor: pointer;
+
           transition: 0.1s;
           transform: rotate(90deg);
           height: 1.25rem;
@@ -154,10 +156,22 @@
         display: none;
         flex-direction: column;
 
-        font-size: 1rem;
+        font-size: 1.1rem;
 
         .printer-option {
           padding-left: 1rem;
+          display: flex;
+          justify-content: left;
+          gap: 0.5rem;
+
+          input {
+            cursor: pointer;
+            filter: grayscale(100%);
+          }
+
+          label {
+            cursor: pointer;
+          }
         }
       }
 

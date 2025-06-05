@@ -4,12 +4,15 @@ import { resolve_printer } from "../../settings/definitions.mjs";
 const add_printer_buttons = document.getElementsByClassName("add-printer-button");
 
 const add_printer_dialog = document.getElementById("add-printer-dialog");
-const add_printer_dialog_options = document.getElementById("add-printer-options");
+const add_printer_dialog_options = document.getElementById(
+  "add-printer-options"
+);
 const close_add_printer_dialog = document.getElementById(
   "close-add-printer-dialog"
 );
 
 function add_printer() {
+  add_printer_dialog_options.innerHTML = "";
   let manufacturers = {};
   let manufacturer_elements = {};
 
@@ -55,7 +58,17 @@ function add_printer() {
 
     let printer_element = document.createElement("span");
     printer_element.className = "printer-option";
-    printer_element.innerText = printer_json["name"];
+
+    let printer_option_input = document.createElement("input");
+    printer_option_input.type = "radio";
+    printer_option_input.id = printer_id;
+    printer_option_input.name = "printer-option";
+    printer_element.appendChild(printer_option_input);
+
+    let print_option_label = document.createElement("label");
+    print_option_label.setAttribute("for", printer_id);
+    print_option_label.innerText = printer_json["name"];
+    printer_element.appendChild(print_option_label);
 
     manufacturer_elements[manufacturer].lastElementChild.appendChild(
       printer_element
