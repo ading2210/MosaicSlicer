@@ -141,9 +141,9 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        cursor: pointer;
 
         cura-icon {
-          cursor: pointer;
 
           transition: 0.1s;
           transform: rotate(90deg);

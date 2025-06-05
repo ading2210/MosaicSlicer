@@ -1,7 +1,10 @@
 import { cura_resources } from "../../resources.mjs";
 import { resolve_printer } from "../../settings/definitions.mjs";
+import { load_container, set_active_printer } from "../../settings/index.mjs";
+import { notify } from "../notifications.mjs";
 
-const add_printer_buttons = document.getElementsByClassName("add-printer-button");
+const add_printer_buttons =
+  document.getElementsByClassName("add-printer-button");
 
 const add_printer_dialog = document.getElementById("add-printer-dialog");
 const add_printer_dialog_options = document.getElementById(
@@ -10,6 +13,7 @@ const add_printer_dialog_options = document.getElementById(
 const close_add_printer_dialog = document.getElementById(
   "close-add-printer-dialog"
 );
+const add_printer_button = document.getElementById("add-printer-button");
 
 function add_printer() {
   add_printer_dialog_options.innerHTML = "";
@@ -78,6 +82,30 @@ function add_printer() {
   add_printer_dialog.showModal();
 
   close_add_printer_dialog.addEventListener("click", () => {
+    add_printer_dialog.close();
+  });
+
+  add_printer_button.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    let selected_printer;
+    for (let option of document.getElementsByName("printer-option")) {
+      if (option.checked) {
+        selected_printer = option.id;
+        break;
+      }
+    }
+
+    if (!selected_printer) {
+      add_printer_dialog.close();
+      notify("No selected printer", "Please select a printer to add");
+      return;
+    }
+
+    console.log(selected_printer);
+
+    let printer = load_container(selected_printer);
+    set_active_printer(printer);
     add_printer_dialog.close();
   });
 }
